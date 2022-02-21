@@ -1,6 +1,7 @@
 #include "app.h"
 #include "Direct.h"
 #include "SceneManager.h"
+#include "ResourceManager.h"
 
 CApp::CApp()
 {
@@ -15,6 +16,7 @@ CApp::~CApp()
 bool CApp::Initialize()
 {
 	if (!CDirect::GetInstance()->Initialize()) return false;
+	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;
 	if (!m_pGameWnd->Initialize()) return false;
 	return true;
@@ -24,6 +26,7 @@ void CApp::Cleanup()
 {
 	if (m_pGameWnd) { delete m_pGameWnd; m_pGameWnd = nullptr; }
 	if (CSceneManager::GetInstance()) { CSceneManager::DeleteInstance(); }
+	if (CResourceManager::GetInstance()) { CResourceManager::DeleteInstance(); }
 	if (CDirect::GetInstance()) { CDirect::GetInstance()->DeleteInstance(); }
 }
 

@@ -40,7 +40,9 @@ bool CDirect::Initialize()
 
 void CDirect::Cleanup()
 {
-
+	if (m_pWICBitmap) { m_pWICBitmap->Release(); m_pWICBitmap = nullptr; }
+	if (m_pWICFactory) { m_pWICFactory->Release(); m_pWICFactory = nullptr; }
+	if (m_pD2DFactory) { m_pD2DFactory->Release(); m_pD2DFactory = nullptr; }
 }
 
 HRESULT CDirect::LoadBitmapFromFile(PCWSTR _wcFileName, ID2D1Bitmap** _ppBitmap, ID2D1HwndRenderTarget* _hWndRT)
