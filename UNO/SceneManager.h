@@ -7,6 +7,7 @@ typedef std::vector<CScene*> scenelist_t;
 enum class eScene : int
 {
 	TITLE_SCENE = 0,
+	NAME_SCENE,
 	MAX
 };
 

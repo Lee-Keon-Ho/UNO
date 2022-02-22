@@ -2,10 +2,12 @@
 #include "Direct.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#define FRAME 10
 
 CApp::CApp()
 {
 	m_pGameWnd = new CGameWnd();
+	m_pFps = new CFps(FRAME);
 }
 
 CApp::~CApp()
@@ -24,6 +26,7 @@ bool CApp::Initialize()
 
 void CApp::Cleanup()
 {
+	if (m_pFps) { delete m_pFps; m_pFps = nullptr; }
 	if (m_pGameWnd) { delete m_pGameWnd; m_pGameWnd = nullptr; }
 	if (CSceneManager::GetInstance()) { CSceneManager::DeleteInstance(); }
 	if (CResourceManager::GetInstance()) { CResourceManager::DeleteInstance(); }
@@ -41,12 +44,12 @@ int CApp::MessageLoop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg); // ==> WndProc() È£Ãâ
 		}
-		/*if (m_pFps->IsFrame())
+		if (m_pFps->IsFrame())
 		{
-			
-		}*/
-		Update();
-		Render();
+			Update();
+			Render();
+		}
+		
 	}
 	Cleanup();
 	return (int)msg.wParam;

@@ -33,17 +33,11 @@ bool CGameWnd::Initialize()
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x9F0000, 1.0f),
-		&m_pRedBrush);
+		CResourceManager::GetInstance()->GetRedBrush());
 	if (FAILED(hr)) return false;
 
 	LoadBitmapFile();
 
-	//
-	m_pRenderTarget->BeginDraw();
-
-	m_pRenderTarget->FillRectangle({ 0.0f, 0.0f, 450.0f, 450.0f }, m_pRedBrush);
-
-	m_pRenderTarget->EndDraw();
 	return true;
 }
 
@@ -54,13 +48,15 @@ bool CGameWnd::LoadBitmapFile()
 
 	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\UNO Menus and Text.png" };
 
-	char resourceFileName[][_MAX_PATH] = { "RED TEXT26.bin" };
+	char resourceFileName[][_MAX_PATH] = { "Resource\\RED TEXT26.bin",
+											"Resource\\BLUE TEXT36.bin",
+											"Resource\\YELLOW TEXT36.bin"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
 	int iTmp = 0;
 
-	for (int y = 0; y < 1; y++)
+	for (int y = 0; y < 3; y++)
 	{
 		for (int x = 0; resourceFileName[y][x] != '\0'; x++)
 		{
@@ -76,7 +72,7 @@ bool CGameWnd::LoadBitmapFile()
 					return false;
 				}
 				fread(tmpSprite, sizeof(CSprite), iTmp, pFile);
-				//_character->SetClip(y, tmpSprite, iTmp);
+				pRM->SetText(tmpSprite, iTmp, y);
 				if (tmpSprite) { delete[] tmpSprite; tmpSprite = nullptr; }
 				fclose(pFile); iTmp = 0; break;
 			}

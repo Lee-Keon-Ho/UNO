@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
+#include "NameScene.h"
+
 CSceneManager* CSceneManager::pInstance = nullptr;
 
 CSceneManager* CSceneManager::GetInstance()
@@ -27,8 +29,10 @@ bool CSceneManager::Initialize()
 {
 	m_scene.reserve((int)eScene::MAX);
 	m_scene.push_back(new CTitleScene());
+	m_scene.push_back(new CNameScene());
 
 	m_nextScene = m_scene[(int)eScene::TITLE_SCENE];
+
 	return true;
 }
 

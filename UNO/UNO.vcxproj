@@ -141,7 +141,9 @@
   <ItemGroup>
     <ClCompile Include="app.cpp" />
     <ClCompile Include="Direct.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameWnd.cpp" />
+    <ClCompile Include="NameScene.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -153,7 +155,9 @@
   <ItemGroup>
     <ClInclude Include="app.h" />
     <ClInclude Include="Direct.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="GameWnd.h" />
+    <ClInclude Include="NameScene.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

@@ -35,3 +35,34 @@ void CResourceManager::Cleanup()
 		if (*iter) { delete* iter; *iter = nullptr; }
 	}
 }
+
+void CResourceManager::SetText(CSprite* _sprite, int _size, int _index)
+{
+	switch (_index)
+	{
+	case RED:
+		m_redText.reserve(_size);
+		for (int i = 0; i < _size; i++)
+		{
+			m_redText.push_back(*_sprite);
+			_sprite++;
+		}
+		break;
+	case BLUE:
+		m_blueText.reserve(_size);
+		for (int i = 0; i < _size; i++)
+		{
+			m_blueText.push_back(*_sprite);
+			_sprite++;
+		}
+		break;
+	case YELLOW:
+		m_yellowText.reserve(_size);
+		for (int i = 0; i < _size; i++)
+		{
+			m_yellowText.push_back(*_sprite);
+			_sprite++;
+		}
+		break;
+	}
+}

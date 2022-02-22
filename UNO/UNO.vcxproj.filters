@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\core">
       <UniqueIdentifier>{f9642d09-a9ff-4aea-9d30-d671ee3a7c9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\utill">
+      <UniqueIdentifier>{3039d644-122b-41e8-8ad8-68cb5b411eec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UNO.cpp">
@@ -54,6 +57,12 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>소스 파일\core</Filter>
     </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>소스 파일\utill</Filter>
+    </ClCompile>
+    <ClCompile Include="NameScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h">
@@ -82,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>소스 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>소스 파일\utill</Filter>
+    </ClInclude>
+    <ClInclude Include="NameScene.h">
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

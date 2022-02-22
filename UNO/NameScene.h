@@ -1,15 +1,16 @@
 #pragma once
 #include "Scene.h"
 
-class CTitleScene : public CScene
+class CNameScene : public CScene
 {
 public:
 private:
-	int m_bOnRender;
-	int m_tick;
+	ID2D1SolidColorBrush* m_pRedBrush;
+	D2D1_RECT_F m_target;
+
 public:
-	CTitleScene();
-	~CTitleScene();
+	CNameScene();
+	~CNameScene();
 
 	void Awake();
 	void Start();
