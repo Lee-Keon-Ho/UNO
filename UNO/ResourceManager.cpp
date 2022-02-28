@@ -64,5 +64,21 @@ void CResourceManager::SetText(CSprite* _sprite, int _size, int _index)
 			_sprite++;
 		}
 		break;
+	case GREEN:
+		m_greenText.reserve(_size);
+		for (int i = 0; i < _size; i++)
+		{
+			m_greenText.push_back(*_sprite);
+			_sprite++;
+		}
+		break;
+	case OK:
+		m_OK.reserve(_size);
+		for (int i = 0; i < _size; i++)
+		{
+			m_OK.push_back(*_sprite);
+			_sprite++;
+		}
+		break;
 	}
 }

@@ -2,7 +2,7 @@
 #include "Direct.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-#define FRAME 10
+#define FRAME 15
 
 CApp::CApp()
 {

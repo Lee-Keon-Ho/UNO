@@ -4,6 +4,8 @@
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define TARGET	{ 0, 0, 350, 350}
 #define RECT	{ 6, 61, 166, 205}
+#define MAX_X	6
+#define MAX_Y	3
 
 typedef CResourceManager::eBitmap bitmap_t;
 
@@ -18,7 +20,8 @@ CNameScene::~CNameScene()
 void CNameScene::Awake()
 {
 	m_pRedBrush = *CResourceManager::GetInstance()->GetRedBrush();
-	m_target = { 53.0f, 102.0f, 68.0f, 132.0f };
+	m_rectangle = { 0.0f, 0.0f };
+	
 }
 
 void CNameScene::Start()
@@ -27,78 +30,108 @@ void CNameScene::Start()
 
 void CNameScene::Update()
 {
-	if (KEY_DOWN(VK_LEFT))
+	if (KEY_DOWN(VK_LEFT)) m_rectangle.x -= 1;
+	if (KEY_DOWN(VK_RIGHT))	m_rectangle.x += 1;
+	if (KEY_DOWN(VK_UP)) m_rectangle.y -= 1;
+	if (KEY_DOWN(VK_DOWN)) m_rectangle.y += 1;
+
+	if (KEY_DOWN('A'))
 	{
-		m_target.left -= 35.0f;
-		m_target.right -= 35.0f;
+		if (m_count > 4) m_count = 4;
+		m_name[m_count] = 'A' + m_rectangle.x + m_rectangle.y * 7;
+		m_count++;
 	}
-	if (KEY_DOWN(VK_RIGHT))
+	if (KEY_DOWN('S'))
 	{
-		m_target.left += 35.0f;
-		m_target.right += 35.0f;
-	}
-	if (KEY_DOWN(VK_UP))
-	{
-		m_target.top -= 40.0f;
-		m_target.bottom -= 40.0f;
-	}
-	if (KEY_DOWN(VK_DOWN))
-	{
-		m_target.top += 40.0f;
-		m_target.bottom += 40.0f;
+		m_name[m_count] = 0;
+		m_count--;
+		if (m_count < 0) m_count = 0;
 	}
 
-	if (m_target.left < 53.0f)
+	if (m_rectangle.x < 0) m_rectangle.x = 0;
+	if (m_rectangle.x > MAX_X) m_rectangle.x = MAX_X;
+	if (m_rectangle.y < 0) m_rectangle.y = 0;
+	if (m_rectangle.y > MAX_Y) m_rectangle.y = MAX_Y;
+
+	if (m_rectangle.y == MAX_Y)
 	{
-		m_target.left = 53.0f;
-		m_target.right = 68.0f;
-	}
-	if (m_target.left > 263.0f)
-	{
-		m_target.left = 263.0f;
-		m_target.right = 278.0f;
-	}
-	if (m_target.top < 102.0f)
-	{
-		m_target.top = 102.0f;
-		m_target.bottom = 132.0f;
-	}
-	if (m_target.top > 222.0f)
-	{
-		m_target.top = 222.0f;
-		m_target.bottom = 252.0f;
+		if (m_rectangle.x > 4)
+		{
+			m_rectangle.x = 4;
+		}
 	}
 }
 
 void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
+	char str[] = { "ENTER NAME" };
 
 	_pRT->BeginDraw();
 
-	_pRT->DrawBitmap(CResourceManager::GetInstance()->GetBitmap(bitmap_t::MENU_AND_TEXT),
+	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
 		TARGET, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, RECT);
 
+	// enter name
+	int size = sizeof(str) - 1;
+	for (int i = 0; i < size; i++)
+	{
+		if (str[i] - 65 < 0) continue;
+		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
+			{ 88.0f + (i * 18), 42.0f, 103.0f + (i * 18), 72.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+			pRM->GetGreenText(str[i] - 'A').GetRect());
+	}
+
+	// spelling
 	int index = 0;
 	for (int y = 0; y < 4; y++)
 	{
 		for (int x = 0; x < 7; x++)
 		{
 			if (index > 25) break;
-			_pRT->DrawBitmap(CResourceManager::GetInstance()->GetBitmap(bitmap_t::MENU_AND_TEXT),
-				{ 53.0f + (35 * x), 102.0f + y * 40, 68.0f + (35 * x), 132.0f + y * 40 }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-				pRM->GetYellowText(index++).GetRect());
+			if (m_rectangle.x + m_rectangle.y * 7 == index)
+			{
+				_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
+					{ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) },
+					1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+					pRM->GetBlueText(index++).GetRect());
+			}
+			else
+			{
+				_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
+					{ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) },
+					1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+					pRM->GetYellowText(index++).GetRect());
+			}
 		}
 	}
 
+	// bar
 	for (int i = 0; i < 5; i++)
 	{
-		_pRT->DrawBitmap(CResourceManager::GetInstance()->GetBitmap(bitmap_t::MENU_AND_TEXT),
+		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
 			{ 88.0f + (35 * i), 296.0f, 103.0f + (35 * i), 304.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 			{ 80.0f, 140.0f, 81.0f, 141.0f});
 	}
 
-	_pRT->DrawRectangle(m_target, m_pRedBrush);
+	// Selection name
+	for (int i = 0; i < m_count; i++)
+	{
+		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
+			{ 88.0f + (35 * i), 262.0f, 103.0f + (35 * i), 292.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+			pRM->GetBlueText(m_name[i] - 65).GetRect());
+	}
+
+	// ok icon
+	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),
+		{ 304.0f , 306.0f, 334.0f, 331.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+		pRM->GetOKIcon(0).GetRect());
+
+	// rectangle
+	_pRT->DrawRectangle(
+		{51.0f + ( 35 * m_rectangle.x), 100.0f + ( 40 * m_rectangle.y) ,
+			70.0f + ( 35 * m_rectangle.x), 134.0f + ( 40 * m_rectangle.y) },
+		m_pRedBrush);
 
 	_pRT->EndDraw();
 }

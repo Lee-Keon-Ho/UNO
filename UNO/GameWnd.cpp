@@ -6,6 +6,7 @@
 #define WINDOW_HEIGHT 389
 
 typedef CResourceManager::eBitmap bitmap_t;
+typedef CResourceManager::eICON icon_t;
 
 CGameWnd::CGameWnd()
 {
@@ -46,17 +47,20 @@ bool CGameWnd::LoadBitmapFile()
 	CDirect* pDirect = CDirect::GetInstance();
 	CResourceManager* pRM = CResourceManager::GetInstance();
 
-	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\UNO Menus and Text.png" };
+	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\UNO Menus and Text.png",
+											L"PNG\\icon.png" };
 
 	char resourceFileName[][_MAX_PATH] = { "Resource\\RED TEXT26.bin",
 											"Resource\\BLUE TEXT36.bin",
-											"Resource\\YELLOW TEXT36.bin"};
+											"Resource\\YELLOW TEXT36.bin",
+											"Resource\\GREEN TEXT36.bin",
+											"Resource\\OK2.bin" };
 
 	FILE* pFile;
 	CSprite* tmpSprite;
 	int iTmp = 0;
 
-	for (int y = 0; y < 3; y++)
+	for (int y = 0; y < icon_t::ICON_MAX; y++)
 	{
 		for (int x = 0; resourceFileName[y][x] != '\0'; x++)
 		{

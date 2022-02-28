@@ -6,8 +6,10 @@ class CNameScene : public CScene
 public:
 private:
 	ID2D1SolidColorBrush* m_pRedBrush;
-	D2D1_RECT_F m_target;
+	D2D1_POINT_2F m_rectangle;
 
+	char m_name[5] = { 0 };
+	int m_count = 0;
 public:
 	CNameScene();
 	~CNameScene();

@@ -45,7 +45,6 @@ void CTitleScene::Render(ID2D1HwndRenderTarget* _pRT)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
 
-	//char str[] = { "PRESS START" };
 	char str[] = { "A KEY START" };
 	if (!_pRT) return;
 	_pRT->BeginDraw();

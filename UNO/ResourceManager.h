@@ -17,14 +17,18 @@ public:
 	enum eBitmap
 	{
 		MENU_AND_TEXT = 0,
+		ICON_OK,
 		MAX
 	};
 
-	enum eColor
+	enum eICON
 	{
 		RED = 0,
 		BLUE,
 		YELLOW,
+		GREEN,
+		OK,
+		ICON_MAX
 	};
 
 private:
@@ -32,6 +36,8 @@ private:
 	spriteList_t m_redText;
 	spriteList_t m_blueText;
 	spriteList_t m_yellowText;
+	spriteList_t m_greenText;
+	spriteList_t m_OK;
 
 	ID2D1SolidColorBrush* m_pRedBrush;
 
@@ -46,6 +52,8 @@ public:
 	CSprite GetRedText(int _index) { return m_redText.at(_index); }
 	CSprite GetBlueText(int _index) { return m_blueText.at(_index); }
 	CSprite GetYellowText(int _index) { return m_yellowText.at(_index); }
+	CSprite GetGreenText(int _index) { return m_greenText.at(_index); }
+	CSprite GetOKIcon(int _index) { return m_OK.at(_index); }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
 public:
 	static CResourceManager* GetInstance();
