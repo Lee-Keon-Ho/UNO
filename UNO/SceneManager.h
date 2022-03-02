@@ -8,6 +8,7 @@ enum class eScene : int
 {
 	TITLE_SCENE = 0,
 	NAME_SCENE,
+	LOBBY_SCENE,
 	MAX
 };
 

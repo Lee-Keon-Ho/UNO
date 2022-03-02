@@ -1,16 +1,19 @@
 #include "NameScene.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
 
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define TARGET	{ 0, 0, 350, 350}
 #define RECT	{ 6, 61, 166, 205}
 #define MAX_X	6
 #define MAX_Y	3
+#define NAME_MAX 5
 
 typedef CResourceManager::eBitmap bitmap_t;
 
-CNameScene::CNameScene()
+CNameScene::CNameScene() : m_count(0), m_bOK(0)
 {
+	
 }
 
 CNameScene::~CNameScene()
@@ -21,7 +24,8 @@ void CNameScene::Awake()
 {
 	m_pRedBrush = *CResourceManager::GetInstance()->GetRedBrush();
 	m_rectangle = { 0.0f, 0.0f };
-	
+	m_name = new char[5];
+	memset(m_name, 0, NAME_MAX);
 }
 
 void CNameScene::Start()
@@ -34,6 +38,11 @@ void CNameScene::Update()
 	if (KEY_DOWN(VK_RIGHT))	m_rectangle.x += 1;
 	if (KEY_DOWN(VK_UP)) m_rectangle.y -= 1;
 	if (KEY_DOWN(VK_DOWN)) m_rectangle.y += 1;
+	if (KEY_DOWN(VK_RETURN))
+	{
+		m_bOK = 1;
+		CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
+	}
 
 	if (KEY_DOWN('A'))
 	{
@@ -125,7 +134,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	// ok icon
 	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),
 		{ 304.0f , 306.0f, 334.0f, 331.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		pRM->GetOKIcon(0).GetRect());
+		pRM->GetOKIcon(m_bOK).GetRect()); m_bOK = 0;
 
 	// rectangle
 	_pRT->DrawRectangle(
