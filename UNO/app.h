@@ -1,12 +1,12 @@
 #pragma once
-#include "GameWnd.h"
+#include "UnoWnd.h"
 #include "FPS.h"
 
 class CApp
 {
 public:
 private:
-	CGameWnd* m_pGameWnd;
+	CUnoWnd* m_pUnoWnd;
 	CFps* m_pFps;
 public:
 	CApp();

@@ -1,9 +1,7 @@
 #include "GameWnd.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
-
-#define WINDOW_WIDTH 366
-#define WINDOW_HEIGHT 389
+#include "SceneManager.h"
 
 typedef CResourceManager::eBitmap bitmap_t;
 typedef CResourceManager::eICON icon_t;
@@ -16,12 +14,15 @@ CGameWnd::~CGameWnd()
 {
 }
 
-bool CGameWnd::Initialize()
+bool CGameWnd::Initialize(HWND _hWnd)
 {
 	HRESULT hr;
 	RECT rc;
-
-	if (!CWnd::Initialize(L"UNO", L"UNO", WINDOW_WIDTH, WINDOW_HEIGHT, SW_SHOW)) return false;
+	GetClientRect(_hWnd, &rc);
+	int iBoundaryW = rc.right / 6 * 3;
+	int iBoundaryS = rc.right / 6;
+	if (!CWnd::Initialize(iBoundaryS, 0, iBoundaryW, rc.bottom, _hWnd, L"GameWnd"))
+		return false;
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 	// RenderTarget
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
@@ -97,6 +98,16 @@ bool CGameWnd::LoadBitmapFile()
 void CGameWnd::Cleanup()
 {
 	if (m_pRenderTarget) { m_pRenderTarget->Release(); m_pRenderTarget = nullptr; }
+}
+
+void CGameWnd::Update()
+{
+	CSceneManager::GetInstance()->Update();
+}
+
+void CGameWnd::Render()
+{
+	CSceneManager::GetInstance()->Render(m_pRenderTarget);
 }
 
 LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)

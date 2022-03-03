@@ -37,8 +37,6 @@ void CTitleScene::Update()
 	{
 		CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
 	}
-		
-	
 }
 
 void CTitleScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -51,7 +49,7 @@ void CTitleScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	// background
 	_pRT->DrawBitmap(CResourceManager::GetInstance()->GetBitmap(bitmap_t::MENU_AND_TEXT),
-		{ 0, 0, 350, 389 }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, { 9, 10, 10, 11 });
+		{ 0, 0, 350, 350 }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, { 9, 10, 10, 11 });
 
 	_pRT->DrawBitmap(CResourceManager::GetInstance()->GetBitmap(bitmap_t::MENU_AND_TEXT),
 		TARGET, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, RECT);

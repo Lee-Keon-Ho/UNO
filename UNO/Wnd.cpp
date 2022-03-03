@@ -84,6 +84,30 @@ bool CWnd::Initialize(LPCWSTR _windowClass, LPCWSTR _title, int _width, int _hei
 	return true;
 }
 
+bool CWnd::Initialize(int _iSx, int _iSy, int _iWidth, int _iHeight, HWND _hParent, LPCTSTR _szClassName)
+{
+	WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc , 0L, 0L,
+	GetModuleHandle(NULL), NULL, NULL, (HBRUSH)GetStockObject(BLACK_BRUSH), NULL,
+	_szClassName, NULL };
+
+	if (!RegisterClassEx(&wc))
+	{
+		MessageBox(NULL, _szClassName, L"RegisterClassEx!", NULL);
+		return false;
+	}
+
+	m_hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, _szClassName, NULL,
+		WS_CHILD | WS_VISIBLE, _iSx, _iSy, _iWidth, _iHeight, _hParent,
+		NULL, GetModuleHandle(NULL), this);
+
+	if (!m_hWnd)
+	{
+		MessageBox(NULL, _szClassName, L"Window", NULL);
+		return false;
+	}
+	return true;
+}
+
 void CWnd::Cleanup()
 {
 

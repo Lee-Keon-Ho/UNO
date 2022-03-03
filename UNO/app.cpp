@@ -6,7 +6,7 @@
 
 CApp::CApp()
 {
-	m_pGameWnd = new CGameWnd();
+	m_pUnoWnd = new CUnoWnd();
 	m_pFps = new CFps(FRAME);
 }
 
@@ -20,14 +20,14 @@ bool CApp::Initialize()
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;
-	if (!m_pGameWnd->Initialize()) return false;
+	if (!m_pUnoWnd->Initialize()) return false;
 	return true;
 }
 
 void CApp::Cleanup()
 {
 	if (m_pFps) { delete m_pFps; m_pFps = nullptr; }
-	if (m_pGameWnd) { delete m_pGameWnd; m_pGameWnd = nullptr; }
+	if (m_pUnoWnd) { delete m_pUnoWnd; m_pUnoWnd = nullptr; }
 	if (CSceneManager::GetInstance()) { CSceneManager::DeleteInstance(); }
 	if (CResourceManager::GetInstance()) { CResourceManager::DeleteInstance(); }
 	if (CDirect::GetInstance()) { CDirect::GetInstance()->DeleteInstance(); }
@@ -49,7 +49,6 @@ int CApp::MessageLoop()
 			Update();
 			Render();
 		}
-		
 	}
 	Cleanup();
 	return (int)msg.wParam;
@@ -57,10 +56,10 @@ int CApp::MessageLoop()
 
 void CApp::Update()
 {
-	CSceneManager::GetInstance()->Update();
+	m_pUnoWnd->Update();
 }
 
 void CApp::Render()
 {
-	CSceneManager::GetInstance()->Render(m_pGameWnd->GetRT());
+	m_pUnoWnd->Render();
 }

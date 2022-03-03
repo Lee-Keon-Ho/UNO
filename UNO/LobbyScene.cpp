@@ -37,7 +37,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
 		TARGET, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, RECT);
 
-	_pRT->DrawRectangle({ 50.0f, 80.0f, 300.0f, 180.0f }, m_pRedBrush);
+	_pRT->DrawRectangle({ 50.0f, 80.0f, 300.0f, 260.0f }, m_pRedBrush);
 
 	// ok icon
 	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),

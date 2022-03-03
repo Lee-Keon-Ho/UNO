@@ -69,6 +69,7 @@ void CNameScene::Update()
 			m_rectangle.x = 4;
 		}
 	}
+	Sleep(10);
 }
 
 void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)

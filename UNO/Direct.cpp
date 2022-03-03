@@ -1,5 +1,6 @@
 #include "Direct.h"
 #pragma comment( lib, "d2d1.lib")
+#pragma comment ( lib, "dwrite.lib")
 
 CDirect* CDirect::pInstance = nullptr;
 
@@ -14,9 +15,10 @@ void CDirect::DeleteInstance()
 	if (pInstance) { delete pInstance; pInstance = nullptr; }
 }
 
-CDirect::CDirect()
+CDirect::CDirect() :
+	m_pWICFactory(nullptr), m_pD2DFactory(nullptr),
+	m_pWICBitmap(nullptr), m_pWriteFactory(nullptr)
 {
-
 }
 
 CDirect::~CDirect()
@@ -34,15 +36,21 @@ bool CDirect::Initialize()
 	if (FAILED(hr)) return false;
 	hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));
 	if (FAILED(hr)) return false;
+	hr = DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		_uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(&m_pWriteFactory));
+	if (FAILED(hr)) return false;
 
 	return true;
 }
 
 void CDirect::Cleanup()
 {
+	if (m_pWriteFactory) { m_pWriteFactory->Release(); m_pWriteFactory = nullptr; }
 	if (m_pWICBitmap) { m_pWICBitmap->Release(); m_pWICBitmap = nullptr; }
-	if (m_pWICFactory) { m_pWICFactory->Release(); m_pWICFactory = nullptr; }
 	if (m_pD2DFactory) { m_pD2DFactory->Release(); m_pD2DFactory = nullptr; }
+	if (m_pWICFactory) { m_pWICFactory->Release(); m_pWICFactory = nullptr; }
 }
 
 HRESULT CDirect::LoadBitmapFromFile(PCWSTR _wcFileName, ID2D1Bitmap** _ppBitmap, ID2D1HwndRenderTarget* _hWndRT)
