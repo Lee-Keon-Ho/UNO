@@ -75,6 +75,9 @@
     <ClCompile Include="UserListWnd.cpp">
       <Filter>소스 파일\Wnd</Filter>
     </ClCompile>
+    <ClCompile Include="ServerManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="UserListWnd.h">
       <Filter>소스 파일\Wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerManager.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

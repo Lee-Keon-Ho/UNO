@@ -1,6 +1,7 @@
 #include "NameScene.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "ServerManager.h"
 
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define TARGET	{ 0, 0, 350, 350}
@@ -41,6 +42,10 @@ void CNameScene::Update()
 	if (KEY_DOWN(VK_RETURN))
 	{
 		m_bOK = 1;
+		if (strlen(m_name) == 5)
+		{
+			CServerManager::GetInstance()->NickNameSend(m_name);
+		}
 		CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 	}
 
@@ -69,7 +74,6 @@ void CNameScene::Update()
 			m_rectangle.x = 4;
 		}
 	}
-	Sleep(10);
 }
 
 void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)

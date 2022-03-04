@@ -14,6 +14,12 @@ public:
 	typedef std::vector<ID2D1Bitmap*> bitmapList_t;
 	typedef std::vector<CSprite> spriteList_t;
 
+	enum TYPE
+	{
+		NICK_NAME = 1,
+		CHATTING
+	};
+
 	enum eBitmap
 	{
 		MENU_AND_TEXT = 0,
@@ -55,6 +61,8 @@ public:
 	CSprite GetGreenText(int _index) { return m_greenText.at(_index); }
 	CSprite GetOKIcon(int _index) { return m_OK.at(_index); }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
+
+	void SetDate(const char* _data);
 public:
 	static CResourceManager* GetInstance();
 	static void DeleteInstance();

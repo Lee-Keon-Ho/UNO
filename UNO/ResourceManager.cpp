@@ -2,6 +2,10 @@
 
 CResourceManager* CResourceManager::pInstance = nullptr;
 
+void CResourceManager::SetDate(const char* _data)
+{
+}
+
 CResourceManager* CResourceManager::GetInstance()
 {
 	if (pInstance == nullptr) pInstance = new CResourceManager();
