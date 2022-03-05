@@ -1,6 +1,6 @@
+#include "ServerManager.h"
 #include <stdio.h>
 #include <process.h>
-#include "ServerManager.h"
 #include "ResourceManager.h"
 
 #pragma comment( lib, "ws2_32.lib")

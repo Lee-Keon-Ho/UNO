@@ -42,6 +42,15 @@ void CResourceManager::Cleanup()
 
 void CResourceManager::SetText(CSprite* _sprite, int _size, int _index)
 {
+	/*
+	m_sprite[_index].reserve(_size);
+	for (int i = 0; i < _size; i++)
+	{
+		m_sprite[_index].push_back(*_sprite);
+		_sprite++;
+	}
+	*/
+
 	switch (_index)
 	{
 	case RED:

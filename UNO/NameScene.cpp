@@ -1,7 +1,8 @@
+#include "ServerManager.h"
 #include "NameScene.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "ServerManager.h"
+//#include "ServerManager.h"
 
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define TARGET	{ 0, 0, 350, 350}

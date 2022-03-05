@@ -30,7 +30,7 @@ void CTitleScene::Update()
 	m_tick += 1;
 	if (m_tick > 15)
 	{
-		m_bOnRender = !m_bOnRender;
+		m_bOnRender = !m_bOnRender; // deltaTime
 		m_tick = 0;
 	}
 	if (KEY_DOWN('A'))

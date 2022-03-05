@@ -1,5 +1,6 @@
-#include <Windows.h>
 #include "app.h"
+
+#include <Windows.h>
 
 HINSTANCE hInst;
 

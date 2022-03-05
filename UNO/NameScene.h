@@ -1,10 +1,14 @@
 #pragma once
 #include "Scene.h"
 
+
+
 class CNameScene : public CScene
 {
 public:
+
 private:
+
 	ID2D1SolidColorBrush* m_pRedBrush;
 	D2D1_POINT_2F m_rectangle;
 
