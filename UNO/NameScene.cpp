@@ -2,7 +2,6 @@
 #include "NameScene.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-//#include "ServerManager.h"
 
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 #define TARGET	{ 0, 0, 350, 350}
@@ -13,7 +12,8 @@
 
 typedef CResourceManager::eBitmap bitmap_t;
 
-CNameScene::CNameScene() : m_count(0), m_bOK(0)
+CNameScene::CNameScene() : m_count(0), m_bOK(0), m_spellingCount(25),
+m_widthMax(7), m_heightMax(4), m_nameMaxSize(5)
 {
 	
 }
@@ -24,9 +24,26 @@ CNameScene::~CNameScene()
 
 void CNameScene::Awake()
 {
-	m_pRedBrush = *CResourceManager::GetInstance()->GetRedBrush();
+	CResourceManager* pRM = CResourceManager::GetInstance();
+	m_pRedBrush = *pRM->GetRedBrush();
+	m_pBitmap = pRM->GetBitmap(bitmap_t::MENU_AND_TEXT);
+
+	m_spellingTarget = new D2D1_RECT_F[m_spellingCount];
+	D2D1_RECT_F* temp = m_spellingTarget;
+	int count = 0;
+	for (int y = 0; y < m_heightMax; y++)
+	{
+		for (int x = 0; x < m_widthMax; x++)
+		{
+			if (count > m_spellingCount) break;
+			*temp = { 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) };
+			temp++; count++;
+		}
+	}
+
+	m_nameTarget = new D2D1_RECT_F[m_nameMaxSize];
 	m_rectangle = { 0.0f, 0.0f };
-	m_name = new char[5];
+	m_name = new char[40];
 	memset(m_name, 0, NAME_MAX);
 }
 
@@ -99,26 +116,17 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	// spelling
 	int index = 0;
-	for (int y = 0; y < 4; y++)
+	for (int i = 0; i < m_spellingCount; i++)
 	{
-		for (int x = 0; x < 7; x++)
+		if (m_rectangle.x + m_rectangle.y * 7 == index)
 		{
-			if (index > 25) break;
-			if (m_rectangle.x + m_rectangle.y * 7 == index)
-			{
-				_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-					{ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) },
-					1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-					pRM->GetBlueText(index++).GetRect());
-			}
-			else
-			{
-				_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-					{ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) },
-					1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-					pRM->GetYellowText(index++).GetRect());
-			}
+			pRM->GetBlueText(i).Render(_pRT, m_pBitmap, m_spellingTarget[i], 1.0f);
 		}
+		else
+		{
+			pRM->GetYellowText(i).Render(_pRT, m_pBitmap, m_spellingTarget[i], 1.0f);
+		}
+		index++;
 	}
 
 	// bar
@@ -153,4 +161,6 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CNameScene::Destroy()
 {
+	if (m_spellingTarget) { delete[] m_spellingTarget; m_spellingTarget = nullptr; }
+	if (m_nameTarget) { delete[] m_nameTarget; m_nameTarget = nullptr; }
 }
