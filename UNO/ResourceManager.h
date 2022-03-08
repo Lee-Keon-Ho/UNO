@@ -44,6 +44,7 @@ private:
 	spriteList_t m_yellowText;
 	spriteList_t m_greenText;
 	spriteList_t m_OK;
+	spriteList_t* m_sprite;
 
 	ID2D1SolidColorBrush* m_pRedBrush;
 
@@ -52,14 +53,12 @@ public:
 	void Cleanup();
 
 	void SetBitmap(ID2D1Bitmap* _pBitmap) { m_bitmap.push_back(_pBitmap); }
-	void SetText(CSprite* _sprite, int _size, int _index);
+	void SetSprite(CSprite* _sprite, int _size, int _index);
 
 	ID2D1Bitmap* GetBitmap(eBitmap _index) { return m_bitmap[_index]; }
 	CSprite GetRedText(int _index) { return m_redText.at(_index); }
-	CSprite GetBlueText(int _index) { return m_blueText.at(_index); }
-	CSprite GetYellowText(int _index) { return m_yellowText.at(_index); }
-	CSprite GetGreenText(int _index) { return m_greenText.at(_index); }
 	CSprite GetOKIcon(int _index) { return m_OK.at(_index); }
+	spriteList_t* GetSprite() { return m_sprite; }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
 
 	void SetDate(const char* _data);

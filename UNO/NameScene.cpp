@@ -1,6 +1,5 @@
 #include "ServerManager.h"
 #include "NameScene.h"
-#include "ResourceManager.h"
 #include "SceneManager.h"
 
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
@@ -10,10 +9,9 @@
 #define MAX_Y	3
 #define NAME_MAX 5
 
-typedef CResourceManager::eBitmap bitmap_t;
-
-CNameScene::CNameScene() : m_count(0), m_bOK(0), m_spellingCount(25),
-m_widthMax(7), m_heightMax(4), m_nameMaxSize(5)
+CNameScene::CNameScene() : m_count(0), m_bOK(0), m_spellingSize(26),
+m_widthMax(7), m_heightMax(4), m_nameSize(5), m_titleSize(0), 
+m_barRect({80.0f, 140.0f, 81.0f, 141.0f})
 {
 	
 }
@@ -25,26 +23,56 @@ CNameScene::~CNameScene()
 void CNameScene::Awake()
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
+	m_target = new targetList_t[MAX];
 	m_pRedBrush = *pRM->GetRedBrush();
 	m_pBitmap = pRM->GetBitmap(bitmap_t::MENU_AND_TEXT);
-
-	m_spellingTarget = new D2D1_RECT_F[m_spellingCount];
-	D2D1_RECT_F* temp = m_spellingTarget;
+	m_pOkBitmap = pRM->GetBitmap(bitmap_t::ICON_OK);
+	m_sprite = pRM->GetSprite();
+	
+	//spelling
+	m_target[SPELLING].reserve(m_spellingSize);
 	int count = 0;
 	for (int y = 0; y < m_heightMax; y++)
 	{
 		for (int x = 0; x < m_widthMax; x++)
 		{
-			if (count > m_spellingCount) break;
-			*temp = { 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) };
-			temp++; count++;
+			m_target[SPELLING].push_back({ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) });
 		}
 	}
 
-	m_nameTarget = new D2D1_RECT_F[m_nameMaxSize];
+	// title
+	char str[] = { "ENTER NAME" };
+	int size = sizeof(str) - 1;
+	m_target[TITLE].reserve(size);
+	for (int i = 0; i < size; i++)
+	{
+		if (str[i] - 'A' < 0) continue;
+		m_target[TITLE].push_back({ 88.0f + (i * 18), 42.0f, 103.0f + (i * 18), 72.0f });
+		m_titleSize++;
+	}
+
+	//bar
+	m_target[BAR].reserve(m_nameSize);
+	for (int i = 0; i < m_nameSize; i++)
+	{
+		m_target[BAR].push_back({ 88.0f + (35 * i), 296.0f, 103.0f + (35 * i), 304.0f });
+	}
+
+	//select name
+	m_target[NAME].reserve(m_nameSize);
+	for (int i = 0; i < m_nameSize; i++)
+	{
+		m_target[NAME].push_back({ 88.0f + (35 * i), 262.0f, 103.0f + (35 * i), 292.0f });
+	}
+
+	//icon
+	m_target[OK].reserve(1);
+	m_target[OK].push_back({ 304.0f , 306.0f, 334.0f, 331.0f });
+
+
 	m_rectangle = { 0.0f, 0.0f };
 	m_name = new char[40];
-	memset(m_name, 0, NAME_MAX);
+	memset(m_name, 0, 40);
 }
 
 void CNameScene::Start()
@@ -104,27 +132,23 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
 		TARGET, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, RECT);
 
-	// enter name
-	int size = sizeof(str) - 1;
-	for (int i = 0; i < size; i++)
+	// title (enter name)
+	for (int i = 0; i < m_titleSize; i++)
 	{
-		if (str[i] - 65 < 0) continue;
-		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-			{ 88.0f + (i * 18), 42.0f, 103.0f + (i * 18), 72.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-			pRM->GetGreenText(str[i] - 'A').GetRect());
+		m_sprite[CResourceManager::GREEN].at(i).Render(_pRT, m_pBitmap, m_target[TITLE].at(i), 1.0f);
 	}
 
 	// spelling
 	int index = 0;
-	for (int i = 0; i < m_spellingCount; i++)
+	for (int i = 0; i < m_spellingSize; i++)
 	{
 		if (m_rectangle.x + m_rectangle.y * 7 == index)
 		{
-			pRM->GetBlueText(i).Render(_pRT, m_pBitmap, m_spellingTarget[i], 1.0f);
+			m_sprite[CResourceManager::BLUE].at(i).Render(_pRT, m_pBitmap, m_target[SPELLING].at(i), 1.0f);
 		}
 		else
 		{
-			pRM->GetYellowText(i).Render(_pRT, m_pBitmap, m_spellingTarget[i], 1.0f);
+			m_sprite[CResourceManager::YELLOW].at(i).Render(_pRT, m_pBitmap, m_target[SPELLING].at(i), 1.0f);
 		}
 		index++;
 	}
@@ -133,22 +157,18 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	for (int i = 0; i < 5; i++)
 	{
 		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-			{ 88.0f + (35 * i), 296.0f, 103.0f + (35 * i), 304.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-			{ 80.0f, 140.0f, 81.0f, 141.0f});
+			m_target[BAR].at(i), 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, m_barRect);
 	}
 
 	// Selection name
 	for (int i = 0; i < m_count; i++)
 	{
-		_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-			{ 88.0f + (35 * i), 262.0f, 103.0f + (35 * i), 292.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-			pRM->GetBlueText(m_name[i] - 65).GetRect());
+		m_sprite[CResourceManager::BLUE].at(m_name[i] - 65).Render(_pRT, m_pBitmap,
+			m_target[NAME].at(i), 1.0f);
 	}
 
 	// ok icon
-	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),
-		{ 304.0f , 306.0f, 334.0f, 331.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		pRM->GetOKIcon(m_bOK).GetRect()); m_bOK = 0;
+	m_sprite[CResourceManager::OK].at(m_bOK).Render(_pRT, m_pOkBitmap, m_target[OK].at(0), 1.0f);
 
 	// rectangle
 	_pRT->DrawRectangle(
@@ -161,6 +181,6 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CNameScene::Destroy()
 {
-	if (m_spellingTarget) { delete[] m_spellingTarget; m_spellingTarget = nullptr; }
-	if (m_nameTarget) { delete[] m_nameTarget; m_nameTarget = nullptr; }
+	if (m_title) { delete[] m_title; m_title = nullptr; }
+	if (m_name) { delete[] m_name; m_name = nullptr; }
 }

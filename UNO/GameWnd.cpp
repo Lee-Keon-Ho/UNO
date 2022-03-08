@@ -77,7 +77,7 @@ bool CGameWnd::LoadBitmapFile()
 					return false;
 				}
 				fread(tmpSprite, sizeof(CSprite), iTmp, pFile);
-				pRM->SetText(tmpSprite, iTmp, y);
+				pRM->SetSprite(tmpSprite, iTmp, y);
 				if (tmpSprite) { delete[] tmpSprite; tmpSprite = nullptr; }
 				fclose(pFile); iTmp = 0; break;
 			}
