@@ -12,6 +12,7 @@ public:
 	enum TARGET
 	{
 		SPELLING = 0,
+		BACKGROUND,
 		TITLE,
 		BAR,
 		NAME,
@@ -23,6 +24,7 @@ private:
 	ID2D1SolidColorBrush* m_pRedBrush;
 	D2D1_POINT_2F m_rectangle;
 	D2D1_RECT_F m_barRect;
+	D2D1_RECT_F m_backgroundRect;
 	targetList_t* m_target;
 
 	ID2D1Bitmap* m_pBitmap;
@@ -37,10 +39,10 @@ private:
 
 	int* m_title;
 
-	char* m_name;
-	int	m_count;
-	int m_nameSize;
-	int m_titleSize;
+	char* m_name; // test
+	int m_count;
+	unsigned int m_nameSize;
+	unsigned int m_titleSize;
 public:
 	CNameScene();
 	~CNameScene();
