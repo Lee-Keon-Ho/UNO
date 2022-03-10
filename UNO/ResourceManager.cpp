@@ -2,7 +2,7 @@
 
 CResourceManager* CResourceManager::pInstance = nullptr;
 
-void CResourceManager::SetDate(const char* _data)
+void CResourceManager::SetData(const char* _data)
 {
 }
 
@@ -49,50 +49,5 @@ void CResourceManager::SetSprite(CSprite* _sprite, int _size, int _index)
 	{
 		m_sprite[_index].push_back(*_sprite);
 		_sprite++;
-	}
-	
-
-	switch (_index)
-	{
-	case RED:
-		m_redText.reserve(_size);
-		for (int i = 0; i < _size; i++)
-		{
-			m_redText.push_back(*_sprite);
-			_sprite++;
-		}
-		break;
-	case BLUE:
-		m_blueText.reserve(_size);
-		for (int i = 0; i < _size; i++)
-		{
-			m_blueText.push_back(*_sprite);
-			_sprite++;
-		}
-		break;
-	case YELLOW:
-		m_yellowText.reserve(_size);
-		for (int i = 0; i < _size; i++)
-		{
-			m_yellowText.push_back(*_sprite);
-			_sprite++;
-		}
-		break;
-	case GREEN:
-		m_greenText.reserve(_size);
-		for (int i = 0; i < _size; i++)
-		{
-			m_greenText.push_back(*_sprite);
-			_sprite++;
-		}
-		break;
-	case OK:
-		m_OK.reserve(_size);
-		for (int i = 0; i < _size; i++)
-		{
-			m_OK.push_back(*_sprite);
-			_sprite++;
-		}
-		break;
 	}
 }

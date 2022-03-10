@@ -1,7 +1,7 @@
 #include "ServerManager.h"
+#include "ResourceManager.h"
 #include <stdio.h>
 #include <process.h>
-#include "ResourceManager.h"
 
 #pragma comment( lib, "ws2_32.lib")
 
@@ -11,14 +11,14 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 {
 	SOCKET socket = (SOCKET)_pArgs;
 	int recvSize = 0;
+	char* recvBuffer = new char[MAX];
 
 	while (1)
 	{
-		char* recvData = new char[MAX];
-		recvSize = recv(socket, recvData, MAX, 0);
+		recvSize = recv(socket, recvBuffer, MAX, 0);
 		if (recvSize <= 0)break;
 
-		CResourceManager::GetInstance()->SetDate(recvData);
+		CResourceManager::GetInstance()->SetData(recvBuffer);
 	}
 	return 0;
 }
@@ -68,6 +68,8 @@ bool CServerManager::Initialize(const char* _ip, int _port)
 	if (connect(m_socket, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
 		return false;
 
+
+
 	return true;
 }
 
@@ -80,10 +82,10 @@ void CServerManager::Cleanup()
 bool CServerManager::NickNameSend(const char* _name)
 {
 	unsigned int threadID;
-	char sendBuffer[100];
+	char sendBuffer[MAX];
 	char* tempBuffer = sendBuffer;
 
-	*(unsigned short*)tempBuffer = 2 + 2 + strlen(_name) + 1; // sizeof(unsigned short) == 2
+	*(unsigned short*)tempBuffer = 2 + 2 + strlen(_name) + 1;
 	tempBuffer += sizeof(unsigned short);
 	*(unsigned short*)tempBuffer = 1;
 	tempBuffer += sizeof(unsigned short);

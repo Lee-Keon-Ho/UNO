@@ -3,6 +3,9 @@
 #include "Sprite.h"
 #include "SceneManager.h"
 
+#define WINDOW_WIDTH 728
+#define WINDOW_HEIGHT 389
+
 typedef CResourceManager::eBitmap bitmap_t;
 typedef CResourceManager::eICON icon_t;
 
@@ -14,14 +17,16 @@ CGameWnd::~CGameWnd()
 {
 }
 
-bool CGameWnd::Initialize(HWND _hWnd)
+bool CGameWnd::Initialize()
 {
+	if (!CWnd::Initialize(L"Uno", L"Uno", WINDOW_WIDTH, WINDOW_HEIGHT, SW_SHOW)) return false;
+
 	HRESULT hr;
 	RECT rc;
-	GetClientRect(_hWnd, &rc);
+	GetClientRect(m_hWnd, &rc);
 	int iBoundaryW = rc.right / 6 * 3;
 	int iBoundaryS = rc.right / 6;
-	if (!CWnd::Initialize(iBoundaryS, 0, iBoundaryW, rc.bottom, _hWnd, L"GameWnd"))
+	if (!CWnd::Initialize(iBoundaryS, 0, iBoundaryW, rc.bottom, m_hWnd, L"GameWnd"))
 		return false;
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 	// RenderTarget

@@ -30,6 +30,7 @@ private:
 	ID2D1Bitmap* m_pBitmap;
 	ID2D1Bitmap* m_pOkBitmap;
 
+
 	CResourceManager::spriteList_t* m_sprite;
 
 	unsigned int m_spellingSize;

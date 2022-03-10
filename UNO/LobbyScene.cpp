@@ -40,9 +40,9 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->DrawRectangle({ 50.0f, 80.0f, 300.0f, 260.0f }, m_pRedBrush);
 
 	// ok icon
-	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),
+	/*_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::ICON_OK),
 		{ 304.0f , 306.0f, 334.0f, 331.0f }, 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		pRM->GetOKIcon(m_bOK).GetRect()); m_bOK = 0;
+		pRM->GetOKIcon(m_bOK).GetRect()); m_bOK = 0;*/
 
 	_pRT->EndDraw();
 }

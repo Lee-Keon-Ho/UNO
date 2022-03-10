@@ -12,7 +12,7 @@ public:
 	CGameWnd();
 	~CGameWnd();
 
-	bool Initialize(HWND _hWnd);
+	bool Initialize();
 	void Cleanup();
 
 	void Update();

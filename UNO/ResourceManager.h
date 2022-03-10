@@ -6,7 +6,6 @@
 #define KEY_UP(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
 #define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 
-
 class CResourceManager
 {
 private:
@@ -65,7 +64,7 @@ public:
 	spriteList_t* GetSprite() { return m_sprite; }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
 
-	void SetDate(const char* _data);
+	void SetData(const char* _data); // 절대하지 않는다
 public:
 	static CResourceManager* GetInstance();
 	static void DeleteInstance();

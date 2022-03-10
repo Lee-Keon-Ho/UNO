@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
-    <ClCompile Include="ChattingWnd.cpp" />
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameWnd.cpp" />
@@ -153,13 +152,10 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UNO.cpp" />
-    <ClCompile Include="UnoWnd.cpp" />
-    <ClCompile Include="UserListWnd.cpp" />
     <ClCompile Include="Wnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
-    <ClInclude Include="ChattingWnd.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameWnd.h" />
@@ -171,8 +167,6 @@
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="UnoWnd.h" />
-    <ClInclude Include="UserListWnd.h" />
     <ClInclude Include="Wnd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
