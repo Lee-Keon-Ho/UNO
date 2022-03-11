@@ -3,8 +3,8 @@
 #include "Sprite.h"
 #include "SceneManager.h"
 
-#define WINDOW_WIDTH 728
-#define WINDOW_HEIGHT 389
+#define WINDOW_WIDTH 785
+#define WINDOW_HEIGHT 734
 
 typedef CResourceManager::eBitmap bitmap_t;
 typedef CResourceManager::eICON icon_t;
@@ -23,11 +23,7 @@ bool CGameWnd::Initialize()
 
 	HRESULT hr;
 	RECT rc;
-	GetClientRect(m_hWnd, &rc);
-	int iBoundaryW = rc.right / 6 * 3;
-	int iBoundaryS = rc.right / 6;
-	if (!CWnd::Initialize(iBoundaryS, 0, iBoundaryW, rc.bottom, m_hWnd, L"GameWnd"))
-		return false;
+
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 	// RenderTarget
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
@@ -53,14 +49,15 @@ bool CGameWnd::LoadBitmapFile()
 	CDirect* pDirect = CDirect::GetInstance();
 	CResourceManager* pRM = CResourceManager::GetInstance();
 
-	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\UNO Menus and Text.png",
-											L"PNG\\icon.png" };
+	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\Menus and Text.png",
+											L"PNG\\ok.png" };
 
-	char resourceFileName[][_MAX_PATH] = { "Resource\\RED TEXT26.bin",
-											"Resource\\BLUE TEXT36.bin",
-											"Resource\\YELLOW TEXT36.bin",
-											"Resource\\GREEN TEXT36.bin",
-											"Resource\\OK2.bin" };
+	char resourceFileName[][_MAX_PATH] = { "Resource\\RED TEXT26.spr",
+											"Resource\\BLUE TEXT36.spr",
+											"Resource\\YELLOW TEXT36.spr",
+											"Resource\\GREEN TEXT36.spr",
+											"Resource\\OK2.spr",
+											"Resource\\BORD1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

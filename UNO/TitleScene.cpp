@@ -3,8 +3,8 @@
 
 #define STR_MAX 20
 
-CTitleScene::CTitleScene() : m_bOnRender(true), m_tick(0), m_backGroundRect({ 9, 10, 10, 11 }),
-m_logoRect({ 177, 61, 241, 101 })
+CTitleScene::CTitleScene() : m_bOnRender(true), m_tick(0), m_backGroundRect({ 104, 80, 105, 81 }),
+m_logoRect({ 652, 236, 870, 373 })
 {
 
 }
@@ -30,12 +30,12 @@ void CTitleScene::Awake()
 	{
 		if (str[i] - 'A' < 0) continue;
 		m_str[count++] = str[i] - 'A';
-		m_target[TEXT].push_back({ 70.0f + (i * 20), 250.0f, 84.0f + (i * 20), 274.0f });
+		m_target[TEXT].push_back({ 120.0f + (i * 50), 550.0f, 160.0f + (i * 50), 600.0f });
 		m_titleSize++;
 	}
 
-	m_target[LOGO].push_back({ 50, 50, 300, 200 });
-	m_target[BACKGROUND].push_back({ 0, 0, 350, 350 });
+	m_target[LOGO].push_back({ 100, 30, 670, 430 });
+	m_target[BACKGROUND].push_back({ 0, 0, 770, 695 });
 }
 
 void CTitleScene::Start()

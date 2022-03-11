@@ -24,7 +24,7 @@ void CNameScene::Awake()
 	
 	//background
 	m_target[BACKGROUND].reserve(1);
-	m_target[BACKGROUND].push_back({ 0, 0, 350, 350 });
+	m_target[BACKGROUND].push_back({ 0, 0, 770, 695 });
 
 	//spelling
 	m_target[SPELLING].reserve(m_spellingSize);
@@ -47,7 +47,7 @@ void CNameScene::Awake()
 	{
 		if (str[i] - 'A' < 0) continue;
 		m_title[count++] = str[i] - 'A';
-		m_target[TITLE].push_back({ 88.0f + (i * 18), 42.0f, 103.0f + (i * 18), 72.0f });
+		m_target[TITLE].push_back({ 100.0f + (i * 50), 50.0f, 140.0f + (i * 50), 100.0f });
 		m_titleSize++;
 	}
 
@@ -129,8 +129,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	_pRT->BeginDraw();
 
-	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-		m_target[BACKGROUND].at(0), 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, m_backgroundRect);
+	m_sprite[CResourceManager::BORD].at(0).Render(_pRT, m_pBitmap, m_target[BACKGROUND].at(0), 1.0f);
 
 	// title (enter name)
 	for (int i = 0; i < m_titleSize; i++)

@@ -37,6 +37,7 @@ public:
 		YELLOW,
 		GREEN,
 		OK,
+		BORD,
 		ICON_MAX
 	};
 
