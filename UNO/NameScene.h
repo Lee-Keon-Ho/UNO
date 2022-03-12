@@ -24,12 +24,10 @@ private:
 	ID2D1SolidColorBrush* m_pRedBrush;
 	D2D1_POINT_2F m_rectangle;
 	D2D1_RECT_F m_barRect;
-	D2D1_RECT_F m_backgroundRect;
 	targetList_t* m_target;
 
 	ID2D1Bitmap* m_pBitmap;
 	ID2D1Bitmap* m_pOkBitmap;
-
 
 	CResourceManager::spriteList_t* m_sprite;
 
@@ -37,13 +35,15 @@ private:
 	unsigned int m_widthMax;
 	unsigned int m_heightMax;
 	unsigned int m_bOK;
+	unsigned int m_currentSpelling;
+	unsigned int m_nameSize;
+	unsigned int m_titleSize;
 
 	int* m_title;
 
-	char* m_name; // test
-	int m_count;
-	unsigned int m_nameSize;
-	unsigned int m_titleSize;
+	char* m_pBuffer; // test
+	int m_bufferCount;
+
 public:
 	CNameScene();
 	~CNameScene();

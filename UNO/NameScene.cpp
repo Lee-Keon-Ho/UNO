@@ -1,10 +1,10 @@
-#include "ServerManager.h"
+#include "Client.h"
 #include "NameScene.h"
 #include "SceneManager.h"
 
-CNameScene::CNameScene() : m_count(0), m_bOK(0), m_spellingSize(26),
-m_widthMax(7), m_heightMax(4), m_nameSize(5), m_titleSize(0), m_rectangle({0.0f, 0.0f}),
-m_backgroundRect({ 6, 61, 166, 205 }), m_barRect({80.0f, 140.0f, 81.0f, 141.0f})
+CNameScene::CNameScene() : m_bufferCount(0), m_bOK(0), m_spellingSize(26),
+m_widthMax(7), m_heightMax(4), m_nameSize(5), m_currentSpelling(0),
+m_titleSize(0), m_rectangle({0.0f, 0.0f}), m_barRect({200.0f, 350.0f, 201.0f, 351.0f})
 {
 	
 }
@@ -33,7 +33,7 @@ void CNameScene::Awake()
 	{
 		for (int x = 0; x < m_widthMax; x++)
 		{
-			m_target[SPELLING].push_back({ 53.0f + (35 * x), 102.0f + (40 * y), 68.0f + (35 * x), 132.0f + (40 * y) });
+			m_target[SPELLING].push_back({ 150.0f + (80 * x), 170.0f + (80 * y), 190.0f + (80 * x), 230.0f + (80 * y) });
 		}
 	}
 
@@ -47,7 +47,7 @@ void CNameScene::Awake()
 	{
 		if (str[i] - 'A' < 0) continue;
 		m_title[count++] = str[i] - 'A';
-		m_target[TITLE].push_back({ 100.0f + (i * 50), 50.0f, 140.0f + (i * 50), 100.0f });
+		m_target[TITLE].push_back({ 190.0f + (i * 40), 90.0f, 230.0f + (i * 40), 150.0f });
 		m_titleSize++;
 	}
 
@@ -55,24 +55,24 @@ void CNameScene::Awake()
 	m_target[BAR].reserve(m_nameSize);
 	for (int i = 0; i < m_nameSize; i++)
 	{
-		m_target[BAR].push_back({ 88.0f + (35 * i), 296.0f, 103.0f + (35 * i), 304.0f });
+		m_target[BAR].push_back({ 150.0f + (80 * i), 585, 190.0f + (80 * i), 600.0f });
 	}
 
 	//select name
 	m_target[NAME].reserve(m_nameSize);
 	for (int i = 0; i < m_nameSize; i++)
 	{
-		m_target[NAME].push_back({ 88.0f + (35 * i), 262.0f, 103.0f + (35 * i), 292.0f });
+		m_target[NAME].push_back({ 150.0f + (80 * i), 490, 190.0f + (80 * i), 570 });
 	}
 
-	//icon
+	//OK icon
 	m_target[OK].reserve(1);
-	m_target[OK].push_back({ 304.0f , 306.0f, 334.0f, 331.0f });
+	m_target[OK].push_back({ 670 , 600, 740, 670 });
 
 
 	m_rectangle = { 0.0f, 0.0f };
-	m_name = new char[MAX_PATH];
-	memset(m_name, 0, MAX_PATH);
+	m_pBuffer = new char[MAX_PATH];
+	memset(m_pBuffer, 0, MAX_PATH);
 }
 
 void CNameScene::Start()
@@ -85,27 +85,28 @@ void CNameScene::Update()
 	if (KEY_DOWN(VK_RIGHT))	m_rectangle.x += 1;
 	if (KEY_DOWN(VK_UP)) m_rectangle.y -= 1;
 	if (KEY_DOWN(VK_DOWN)) m_rectangle.y += 1;
+
 	if (KEY_DOWN(VK_RETURN))
 	{
 		m_bOK = 1;
-		if (strlen(m_name) == m_nameSize)
+		if (strlen(m_pBuffer) == m_nameSize)
 		{
-			CServerManager::GetInstance()->NickNameSend(m_name);
+			CClient::GetInstance()->NickNameSend(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}
 
 	if (KEY_DOWN('A'))
 	{
-		if (m_count >= m_nameSize) m_count = m_nameSize - 1;
-		m_name[m_count] = 'A' + m_rectangle.x + m_rectangle.y * m_widthMax;
-		m_count++;
+		if (m_bufferCount >= m_nameSize) m_bufferCount = m_nameSize - 1;
+		m_pBuffer[m_bufferCount] = 'A' + m_rectangle.x + m_rectangle.y * m_widthMax;
+		m_bufferCount++;
 	}
 	if (KEY_DOWN('S'))
 	{
-		m_name[m_count] = 0;
-		m_count--;
-		if (m_count < 0) m_count = 0;
+		m_pBuffer[m_bufferCount] = 0;
+		m_bufferCount--;
+		if (m_bufferCount < 0) m_bufferCount = 0;
 	}
 
 	if (m_rectangle.x < 0) m_rectangle.x = 0;
@@ -120,6 +121,8 @@ void CNameScene::Update()
 			m_rectangle.x = m_widthMax - 3;
 		}
 	}
+
+	m_currentSpelling = m_rectangle.x + m_rectangle.y * m_widthMax;
 }
 
 void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -141,7 +144,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	int index = 0;
 	for (int i = 0; i < m_spellingSize; i++)
 	{
-		if (m_rectangle.x + m_rectangle.y * m_widthMax == index)
+		if (m_currentSpelling == index)
 		{
 			m_sprite[CResourceManager::BLUE].at(i).Render(_pRT, m_pBitmap, m_target[SPELLING].at(i), 1.0f);
 		}
@@ -160,9 +163,9 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	}
 
 	// Selection name
-	for (int i = 0; i < m_count; i++)
+	for (int i = 0; i < m_bufferCount; i++)
 	{
-		m_sprite[CResourceManager::BLUE].at(m_name[i] - 'A').Render(_pRT, m_pBitmap,
+		m_sprite[CResourceManager::BLUE].at(m_pBuffer[i] - 'A').Render(_pRT, m_pBitmap,
 			m_target[NAME].at(i), 1.0f);
 	}
 
@@ -170,17 +173,11 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_sprite[CResourceManager::OK].at(m_bOK).Render(_pRT, m_pOkBitmap, m_target[OK].at(0), 1.0f);
 	m_bOK = 0;
 
-	// rectangle
-	_pRT->DrawRectangle(
-		{51.0f + ( 35 * m_rectangle.x), 100.0f + ( 40 * m_rectangle.y) ,
-			70.0f + ( 35 * m_rectangle.x), 134.0f + ( 40 * m_rectangle.y) },
-		m_pRedBrush);
-
 	_pRT->EndDraw();
 }
 
 void CNameScene::Destroy()
 {
 	if (m_title) { delete[] m_title; m_title = nullptr; }
-	if (m_name) { delete[] m_name; m_name = nullptr; }
+	if (m_pBuffer) { delete[] m_pBuffer; m_pBuffer = nullptr; }
 }

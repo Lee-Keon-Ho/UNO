@@ -1,4 +1,4 @@
-#include "ServerManager.h"
+#include "Client.h"
 #include "app.h"
 #include "Direct.h"
 #include "SceneManager.h"
@@ -18,7 +18,7 @@ CApp::~CApp()
 
 bool CApp::Initialize()
 {
-	if (!CServerManager::GetInstance()->Initialize("211.218.197.87", 30002))return false;
+	if (!CClient::GetInstance()->Initialize("211.218.197.87", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;
@@ -32,7 +32,7 @@ void CApp::Cleanup()
 	if (m_pGameWnd) { delete m_pGameWnd; m_pGameWnd = nullptr; }
 	if (CSceneManager::GetInstance()) { CSceneManager::GetInstance()->DeleteInstance(); }
 	if (CResourceManager::GetInstance()) { CResourceManager::GetInstance()->DeleteInstance(); }
-	if (CServerManager::GetInstance()) { CServerManager::GetInstance()->DeleteInstance(); }
+	if (CClient::GetInstance()) { CClient::GetInstance()->DeleteInstance(); }
 	if (CDirect::GetInstance()) { CDirect::GetInstance()->DeleteInstance(); }
 }
 

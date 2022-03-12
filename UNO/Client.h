@@ -3,12 +3,12 @@
 #include <WS2tcpip.h>
 #include <Windows.h>
 
-class CServerManager
+class CClient
 {
 private:
-	static CServerManager* pInstance;
-	CServerManager();
-	~CServerManager();
+	static CClient* pInstance;
+	CClient();
+	~CClient();
 public:
 
 private:
@@ -23,6 +23,6 @@ public:
 
 	SOCKET GetSocket() { return m_socket; }
 public:
-	static CServerManager* GetInstance();
+	static CClient* GetInstance();
 	static void DeleteInstance();
 };

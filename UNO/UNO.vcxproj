@@ -148,8 +148,9 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ServerManager.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UNO.cpp" />
     <ClCompile Include="Wnd.cpp" />
@@ -164,8 +165,9 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ServerManager.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Wnd.h" />
   </ItemGroup>

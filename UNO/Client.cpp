@@ -1,4 +1,4 @@
-#include "ServerManager.h"
+#include "Client.h"
 #include "ResourceManager.h"
 #include <stdio.h>
 #include <process.h>
@@ -23,28 +23,28 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 	return 0;
 }
 
-CServerManager* CServerManager::pInstance = nullptr;
+CClient* CClient::pInstance = nullptr;
 
-CServerManager* CServerManager::GetInstance()
+CClient* CClient::GetInstance()
 {
-	if (pInstance == nullptr) pInstance = new CServerManager();
+	if (pInstance == nullptr) pInstance = new CClient();
 	return pInstance;
 }
 
-void CServerManager::DeleteInstance()
+void CClient::DeleteInstance()
 {
 }
 
-CServerManager::CServerManager()
+CClient::CClient()
 {
 }
 
-CServerManager::~CServerManager()
+CClient::~CClient()
 {
 }
 
 
-bool CServerManager::Initialize(const char* _ip, int _port)
+bool CClient::Initialize(const char* _ip, int _port)
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAddr;
@@ -73,13 +73,13 @@ bool CServerManager::Initialize(const char* _ip, int _port)
 	return true;
 }
 
-void CServerManager::Cleanup()
+void CClient::Cleanup()
 {
 	closesocket(m_socket);
 	WSACleanup();
 }
 
-bool CServerManager::NickNameSend(const char* _name)
+bool CClient::NickNameSend(const char* _name)
 {
 	unsigned int threadID;
 	char sendBuffer[MAX];
