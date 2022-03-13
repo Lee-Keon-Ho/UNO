@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "Object.h"
 #include "ResourceManager.h"
 #include <d2d1.h>
  
@@ -26,6 +27,14 @@ private:
 	D2D1_RECT_F m_barRect;
 	targetList_t* m_target;
 
+	CObject* m_bord;
+	CObject* m_yellowSpelling;
+	CObject* m_blueSpelling;
+	CObject* m_title;
+	CObject* m_bar;
+	CObject* m_ok;
+	CObject* m_name;
+
 	ID2D1Bitmap* m_pBitmap;
 	ID2D1Bitmap* m_pOkBitmap;
 
@@ -39,7 +48,6 @@ private:
 	unsigned int m_nameSize;
 	unsigned int m_titleSize;
 
-	int* m_title;
 
 	char* m_pBuffer; // test
 	int m_bufferCount;
