@@ -149,7 +149,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_blueSpelling->Render(_pRT, m_currentSpelling, 1.0f);
 
 	// bar
-	m_bar->Render(_pRT, 0, 1.0f);
+	m_bar->Render(_pRT); // 하나의 sprite 여러 타겟
 
 	// Selection name
 	for (int i = 0; i < m_bufferCount; i++)

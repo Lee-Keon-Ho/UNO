@@ -20,6 +20,7 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 	void Render(ID2D1HwndRenderTarget* _pRT, int _index, float _alpha);
+	void Render(ID2D1HwndRenderTarget* _pRT);
 	void SetTarget(D2D1_RECT_F _target);
 private:
 };
