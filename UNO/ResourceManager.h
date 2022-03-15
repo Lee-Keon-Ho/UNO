@@ -38,6 +38,10 @@ public:
 		GREEN,
 		OK,
 		BORD,
+		LOBBY,
+		NUM,
+		ROOMNAME,
+		STATE,
 		ICON_MAX
 	};
 
@@ -51,6 +55,10 @@ private:
 	spriteList_t* m_sprite;
 
 	ID2D1SolidColorBrush* m_pRedBrush;
+	ID2D1SolidColorBrush* m_pYellowBrush;
+	ID2D1SolidColorBrush* m_pBlackBrush;
+
+	IDWriteTextFormat* m_pWriteTextFormat;
 
 public:
 	bool Initialize();
@@ -63,7 +71,10 @@ public:
 	CSprite GetRedText(int _index) { return m_redText.at(_index); }
 	CSprite GetOKIcon(int _index) { return m_OK.at(_index); }
 	spriteList_t* GetSprite() { return m_sprite; }
+	IDWriteTextFormat** GetWriteFormat() { return &m_pWriteTextFormat; }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
+	ID2D1SolidColorBrush** GetYellowBrush() { return &m_pYellowBrush; }
+	ID2D1SolidColorBrush** GetBlackBrush() { return &m_pBlackBrush; }
 
 	void SetData(const char* _data); // 절대하지 않는다
 public:

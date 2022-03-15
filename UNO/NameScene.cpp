@@ -2,9 +2,11 @@
 #include "NameScene.h"
 #include "SceneManager.h"
 
-CNameScene::CNameScene() : m_bufferCount(0), m_bOK(0), m_spellingSize(26),
-m_widthMax(7), m_heightMax(4), m_nameSize(5), m_currentSpelling(0),
-m_titleSize(0), m_rectangle({0.0f, 0.0f}), m_barRect({200.0f, 350.0f, 201.0f, 351.0f})
+CNameScene::CNameScene() 
+	: m_bufferCount(0), m_bOK(0), m_spellingSize(26),
+	m_widthMax(7), m_heightMax(4), m_nameSize(5), m_currentSpelling(0),
+	m_titleSize(0), m_rectangle({0.0f, 0.0f}), m_barRect({200.0f, 350.0f, 201.0f, 351.0f}),
+	m_okRect({ 670 , 600, 740, 670 })
 {
 	
 }
@@ -16,66 +18,67 @@ CNameScene::~CNameScene()
 void CNameScene::Awake()
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
-	m_target = new targetList_t[MAX];
-	m_pRedBrush = *pRM->GetRedBrush();
 	ID2D1Bitmap* pBitmap = pRM->GetBitmap(bitmap_t::MENU_AND_TEXT);
-	m_pOkBitmap = pRM->GetBitmap(bitmap_t::ICON_OK);
+	ID2D1Bitmap* pBitmapOK = pRM->GetBitmap(bitmap_t::ICON_OK);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 	
 	//background
-	m_bord = new CObject(sprite[CResourceManager::BORD], pBitmap);
-	m_bord->SetTarget({ 0, 0, 770, 695 });
+	m_pBord = new CObject(sprite[CResourceManager::BORD], pBitmap);
+	m_pBord->SetTarget({ 0, 0, 770, 695 });
 
 	//spelling
-	m_yellowSpelling = new CObject(sprite[CResourceManager::YELLOW], pBitmap);
-	m_blueSpelling = new CObject(sprite[CResourceManager::BLUE], pBitmap);
+	m_pYellowSpelling = new CObject(sprite[CResourceManager::YELLOW], pBitmap);
+	m_pBlueSpelling = new CObject(sprite[CResourceManager::BLUE], pBitmap);
 	int count = 0;
 	for (int y = 0; y < m_heightMax; y++)
 	{
 		for (int x = 0; x < m_widthMax; x++)
 		{
 			if (++count > m_spellingSize) break;
-			m_yellowSpelling->SetTarget({ 150.0f + (80 * x), 170.0f + (80 * y), 190.0f + (80 * x), 230.0f + (80 * y) });
-			m_blueSpelling->SetTarget({ 150.0f + (80 * x), 170.0f + (80 * y), 190.0f + (80 * x), 230.0f + (80 * y) });
+			m_pYellowSpelling->SetTarget({ 150.0f + (80 * x), 170.0f + (80 * y), 190.0f + (80 * x), 230.0f + (80 * y) });
+			m_pBlueSpelling->SetTarget({ 150.0f + (80 * x), 170.0f + (80 * y), 190.0f + (80 * x), 230.0f + (80 * y) });
 		}
 	}
 
 	// title
-	m_title = new CObject(sprite[CResourceManager::GREEN], pBitmap);
+	m_pTitle = new CObject(sprite[CResourceManager::GREEN], pBitmap);
 	char str[] = { "ENTER NAME" };
 	int size = sizeof(str) - 1;
+	m_pTextArr = new int[size];
 	count = 0;
 	//m_title = new int[size];
 	for (int i = 0; i < size; i++)
 	{
 		if (str[i] - 'A' < 0) continue;
-	//	m_title[count++] = str[i] - 'A';
-		m_title->SetTarget({ 190.0f + (i * 40), 90.0f, 230.0f + (i * 40), 150.0f });
+		m_pTextArr[count++] = str[i] - 'A';
+		m_pTitle->SetTarget({ 190.0f + (i * 40), 90.0f, 230.0f + (i * 40), 150.0f });
 	}
 
 	//bar
-	m_bar = new CObject(new CSprite(m_barRect), pBitmap);
+	m_pBar = new CObject(new CSprite(m_barRect), pBitmap);
 	for (int i = 0; i < m_nameSize; i++)
 	{
-		m_bar->SetTarget({ 150.0f + (80 * i), 585, 190.0f + (80 * i), 600.0f });
+		m_pBar->SetTarget({ 150.0f + (80 * i), 585, 190.0f + (80 * i), 600.0f });
 	}
 
 	//select name
-	m_name = new CObject(sprite[CResourceManager::BLUE], pBitmap);
+	m_pName = new CObject(sprite[CResourceManager::BLUE], pBitmap);
 	for (int i = 0; i < m_nameSize; i++)
 	{
-		m_name->SetTarget({ 150.0f + (80 * i), 490, 190.0f + (80 * i), 570 });
+		m_pName->SetTarget({ 150.0f + (80 * i), 490, 190.0f + (80 * i), 570 });
 	}
 
 	//OK icon
-	m_ok = new CObject(sprite[CResourceManager::OK], pRM->GetBitmap(bitmap_t::ICON_OK));
-	m_ok->SetTarget({ 670 , 600, 740, 670 });
-	m_ok->SetTarget({ 670 , 600, 740, 670 });
+	m_pOk = new CObject(sprite[CResourceManager::OK], pBitmapOK);
+	m_pOk->SetTarget(m_okRect);
+	m_pOk->SetTarget(m_okRect);
 
+	m_pNameArr = new int[m_nameSize];
 
-	m_rectangle = { 0.0f, 0.0f };
 	m_pBuffer = new char[MAX_PATH];
 	memset(m_pBuffer, 0, MAX_PATH);
+
+	m_rectangle = { 0.0f, 0.0f };
 }
 
 void CNameScene::Start()
@@ -103,6 +106,7 @@ void CNameScene::Update()
 	{
 		if (m_bufferCount >= m_nameSize) m_bufferCount = m_nameSize - 1;
 		m_pBuffer[m_bufferCount] = 'A' + m_rectangle.x + m_rectangle.y * m_widthMax;
+		m_pNameArr[m_bufferCount] = m_rectangle.x + m_rectangle.y * m_widthMax;
 		m_bufferCount++;
 	}
 	if (KEY_DOWN('S'))
@@ -136,29 +140,23 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->BeginDraw();
 
 	//background
-	m_bord->Render(_pRT, 1.0f);
+	m_pBord->Render(_pRT, 1.0f);
 
 	// title (enter name)
-	for (int i = 0; i < m_titleSize; i++)
-	{
-		//m_sprite[CResourceManager::GREEN].at(m_title[i]).Render(_pRT, m_pBitmap, m_target[TITLE].at(i), 1.0f);
-	}
+	m_pTitle->Render(_pRT, m_pTextArr, 1.0f);
 
 	// spelling
-	m_yellowSpelling->Render(_pRT, 1.0f);
-	m_blueSpelling->Render(_pRT, m_currentSpelling, 1.0f);
+	m_pYellowSpelling->Render(_pRT, 1.0f);
+	m_pBlueSpelling->Render(_pRT, m_currentSpelling, 1.0f);
 
 	// bar
-	m_bar->Render(_pRT); // 하나의 sprite 여러 타겟
+	m_pBar->Render(_pRT);
 
 	// Selection name
-	for (int i = 0; i < m_bufferCount; i++)
-	{
-		//m_name->Render(_pRT, m_pBuffer[i] - 'A', 1.0f);
-	}
+	m_pName->Render(_pRT, m_pNameArr, m_bufferCount, 1.0f);
 
 	// ok icon
-	m_ok->Render(_pRT, m_bOK, 1.0f);
+	m_pOk->Render(_pRT, m_bOK, 1.0f);
 	m_bOK = 0;
 
 	_pRT->EndDraw();
@@ -166,6 +164,14 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CNameScene::Destroy()
 {
-	if (m_title) { delete[] m_title; m_title = nullptr; }
 	if (m_pBuffer) { delete[] m_pBuffer; m_pBuffer = nullptr; }
+	if (m_pNameArr) { delete[] m_pNameArr; m_pNameArr = nullptr; }
+	if (m_pOk) { delete m_pOk; m_pOk = nullptr; }
+	if (m_pName) { delete m_pName; m_pName = nullptr; }
+	if (m_pBar) { delete m_pBar; m_pBar = nullptr; }
+	if (m_pTitle) { delete m_pTitle; m_pTitle = nullptr; }
+	if (m_pTextArr) { delete[] m_pTextArr; m_pTextArr = nullptr; }
+	if (m_pBlueSpelling) { delete m_pBlueSpelling; m_pBlueSpelling = nullptr; }
+	if (m_pYellowSpelling) { delete m_pYellowSpelling; m_pYellowSpelling = nullptr; }
+	if (m_pBord) { delete m_pBord; m_pBord = nullptr; }
 }

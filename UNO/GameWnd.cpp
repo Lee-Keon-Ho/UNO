@@ -35,8 +35,31 @@ bool CGameWnd::Initialize()
 	if (FAILED(hr)) return false;
 	//──────────────────────────────────────────────────────────────────────────────────
 
+	//──────────────────────────────────────────────────────────────────────────────────
+	// Text 사용에 필요
+	//──────────────────────────────────────────────────────────────────────────────────
+	const WCHAR font[] = L"Consolas";
+	const FLOAT fontsize = 15;
+
+	hr = CDirect::GetInstance()->GetWriteFactory()->CreateTextFormat(
+		font, NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		fontsize, L"en-us", CResourceManager::GetInstance()->GetWriteFormat());
+	if (FAILED(hr)) return false;
+	//──────────────────────────────────────────────────────────────────────────────────
+
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x9F0000, 1.0f),
 		CResourceManager::GetInstance()->GetRedBrush());
+	if (FAILED(hr)) return false;
+
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xFFFFCC, 1.0f),
+		CResourceManager::GetInstance()->GetYellowBrush());
+	if (FAILED(hr)) return false;
+
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 1.0f),
+		CResourceManager::GetInstance()->GetBlackBrush());
 	if (FAILED(hr)) return false;
 
 	LoadBitmapFile();
@@ -57,7 +80,11 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\YELLOW TEXT36.spr",
 											"Resource\\GREEN TEXT36.spr",
 											"Resource\\OK2.spr",
-											"Resource\\BORD1.spr"};
+											"Resource\\BORD1.spr",
+											"Resource\\LOBBY1.spr",
+											"Resource\\NUM3.spr",
+											"Resource\\ROOMNAME8.spr", 
+											"Resource\\STATE5.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

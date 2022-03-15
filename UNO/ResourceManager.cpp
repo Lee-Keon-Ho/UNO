@@ -43,7 +43,6 @@ void CResourceManager::Cleanup()
 
 void CResourceManager::SetSprite(CSprite* _sprite, int _size, int _index)
 {
-	
 	m_sprite[_index].reserve(_size);
 	for (int i = 0; i < _size; i++)
 	{

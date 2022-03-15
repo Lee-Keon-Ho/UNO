@@ -25,20 +25,15 @@ private:
 	ID2D1SolidColorBrush* m_pRedBrush;
 	D2D1_POINT_2F m_rectangle;
 	D2D1_RECT_F m_barRect;
-	targetList_t* m_target;
+	D2D1_RECT_F m_okRect;
 
-	CObject* m_bord;
-	CObject* m_yellowSpelling;
-	CObject* m_blueSpelling;
-	CObject* m_title;
-	CObject* m_bar;
-	CObject* m_ok;
-	CObject* m_name;
-
-	ID2D1Bitmap* m_pBitmap;
-	ID2D1Bitmap* m_pOkBitmap;
-
-	CResourceManager::spriteList_t* m_sprite;
+	CObject* m_pBord;
+	CObject* m_pYellowSpelling;
+	CObject* m_pBlueSpelling;
+	CObject* m_pTitle;
+	CObject* m_pBar;
+	CObject* m_pName;
+	CObject* m_pOk;
 
 	unsigned int m_spellingSize;
 	unsigned int m_widthMax;
@@ -47,10 +42,11 @@ private:
 	unsigned int m_currentSpelling;
 	unsigned int m_nameSize;
 	unsigned int m_titleSize;
-
+	unsigned int m_bufferCount;
 
 	char* m_pBuffer; // test
-	int m_bufferCount;
+	int* m_pTextArr;
+	int* m_pNameArr;
 
 public:
 	CNameScene();

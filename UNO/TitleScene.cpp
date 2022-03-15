@@ -3,8 +3,10 @@
 
 #define STR_MAX 20
 
-CTitleScene::CTitleScene() : m_bOnRender(true), m_tick(0), m_backGroundRect({ 104, 80, 105, 81 }),
-m_logoRect({ 652, 236, 870, 373 })
+CTitleScene::CTitleScene()
+	: m_bOnRender(true), m_tick(0), 
+	m_logoRect({ 652, 236, 870, 373 }), m_logoTargetRect({ 100, 30, 670, 430 }),
+	m_backGroundRect({ 104, 80, 105, 81 }), m_backGroundTargetRect({ 0, 0, 770, 695 })
 {
 
 }
@@ -16,26 +18,29 @@ CTitleScene::~CTitleScene()
 void CTitleScene::Awake()
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
-	m_sprite = pRM->GetSprite();
-	m_pBitmap = pRM->GetBitmap(bitmap_t::MENU_AND_TEXT);
-	m_str = new int[STR_MAX];
-	m_target = new targetList_t[MAX];
+	ID2D1Bitmap* pBitmap = pRM->GetBitmap(bitmap_t::MENU_AND_TEXT);
+	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
+
+	//background
+	m_pBackground = new CObject(new CSprite(m_backGroundRect), pBitmap);
+	m_pBackground->SetTarget(m_backGroundTargetRect);
+
+	//logo
+	m_pLogo = new CObject(new CSprite(m_logoRect), pBitmap);
+	m_pLogo->SetTarget(m_logoTargetRect);
 
 	// text
+	m_pRedText = new CObject(sprite[CResourceManager::RED], pBitmap);
 	char str[] = { "A KEY START" };
 	int size = sizeof(str) - 1;
+	m_pTextArr = new int[size];
 	int count = 0;
-	m_target[TEXT].reserve(size);
 	for (int i = 0; i < size; i++)
 	{
 		if (str[i] - 'A' < 0) continue;
-		m_str[count++] = str[i] - 'A';
-		m_target[TEXT].push_back({ 120.0f + (i * 50), 550.0f, 160.0f + (i * 50), 600.0f });
-		m_titleSize++;
+		m_pTextArr[count++] = str[i] - 'A';
+		m_pRedText->SetTarget({ 120.0f + (i * 50), 550.0f, 160.0f + (i * 50), 600.0f });
 	}
-
-	m_target[LOGO].push_back({ 100, 30, 670, 430 });
-	m_target[BACKGROUND].push_back({ 0, 0, 770, 695 });
 }
 
 void CTitleScene::Start()
@@ -65,19 +70,14 @@ void CTitleScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->BeginDraw();
 
 	// background
-	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-		m_target[BACKGROUND].at(0), 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, m_backGroundRect);
+	m_pBackground->Render(_pRT, 0, 1.0f);
 
 	// LOGO
-	_pRT->DrawBitmap(pRM->GetBitmap(bitmap_t::MENU_AND_TEXT),
-		m_target[LOGO].at(0), 1, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, m_logoRect);
+	m_pLogo->Render(_pRT, 0, 1.0f);
 
 	if (m_bOnRender)
 	{
-		for (int i = 0; i < m_titleSize; i++)
-		{
-			m_sprite[CResourceManager::RED].at(m_str[i]).Render(_pRT, m_pBitmap, m_target[TEXT].at(i), 1.0f);
-		}
+		m_pRedText->Render(_pRT, m_pTextArr, 1.0f);
 	}
 
 	_pRT->EndDraw();
@@ -85,5 +85,8 @@ void CTitleScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CTitleScene::Destroy()
 {
-	if (m_str) { delete m_str; m_str = nullptr; }
+	if (m_pTextArr) { delete[] m_pTextArr; m_pTextArr = nullptr; }
+	if (m_pRedText) { delete m_pRedText; m_pRedText = nullptr; }
+	if (m_pLogo) { delete m_pLogo; m_pLogo = nullptr; }
+	if (m_pBackground) { delete m_pBackground; m_pBackground = nullptr; }
 }
