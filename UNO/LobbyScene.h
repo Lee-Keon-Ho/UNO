@@ -6,7 +6,7 @@
 class CLobbyScene : public CScene
 {
 public:
-	typedef std::vector<D2D1_RECT_F> targetList_t;
+	typedef CResourceManager::eBitmap bitmap_t;
 
 	enum TARGET
 	{
@@ -27,18 +27,21 @@ private:
 	CObject* m_pNumText;
 	CObject* m_pRoomNameText;
 	CObject* m_pStateText;
+	CObject* m_pCreateButton;
 
 	D2D1_RECT_F m_okRect;
 	D2D1_RECT_F m_bordRect;
 	D2D1_RECT_F m_roomRect;
 	D2D1_RECT_F m_userRect;
 	D2D1_RECT_F m_chatRect;
+	D2D1_RECT_F m_createButton;
 
 	unsigned int m_bOK;
 
 	unsigned int m_numTextSize;
 	unsigned int m_roomNameTextSize;
 	unsigned int m_stateTextSize;
+	unsigned int m_createTextSize;
 
 public:
 	CLobbyScene();

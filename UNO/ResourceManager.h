@@ -42,6 +42,8 @@ public:
 		NUM,
 		ROOMNAME,
 		STATE,
+		CREATE,
+		GAMEBORD,
 		ICON_MAX
 	};
 

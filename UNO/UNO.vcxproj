@@ -142,6 +142,7 @@
     <ClCompile Include="app.cpp" />
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="RoomScene.cpp" />
     <ClCompile Include="GameWnd.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="NameScene.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="app.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
+    <ClInclude Include="RoomScene.h" />
     <ClInclude Include="GameWnd.h" />
     <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="NameScene.h" />

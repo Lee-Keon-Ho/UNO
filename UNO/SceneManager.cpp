@@ -2,6 +2,7 @@
 #include "TitleScene.h"
 #include "NameScene.h"
 #include "LobbyScene.h"
+#include "RoomScene.h"
 
 CSceneManager* CSceneManager::pInstance = nullptr;
 
@@ -32,6 +33,7 @@ bool CSceneManager::Initialize()
 	m_scene.push_back(new CTitleScene());
 	m_scene.push_back(new CNameScene());
 	m_scene.push_back(new CLobbyScene());
+	m_scene.push_back(new CRoomScene());
 
 	m_nextScene = m_scene[(int)eScene::TITLE_SCENE];
 

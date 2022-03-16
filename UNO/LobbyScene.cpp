@@ -1,16 +1,11 @@
 #include "LobbyScene.h"
-
-#define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
-#define TARGET	{ 0, 0, 770, 695 }
-#define RECT	{ 6, 61, 166, 205 }
-
-typedef CResourceManager::eBitmap bitmap_t;
+#include "SceneManager.h"
 
 CLobbyScene::CLobbyScene()
 	: m_bOK(0), m_okRect({ 670 , 600, 740, 670 }), m_bordRect({ 0, 0, 770, 695 }),
 	m_roomRect({ 50.0f, 50.0f, 500.0f, 400.0f }), m_userRect({ 501.0f, 50.0f, 710.0f, 400.0f }),
-	m_chatRect({ 50.0f, 401.0f, 500.0f, 650.0f }), m_numTextSize(3), m_roomNameTextSize(8),
-	m_stateTextSize(5)
+	m_chatRect({ 50.0f, 401.0f, 500.0f, 650.0f }), m_createButton({ 501.0f, 401.0f, 610.0f, 481.0f }),
+	m_numTextSize(3), m_roomNameTextSize(8), m_stateTextSize(5), m_createTextSize(6)
 {
 }
 
@@ -47,6 +42,14 @@ void CLobbyScene::Awake()
 	m_pChatting = new CObject(sprite[CResourceManager::LOBBY], pBitmap);
 	m_pChatting->SetTarget(m_chatRect);
 
+	// createButton
+	m_pCreateButton = new CObject(sprite[CResourceManager::CREATE], pBitmap);
+	m_pCreateButton->SetTarget(m_createButton);
+	for (int i = 0; i < m_createTextSize; i++)
+	{
+		m_pCreateButton->SetTarget({507.0f + (i * 15), 426.0f, 527.0f + (i * 15), 456.0f });
+	}
+
 	//num text
 	m_pNumText = new CObject(sprite[CResourceManager::NUM], pBitmap);
 	for (int i = 0; i < m_numTextSize; i++)
@@ -75,7 +78,11 @@ void CLobbyScene::Start()
 
 void CLobbyScene::Update()
 {
-	
+	if (KEY_DOWN(VK_LBUTTON))
+	{
+		
+		CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
+	}
 }
 
 void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -90,6 +97,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_pRoomList->Render(_pRT, 0, 1.0f);
 	m_pUserList->Render(_pRT, 0, 1.0f);
 	m_pChatting->Render(_pRT, 0, 1.0f);
+	m_pCreateButton->Render(_pRT, 1.0f);
 	m_pNumText->Render(_pRT, 1.0f);
 	m_pRoomNameText->Render(_pRT, 1.0f);
 	m_pStateText->Render(_pRT, 1.0f);
@@ -106,6 +114,9 @@ void CLobbyScene::Destroy()
 	if (m_pStateText) { delete m_pStateText; m_pStateText = nullptr; }
 	if (m_pRoomNameText) { delete m_pRoomNameText; m_pRoomNameText = nullptr; }
 	if (m_pNumText) { delete m_pNumText; m_pNumText = nullptr; }
+	if (m_pCreateButton) { delete m_pCreateButton; m_pCreateButton = nullptr; }
+	if (m_pChatting) { delete m_pChatting; m_pChatting = nullptr; }
+	if (m_pUserList) { delete m_pUserList; m_pUserList = nullptr; }
 	if (m_pRoomList) { delete m_pRoomList; m_pRoomList = nullptr; }
 	if (m_pOk) { delete m_pOk; m_pOk = nullptr; }
 	if (m_pBord) { delete m_pBord; m_pBord = nullptr; }

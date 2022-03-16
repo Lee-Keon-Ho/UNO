@@ -84,7 +84,9 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\LOBBY1.spr",
 											"Resource\\NUM3.spr",
 											"Resource\\ROOMNAME8.spr", 
-											"Resource\\STATE5.spr"};
+											"Resource\\STATE5.spr",
+											"Resource\\CREATE7.spr",
+											"Resource\\GameBord1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
@@ -143,6 +145,11 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 {
 	switch (_message)
 	{
+	case WM_LBUTTONDOWN:
+		POINT mouse;
+		GetCursorPos(&mouse);
+		ScreenToClient(_hWnd, &mouse);
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
