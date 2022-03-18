@@ -28,13 +28,15 @@ private:
 	CObject* m_pRoomNameText;
 	CObject* m_pStateText;
 	CObject* m_pCreateButton;
+	CObject* m_pQuickButton;
 
 	D2D1_RECT_F m_okRect;
 	D2D1_RECT_F m_bordRect;
 	D2D1_RECT_F m_roomRect;
 	D2D1_RECT_F m_userRect;
 	D2D1_RECT_F m_chatRect;
-	D2D1_RECT_F m_createButton;
+	D2D1_RECT_F m_createButtonRect;
+	D2D1_RECT_F m_quickButtonRect;
 
 	unsigned int m_bOK;
 
@@ -42,6 +44,7 @@ private:
 	unsigned int m_roomNameTextSize;
 	unsigned int m_stateTextSize;
 	unsigned int m_createTextSize;
+	unsigned int m_quickTextSize;
 
 public:
 	CLobbyScene();

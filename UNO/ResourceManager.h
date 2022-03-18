@@ -43,6 +43,7 @@ public:
 		ROOMNAME,
 		STATE,
 		CREATE,
+		QUICK,
 		GAMEBORD,
 		ICON_MAX
 	};

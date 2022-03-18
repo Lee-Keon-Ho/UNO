@@ -86,6 +86,7 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\ROOMNAME8.spr", 
 											"Resource\\STATE5.spr",
 											"Resource\\CREATE7.spr",
+											"Resource\\QUICK6.spr",
 											"Resource\\GameBord1.spr"};
 
 	FILE* pFile;
