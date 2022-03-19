@@ -3,6 +3,8 @@
 #include "Direct.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+
+#include "Timer.h"
 #define FRAME 15
 
 CApp::CApp()
@@ -40,6 +42,9 @@ int CApp::MessageLoop()
 {
 	MSG msg = { 0 };
 
+	// gpm
+	CTimer::GetInstance()->Start();
+
 	while (WM_QUIT != msg.message)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -49,6 +54,8 @@ int CApp::MessageLoop()
 		}
 		if (m_pFps->IsFrame())
 		{
+			// gpm
+			CTimer::GetInstance()->Update();
 			Update();
 			Render();
 		}

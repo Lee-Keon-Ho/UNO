@@ -89,7 +89,13 @@ void CLobbyScene::Update()
 {
 	if (KEY_DOWN(VK_LBUTTON))
 	{
-	//	CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
+		//Input::mouse_x
+		/*if (m_createButtonRect == mouse) // 버튼을 클릭 했다.
+		{
+			CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
+		}
+		*/
+		CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
 	}
 }
 

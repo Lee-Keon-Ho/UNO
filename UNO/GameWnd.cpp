@@ -146,7 +146,9 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 {
 	switch (_message)
 	{
+	case WM_MOUSEMOVE :
 	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
 		POINT mouse;
 		GetCursorPos(&mouse);
 		ScreenToClient(_hWnd, &mouse);
