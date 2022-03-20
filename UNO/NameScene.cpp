@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "NameScene.h"
 #include "SceneManager.h"
+#include "Input.h"
 
 CNameScene::CNameScene() 
 	: m_bufferCount(0), m_bOK(0), m_spellingSize(26),

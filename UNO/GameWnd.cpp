@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include "SceneManager.h"
+#include "Input.h"
 
 #define WINDOW_WIDTH 785
 #define WINDOW_HEIGHT 734
@@ -144,14 +145,15 @@ void CGameWnd::Render()
 
 LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
+	POINT mouse;
 	switch (_message)
 	{
-	case WM_MOUSEMOVE :
-	case WM_LBUTTONDOWN:
+	//case WM_MOUSEMOVE :
+	//case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP:
-		POINT mouse;
-		GetCursorPos(&mouse);
-		ScreenToClient(_hWnd, &mouse);
+		mouse.x = LOWORD(_lParam);
+		mouse.y = HIWORD(_lParam);
+		CInput::GetInstance()->SetMousePosition(mouse);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

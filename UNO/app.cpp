@@ -3,7 +3,7 @@
 #include "Direct.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
-
+#include "Input.h"
 #include "Timer.h"
 #define FRAME 15
 
@@ -24,6 +24,7 @@ bool CApp::Initialize()
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;
+	if (!CInput::GetInstance()) return false;
 	if (!m_pGameWnd->Initialize()) return false;
 	return true;
 }
@@ -32,6 +33,7 @@ void CApp::Cleanup()
 {
 	if (m_pFps) { delete m_pFps; m_pFps = nullptr; }
 	if (m_pGameWnd) { delete m_pGameWnd; m_pGameWnd = nullptr; }
+	if (CInput::GetInstance()) { CInput::GetInstance()->DeleteInstance(); }
 	if (CSceneManager::GetInstance()) { CSceneManager::GetInstance()->DeleteInstance(); }
 	if (CResourceManager::GetInstance()) { CResourceManager::GetInstance()->DeleteInstance(); }
 	if (CClient::GetInstance()) { CClient::GetInstance()->DeleteInstance(); }
