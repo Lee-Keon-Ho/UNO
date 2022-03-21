@@ -88,12 +88,13 @@ void CNameScene::Start()
 
 void CNameScene::Update()
 {
-	if (KEY_DOWN(VK_LEFT)) m_rectangle.x -= 1;
-	if (KEY_DOWN(VK_RIGHT))	m_rectangle.x += 1;
-	if (KEY_DOWN(VK_UP)) m_rectangle.y -= 1;
-	if (KEY_DOWN(VK_DOWN)) m_rectangle.y += 1;
+	int key = CInput::GetInstance()->GetKey();
+	if (key == VK_LEFT) m_rectangle.x -= 1;
+	if (key == VK_RIGHT)	m_rectangle.x += 1;
+	if (key == VK_UP) m_rectangle.y -= 1;
+	if (key == VK_DOWN) m_rectangle.y += 1;
 
-	if (KEY_DOWN(VK_RETURN))
+	if (key == VK_RETURN)
 	{
 		m_bOK = 1;
 		if (strlen(m_pBuffer) == m_nameSize)
@@ -103,14 +104,14 @@ void CNameScene::Update()
 		}
 	}
 
-	if (KEY_DOWN('A'))
+	if (key == 'A')
 	{
 		if (m_bufferCount >= m_nameSize) m_bufferCount = m_nameSize - 1;
 		m_pBuffer[m_bufferCount] = 'A' + m_rectangle.x + m_rectangle.y * m_widthMax;
 		m_pNameArr[m_bufferCount] = m_rectangle.x + m_rectangle.y * m_widthMax;
 		m_bufferCount++;
 	}
-	if (KEY_DOWN('S'))
+	if (key == 'S')
 	{
 		m_pBuffer[m_bufferCount] = 0;
 		m_bufferCount--;

@@ -3,7 +3,7 @@
 #include "NameScene.h"
 #include "LobbyScene.h"
 #include "RoomScene.h"
-
+#include "Input.h"
 CSceneManager* CSceneManager::pInstance = nullptr;
 
 CSceneManager* CSceneManager::GetInstance()
@@ -74,6 +74,8 @@ void CSceneManager::Update()
 		LoadScene();
 	}
 	m_currentScene->Update();
+	CInput::GetInstance()->SetKey(0);
+	
 }
 
 void CSceneManager::Render(ID2D1HwndRenderTarget* _pRT)

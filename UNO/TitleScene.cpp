@@ -1,6 +1,6 @@
 #include "TitleScene.h"
 #include "SceneManager.h"
-
+#include "Input.h"
 #define STR_MAX 20
 
 CTitleScene::CTitleScene()
@@ -49,13 +49,14 @@ void CTitleScene::Start()
 
 void CTitleScene::Update()
 {
+	int key = CInput::GetInstance()->GetKey();
 	m_tick += 1;
 	if (m_tick > 15)
 	{
 		m_bOnRender = !m_bOnRender; // deltaTime
 		m_tick = 0;
 	}
-	if (KEY_DOWN('A'))
+	if (key == 'A')
 	{
 		CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
 	}

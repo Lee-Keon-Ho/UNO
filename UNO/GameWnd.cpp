@@ -155,6 +155,9 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		mouse.y = HIWORD(_lParam);
 		CInput::GetInstance()->SetMousePosition(mouse);
 		break;
+	case WM_KEYDOWN:
+		CInput::GetInstance()->SetKey(_wParam);
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

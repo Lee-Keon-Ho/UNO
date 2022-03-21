@@ -1,6 +1,6 @@
 #include "LobbyScene.h"
 #include "SceneManager.h"
-
+#include "Input.h"
 CLobbyScene::CLobbyScene()
 	: m_bOK(0), m_okRect({ 670 , 600, 740, 670 }), m_bordRect({ 0, 0, 770, 695 }),
 	m_roomRect({ 50.0f, 50.0f, 500.0f, 400.0f }), m_userRect({ 501.0f, 50.0f, 710.0f, 400.0f }),
@@ -87,7 +87,8 @@ void CLobbyScene::Start()
 
 void CLobbyScene::Update()
 {
-	if (KEY_DOWN(VK_LBUTTON))
+	int key = CInput::GetInstance()->GetKey();
+	if (key == VK_LBUTTON)
 	{
 		//Input::mouse_x
 		/*if (m_createButtonRect == mouse) // 버튼을 클릭 했다.

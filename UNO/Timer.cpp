@@ -26,13 +26,6 @@ CTimer::~CTimer()
 {
 }
 
-void CTimer::Update()
-{
-	
-}
-
-
-
 void CTimer::Start(void)
 {
 	m_prevTick = timeGetTime();;
