@@ -87,8 +87,9 @@ void CLobbyScene::Start()
 
 void CLobbyScene::Update()
 {
-	int key = CInput::GetInstance()->GetKey();
-	if (key == VK_LBUTTON)
+	POINT mouse = CInput::GetInstance()->GetMousePosition();
+	if (mouse.x >= m_createButtonRect.left && mouse.x <= m_createButtonRect.right &&
+		mouse.y >= m_createButtonRect.top && mouse.y <= m_createButtonRect.bottom)
 	{
 		//Input::mouse_x
 		/*if (m_createButtonRect == mouse) // 버튼을 클릭 했다.
