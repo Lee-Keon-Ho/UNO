@@ -7,7 +7,8 @@ class CObject
 public:
 	typedef std::vector<D2D1_RECT_F> targetList_t;
 	typedef std::vector<CSprite> spriteList_t;
-private:
+
+protected:
 	spriteList_t m_sprite;
 	targetList_t m_target;
 	ID2D1Bitmap* m_bitmap;

@@ -1,6 +1,8 @@
+#include "Client.h"
 #include "LobbyScene.h"
 #include "SceneManager.h"
 #include "Input.h"
+
 CLobbyScene::CLobbyScene()
 	: m_bOK(0), m_okRect({ 670 , 600, 740, 670 }), m_bordRect({ 0, 0, 770, 695 }),
 	m_roomRect({ 50.0f, 50.0f, 500.0f, 400.0f }), m_userRect({ 501.0f, 50.0f, 710.0f, 400.0f }),
@@ -79,6 +81,18 @@ void CLobbyScene::Awake()
 	{
 		m_pStateText->SetTarget({ 400.0f + (i * 15), 55.0f, 420.0f + (i * 15), 75.0f });
 	}
+
+	/*room = new CRoom(sprite[CResourceManager::BORD], pBitmap);
+	room->m_room.number = 1;
+	room->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });
+
+	room1 = new CRoom(sprite[CResourceManager::BORD], pBitmap);
+	room1->m_room.number = 2;
+	room1->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });
+
+	room2 = new CRoom(sprite[CResourceManager::BORD], pBitmap);
+	room2->m_room.number = 3;
+	room2->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });*/
 }
 
 void CLobbyScene::Start()
@@ -91,12 +105,7 @@ void CLobbyScene::Update()
 	if (mouse.x >= m_createButtonRect.left && mouse.x <= m_createButtonRect.right &&
 		mouse.y >= m_createButtonRect.top && mouse.y <= m_createButtonRect.bottom)
 	{
-		//Input::mouse_x
-		/*if (m_createButtonRect == mouse) // 버튼을 클릭 했다.
-		{
-			CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
-		}
-		*/
+		CClient::GetInstance()->Send(CResourceManager::GetInstance()->GetName(), 2);
 		CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
 	}
 }
@@ -118,7 +127,9 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_pNumText->Render(_pRT, 1.0f);
 	m_pRoomNameText->Render(_pRT, 1.0f);
 	m_pStateText->Render(_pRT, 1.0f);
-
+	/*room->Render(_pRT, 1.0f);
+	room1->Render(_pRT, 1.0f);
+	room2->Render(_pRT, 1.0f);*/
 	// ok icon
 	m_pOk->Render(_pRT, m_bOK, 1.0f);
 	m_bOK = 0;

@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -143,11 +143,11 @@
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomScene.cpp" />
     <ClCompile Include="GameWnd.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="NameScene.cpp" />
-    <ClCompile Include="Objcet.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -157,6 +157,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UNO.cpp" />
+    <ClCompile Include="User.cpp" />
     <ClCompile Include="Wnd.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="RoomScene.h" />
     <ClInclude Include="GameWnd.h" />
     <ClInclude Include="LobbyScene.h" />
@@ -176,6 +178,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="User.h" />
     <ClInclude Include="Wnd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

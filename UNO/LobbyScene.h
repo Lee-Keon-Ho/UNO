@@ -2,12 +2,15 @@
 #include "Scene.h"
 #include "Object.h"
 #include "ResourceManager.h"
-
+#include "Room.h"
+#include "User.h"
+#include <list>
 class CLobbyScene : public CScene
 {
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
-
+	typedef std::list<CRoom*> RoomList;
+	typedef std::list<CUser*> UserList;
 	enum TARGET
 	{
 		BACKGROUND,
@@ -18,6 +21,7 @@ private:
 	ID2D1SolidColorBrush* m_pRedBrush;
 	ID2D1Bitmap* m_pBitmap;
 	ID2D1Bitmap* m_pOkBitmap;
+	
 
 	CObject* m_pBord;
 	CObject* m_pOk;
@@ -29,6 +33,12 @@ private:
 	CObject* m_pStateText;
 	CObject* m_pCreateButton;
 	CObject* m_pQuickButton;
+
+	/*CRoom* room;
+	CRoom* room1;
+	CRoom* room2;*/
+	RoomList m_roomList;
+	UserList m_userList;
 
 	D2D1_RECT_F m_okRect;
 	D2D1_RECT_F m_bordRect;

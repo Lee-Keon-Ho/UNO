@@ -19,8 +19,7 @@ public:
 	bool Initialize(const char* _ip, int _port);
 	void Cleanup();
 
-	bool NickNameSend(const char* _name);
-
+	bool Send(char* _data, int _type);
 	SOCKET GetSocket() { return m_socket; }
 public:
 	static CClient* GetInstance();

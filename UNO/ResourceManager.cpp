@@ -2,10 +2,6 @@
 
 CResourceManager* CResourceManager::pInstance = nullptr;
 
-void CResourceManager::SetData(const char* _data)
-{
-}
-
 CResourceManager* CResourceManager::GetInstance()
 {
 	if (pInstance == nullptr) pInstance = new CResourceManager();
@@ -24,6 +20,8 @@ CResourceManager::CResourceManager()
 
 CResourceManager::~CResourceManager()
 {
+	if (m_name) { delete[] m_name; m_name = nullptr; }
+	if (m_sprite) { delete[] m_sprite; m_sprite = nullptr; }
 }
 
 bool CResourceManager::Initialize()

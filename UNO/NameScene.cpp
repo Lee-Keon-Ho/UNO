@@ -99,7 +99,8 @@ void CNameScene::Update()
 		m_bOK = 1;
 		if (strlen(m_pBuffer) == m_nameSize)
 		{
-			CClient::GetInstance()->NickNameSend(m_pBuffer);
+			CClient::GetInstance()->Send(m_pBuffer, 1); // 변경 필요
+			CResourceManager::GetInstance()->SetName(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}

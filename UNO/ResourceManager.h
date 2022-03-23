@@ -63,6 +63,7 @@ private:
 
 	IDWriteTextFormat* m_pWriteTextFormat;
 
+	char* m_name;
 public:
 	bool Initialize();
 	void Cleanup();
@@ -79,7 +80,18 @@ public:
 	ID2D1SolidColorBrush** GetYellowBrush() { return &m_pYellowBrush; }
 	ID2D1SolidColorBrush** GetBlackBrush() { return &m_pBlackBrush; }
 
-	void SetData(const char* _data); // 절대하지 않는다
+
+	//test
+	void SetName(char* _name)
+	{
+		int size = strlen(_name) + 1;
+		m_name = new char[size];
+		memcpy(m_name, _name, size);
+	}
+	char* GetName()
+	{
+		return m_name;
+	}
 public:
 	static CResourceManager* GetInstance();
 	static void DeleteInstance();
