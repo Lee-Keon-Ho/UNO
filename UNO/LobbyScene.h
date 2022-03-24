@@ -3,14 +3,14 @@
 #include "Object.h"
 #include "ResourceManager.h"
 #include "Room.h"
-#include "User.h"
+#include "UserList.h"
 #include <list>
 class CLobbyScene : public CScene
 {
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
 	typedef std::list<CRoom*> RoomList;
-	typedef std::list<CUser*> UserList;
+	//typedef std::list<CUserList*> UserList;
 	enum TARGET
 	{
 		BACKGROUND,
@@ -31,14 +31,20 @@ private:
 	CObject* m_pNumText;
 	CObject* m_pRoomNameText;
 	CObject* m_pStateText;
+	CObject* m_pUserListText;
 	CObject* m_pCreateButton;
 	CObject* m_pQuickButton;
 
+	//test
 	/*CRoom* room;
 	CRoom* room1;
 	CRoom* room2;*/
+
+	CObject* m_pUser;
+	
+
 	RoomList m_roomList;
-	UserList m_userList;
+	//UserList m_userList;
 
 	D2D1_RECT_F m_okRect;
 	D2D1_RECT_F m_bordRect;

@@ -80,18 +80,6 @@ public:
 	ID2D1SolidColorBrush** GetYellowBrush() { return &m_pYellowBrush; }
 	ID2D1SolidColorBrush** GetBlackBrush() { return &m_pBlackBrush; }
 
-
-	//test
-	void SetName(char* _name)
-	{
-		int size = strlen(_name) + 1;
-		m_name = new char[size];
-		memcpy(m_name, _name, size);
-	}
-	char* GetName()
-	{
-		return m_name;
-	}
 public:
 	static CResourceManager* GetInstance();
 	static void DeleteInstance();

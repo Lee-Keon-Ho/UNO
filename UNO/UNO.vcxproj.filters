@@ -22,7 +22,7 @@
     <Filter Include="소스 파일\utill">
       <UniqueIdentifier>{3039d644-122b-41e8-8ad8-68cb5b411eec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Wnd\Scene">
+    <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{5ee67e97-a5ee-41c3-80a8-bd9d8ad1cc88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -37,10 +37,10 @@
       <Filter>소스 파일\Wnd</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Direct.cpp">
       <Filter>소스 파일\core</Filter>
@@ -61,10 +61,10 @@
       <Filter>소스 파일\utill</Filter>
     </ClCompile>
     <ClCompile Include="NameScene.cpp">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="LobbyScene.cpp">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>소스 파일</Filter>
@@ -76,7 +76,7 @@
       <Filter>소스 파일\core</Filter>
     </ClCompile>
     <ClCompile Include="RoomScene.cpp">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>소스 파일</Filter>
@@ -84,7 +84,7 @@
     <ClCompile Include="Room.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
+    <ClCompile Include="UserList.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,10 +96,10 @@
       <Filter>소스 파일\Wnd</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Direct.h">
       <Filter>소스 파일\core</Filter>
@@ -120,10 +120,10 @@
       <Filter>소스 파일\utill</Filter>
     </ClInclude>
     <ClInclude Include="NameScene.h">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="LobbyScene.h">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>헤더 파일</Filter>
@@ -135,7 +135,7 @@
       <Filter>소스 파일\core</Filter>
     </ClInclude>
     <ClInclude Include="RoomScene.h">
-      <Filter>소스 파일\Wnd\Scene</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>헤더 파일</Filter>
@@ -143,7 +143,7 @@
     <ClInclude Include="Room.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
+    <ClInclude Include="UserList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

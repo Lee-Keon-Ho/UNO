@@ -100,7 +100,7 @@ void CNameScene::Update()
 		if (strlen(m_pBuffer) == m_nameSize)
 		{
 			CClient::GetInstance()->Send(m_pBuffer, 1); // 변경 필요
-			CResourceManager::GetInstance()->SetName(m_pBuffer);
+			//CResourceManager::GetInstance()->SetName(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}

@@ -82,6 +82,11 @@ void CLobbyScene::Awake()
 		m_pStateText->SetTarget({ 400.0f + (i * 15), 55.0f, 420.0f + (i * 15), 75.0f });
 	}
 
+	m_pUserListText = new CObject(sprite[CResourceManager::ROOMNAME], pBitmap);
+	for (int i = 0; i < m_roomNameTextSize; i++)
+	{
+		m_pUserListText->SetTarget({ 541.0f + (i * 15), 55.0f, 561.0f + (i * 15), 75.0f });
+	}
 	/*room = new CRoom(sprite[CResourceManager::BORD], pBitmap);
 	room->m_room.number = 1;
 	room->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });
@@ -93,6 +98,14 @@ void CLobbyScene::Awake()
 	room2 = new CRoom(sprite[CResourceManager::BORD], pBitmap);
 	room2->m_room.number = 3;
 	room2->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });*/
+
+	//test
+	m_pUser = new CObject(sprite[CResourceManager::GREEN], pBitmap);
+	for (int i = 0; i < 5; i++)
+	{
+		m_pUser->SetTarget({ 511.0f + (i * 10), 90.0f, 526.0f + (i * 10), 105.0f });
+	}
+	
 }
 
 void CLobbyScene::Start()
@@ -105,7 +118,7 @@ void CLobbyScene::Update()
 	if (mouse.x >= m_createButtonRect.left && mouse.x <= m_createButtonRect.right &&
 		mouse.y >= m_createButtonRect.top && mouse.y <= m_createButtonRect.bottom)
 	{
-		CClient::GetInstance()->Send(CResourceManager::GetInstance()->GetName(), 2);
+		//CClient::GetInstance()->Send(CResourceManager::GetInstance()->GetName(), 2);
 		CSceneManager::GetInstance()->ChangeScene(eScene::GAME_SCENE);
 	}
 }
@@ -127,9 +140,11 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_pNumText->Render(_pRT, 1.0f);
 	m_pRoomNameText->Render(_pRT, 1.0f);
 	m_pStateText->Render(_pRT, 1.0f);
+	m_pUserListText->Render(_pRT, 1.0f);
 	/*room->Render(_pRT, 1.0f);
 	room1->Render(_pRT, 1.0f);
 	room2->Render(_pRT, 1.0f);*/
+	m_pUser->Render(_pRT, 1.0f);
 	// ok icon
 	m_pOk->Render(_pRT, m_bOK, 1.0f);
 	m_bOK = 0;
@@ -139,6 +154,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CLobbyScene::Destroy()
 {
+	if (m_pUserListText) { delete m_pUserListText; m_pUserListText = nullptr; }
 	if (m_pStateText) { delete m_pStateText; m_pStateText = nullptr; }
 	if (m_pRoomNameText) { delete m_pRoomNameText; m_pRoomNameText = nullptr; }
 	if (m_pNumText) { delete m_pNumText; m_pNumText = nullptr; }

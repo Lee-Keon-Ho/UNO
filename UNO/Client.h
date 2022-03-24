@@ -21,6 +21,9 @@ public:
 
 	bool Send(char* _data, int _type);
 	SOCKET GetSocket() { return m_socket; }
+
+	// test class를 만들어서 따로 사용할 것
+	int Recv(SOCKET _socket);
 public:
 	static CClient* GetInstance();
 	static void DeleteInstance();

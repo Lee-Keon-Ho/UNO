@@ -15,7 +15,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 
 	while (1)
 	{
-		recvSize = recv(socket, recvBuffer, MAX, 0);
+		recvSize = CClient::GetInstance()->Recv(socket);//recv(socket, recvBuffer, MAX, 0);
 		if (recvSize <= 0)break;
 
 		//CResourceManager::GetInstance()->SetData(recvBuffer);
@@ -96,4 +96,14 @@ bool CClient::Send(char* _data, int _type)
 	{
 		return false;
 	}
+}
+
+int CClient::Recv(SOCKET _socket)
+{
+	char* recvBuffer = new char[MAX];
+	int recvSize = recv(_socket, recvBuffer, MAX, 0);;
+
+
+
+	return recvSize;
 }
