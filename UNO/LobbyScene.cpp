@@ -82,7 +82,8 @@ void CLobbyScene::Awake()
 		m_pStateText->SetTarget({ 400.0f + (i * 15), 55.0f, 420.0f + (i * 15), 75.0f });
 	}
 
-	m_pUserListText = new CObject(sprite[CResourceManager::ROOMNAME], pBitmap);
+	//user list
+	m_pUserListText = new CObject(sprite[CResourceManager::USERLIST], pBitmap);
 	for (int i = 0; i < m_roomNameTextSize; i++)
 	{
 		m_pUserListText->SetTarget({ 541.0f + (i * 15), 55.0f, 561.0f + (i * 15), 75.0f });
@@ -100,7 +101,8 @@ void CLobbyScene::Awake()
 	room2->SetTarget({ 60.0f, 90.0f, 490.0f, 140.0f });*/
 
 	//test
-	m_pUser = new CObject(sprite[CResourceManager::GREEN], pBitmap);
+	m_pUser = new CObject(sprite[CResourceManager::USERNAME], pBitmap);
+	m_pUser->SetTarget({ 506.0f , 85.0f, 705.0f, 110.0f });
 	for (int i = 0; i < 5; i++)
 	{
 		m_pUser->SetTarget({ 511.0f + (i * 10), 90.0f, 526.0f + (i * 10), 105.0f });

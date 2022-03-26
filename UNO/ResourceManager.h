@@ -45,6 +45,8 @@ public:
 		CREATE,
 		QUICK,
 		GAMEBORD,
+		USERLIST,
+		USERNAME,
 		ICON_MAX
 	};
 
@@ -62,8 +64,6 @@ private:
 	ID2D1SolidColorBrush* m_pBlackBrush;
 
 	IDWriteTextFormat* m_pWriteTextFormat;
-
-	char* m_name;
 public:
 	bool Initialize();
 	void Cleanup();

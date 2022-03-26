@@ -20,7 +20,6 @@ CResourceManager::CResourceManager()
 
 CResourceManager::~CResourceManager()
 {
-	if (m_name) { delete[] m_name; m_name = nullptr; }
 	if (m_sprite) { delete[] m_sprite; m_sprite = nullptr; }
 }
 

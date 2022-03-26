@@ -9,14 +9,21 @@
 
 unsigned int __stdcall ThreadFunc(void* _pArgs)
 {
-	SOCKET socket = (SOCKET)_pArgs;
+	SOCKET socket = *(SOCKET*)_pArgs;
 	int recvSize = 0;
-	char* recvBuffer = new char[MAX];
+	
 
 	while (1)
 	{
-		recvSize = CClient::GetInstance()->Recv(socket);//recv(socket, recvBuffer, MAX, 0);
-		if (recvSize <= 0)break;
+		char recvBuffer[MAX];
+		recvSize = recv(socket, recvBuffer, MAX, 0);
+		if (recvSize <= 0)
+		{
+			closesocket(socket);
+			break;
+		}
+		//recvSize = CClient::GetInstance()->Recv(socket);
+		//if (recvSize <= 0)break;
 
 		//CResourceManager::GetInstance()->SetData(recvBuffer);
 	}
@@ -68,7 +75,6 @@ bool CClient::Initialize(const char* _ip, int _port)
 		return false;
 
 	m_hThread = (HANDLE)_beginthreadex(NULL, 0, &ThreadFunc, &m_socket, 0, &threadID);
-	Sleep(10);
 
 	return true;
 }
@@ -100,8 +106,8 @@ bool CClient::Send(char* _data, int _type)
 
 int CClient::Recv(SOCKET _socket)
 {
-	char* recvBuffer = new char[MAX];
-	int recvSize = recv(_socket, recvBuffer, MAX, 0);;
+	char recvBuffer[MAX];
+	int recvSize = recv(_socket, recvBuffer, MAX, 0);
 
 
 

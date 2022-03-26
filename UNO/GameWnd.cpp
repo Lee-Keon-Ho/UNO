@@ -88,7 +88,9 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\STATE5.spr",
 											"Resource\\CREATE7.spr",
 											"Resource\\QUICK6.spr",
-											"Resource\\GameBord1.spr"};
+											"Resource\\GameBord1.spr",
+											"Resource\\USERLIST8.spr",
+											"Resource\\USERNAME37.spr" };
 
 	FILE* pFile;
 	CSprite* tmpSprite;
