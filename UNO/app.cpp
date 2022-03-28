@@ -20,7 +20,7 @@ CApp::~CApp()
 
 bool CApp::Initialize()
 {
-	if (!CClient::GetInstance()->Initialize("14.54.160.37", 30002))return false;
+	//if (!CClient::GetInstance()->Initialize("14.54.160.37", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;

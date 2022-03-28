@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Object.h"
+#include "Button.h"
 #include "ResourceManager.h"
 #include "Room.h"
 #include "UserList.h"
@@ -18,50 +19,18 @@ public:
 		MAX
 	};
 private:
-	ID2D1SolidColorBrush* m_pRedBrush;
-	ID2D1Bitmap* m_pBitmap;
-	ID2D1Bitmap* m_pOkBitmap;
-	
+	CObject* m_pBackGround;
 
-	CObject* m_pBord;
-	CObject* m_pOk;
-	CObject* m_pRoomList;
-	CObject* m_pUserList;
-	CObject* m_pChatting;
-	CObject* m_pNumText;
-	CObject* m_pRoomNameText;
-	CObject* m_pStateText;
-	CObject* m_pUserListText;
-	CObject* m_pCreateButton;
-	CObject* m_pQuickButton;
+	CButton* m_pCreateButton;
+	CButton* m_pQuickButton;
+	CButton* m_pChooseButton;
 
-	//test
-	/*CRoom* room;
-	CRoom* room1;
-	CRoom* room2;*/
-
-	CObject* m_pUser;
-	
-
-	RoomList m_roomList;
-	//UserList m_userList;
-
-	D2D1_RECT_F m_okRect;
-	D2D1_RECT_F m_bordRect;
-	D2D1_RECT_F m_roomRect;
-	D2D1_RECT_F m_userRect;
-	D2D1_RECT_F m_chatRect;
+	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_createButtonRect;
 	D2D1_RECT_F m_quickButtonRect;
+	D2D1_RECT_F m_chooseButtonRect;
 
-	unsigned int m_bOK;
-
-	unsigned int m_numTextSize;
-	unsigned int m_roomNameTextSize;
-	unsigned int m_stateTextSize;
-	unsigned int m_createTextSize;
-	unsigned int m_quickTextSize;
-
+	RoomList m_roomList;
 public:
 	CLobbyScene();
 	~CLobbyScene();

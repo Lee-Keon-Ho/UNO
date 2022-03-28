@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "Object.h"
+#include "Button.h"
 #include "ResourceManager.h"
 #include <d2d1.h>
  
@@ -22,32 +22,22 @@ public:
 	};
 
 private:
-	ID2D1SolidColorBrush* m_pRedBrush;
+	ID2D1SolidColorBrush* m_pBrush;
 	D2D1_POINT_2F m_rectangle;
 	D2D1_RECT_F m_barRect;
 	D2D1_RECT_F m_okRect;
 
-	CObject* m_pBord;
-	CObject* m_pYellowSpelling;
-	CObject* m_pBlueSpelling;
-	CObject* m_pTitle;
-	CObject* m_pBar;
-	CObject* m_pName;
-	CObject* m_pOk;
+	CObject* m_pBackGround;
+	CObject* m_pLogin;
+	CButton* m_pButton;
 
-	unsigned int m_spellingSize;
-	unsigned int m_widthMax;
-	unsigned int m_heightMax;
-	unsigned int m_bOK;
-	unsigned int m_currentSpelling;
-	unsigned int m_nameSize;
-	unsigned int m_titleSize;
-	unsigned int m_bufferCount;
+	D2D1_RECT_F m_buttonRect;
 
-	char* m_pBuffer; // test
-	int* m_pTextArr;
-	int* m_pNameArr;
+	//char* m_pBuffer;
+	WCHAR* m_pBuffer;
+	int m_bufferCount;
 
+	unsigned m_nameMAX;
 public:
 	CNameScene();
 	~CNameScene();

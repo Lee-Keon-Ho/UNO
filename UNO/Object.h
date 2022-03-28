@@ -5,25 +5,20 @@
 class CObject
 {
 public:
-	typedef std::vector<D2D1_RECT_F> targetList_t;
 	typedef std::vector<CSprite> spriteList_t;
 
 protected:
 	spriteList_t m_sprite;
-	targetList_t m_target;
+	D2D1_RECT_F  m_target;
 	ID2D1Bitmap* m_bitmap;
 
 public:
 	CObject();
 	~CObject();
-	CObject(spriteList_t _sprite, ID2D1Bitmap* _bitmap);
-	CObject(CSprite* _sprite, ID2D1Bitmap* _bitmap);
+	CObject(spriteList_t _sprite, ID2D1Bitmap* _bitmap, D2D1_RECT_F _target);
 
-	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 	void Render(ID2D1HwndRenderTarget* _pRT, int _index, float _alpha);
-	void Render(ID2D1HwndRenderTarget* _pRT, int* _index, float _alpha);
-	void Render(ID2D1HwndRenderTarget* _pRT, int* _index, int _size, float _alpha);
 
 	void SetTarget(D2D1_RECT_F _target);
 private:

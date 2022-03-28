@@ -9,7 +9,7 @@ class CRoomScene : public CScene
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
 private:
-	CObject* m_pGameBord;
+
 
 	D2D1_RECT_F m_gameBordRECT;
 public:

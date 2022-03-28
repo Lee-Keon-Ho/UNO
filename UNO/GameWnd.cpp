@@ -4,8 +4,8 @@
 #include "SceneManager.h"
 #include "Input.h"
 
-#define WINDOW_WIDTH 785
-#define WINDOW_HEIGHT 734
+#define WINDOW_WIDTH 1296
+#define WINDOW_HEIGHT 759
 
 typedef CResourceManager::eBitmap bitmap_t;
 typedef CResourceManager::eICON icon_t;
@@ -73,24 +73,17 @@ bool CGameWnd::LoadBitmapFile()
 	CDirect* pDirect = CDirect::GetInstance();
 	CResourceManager* pRM = CResourceManager::GetInstance();
 
-	TCHAR mapPngFileName[][_MAX_PATH] = { L"PNG\\Menus and Text.png",
-											L"PNG\\ok.png" };
+	TCHAR mapPngFileName[][_MAX_PATH] = {	L"PNG\\LOGIN.png",
+											L"PNG\\LOBBY.png",
+											L"PNG\\BUTTON.png"};
 
-	char resourceFileName[][_MAX_PATH] = { "Resource\\RED TEXT26.spr",
-											"Resource\\BLUE TEXT36.spr",
-											"Resource\\YELLOW TEXT36.spr",
-											"Resource\\GREEN TEXT36.spr",
-											"Resource\\OK2.spr",
-											"Resource\\BORD1.spr",
-											"Resource\\LOBBY1.spr",
-											"Resource\\NUM3.spr",
-											"Resource\\ROOMNAME8.spr", 
-											"Resource\\STATE5.spr",
-											"Resource\\CREATE7.spr",
-											"Resource\\QUICK6.spr",
-											"Resource\\GameBord1.spr",
-											"Resource\\USERLIST8.spr",
-											"Resource\\USERNAME37.spr" };
+	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
+											"Resource\\LOGIN_background1.spr",
+											"Resource\\LOGIN_BUTTON2.spr",
+											"Resource\\LOGIN_object1.spr",
+											"Resource\\CREATE_BUTTON2.spr",
+											"Resource\\QUICK_BUTTON2.spr",
+											"Resource\\CHOOSE_BUTTON2.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
@@ -148,14 +141,17 @@ void CGameWnd::Render()
 LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
 	POINT mouse;
+	char key;
 	switch (_message)
 	{
-	//case WM_MOUSEMOVE :
-	//case WM_LBUTTONDOWN:
+	case WM_MOUSEMOVE :
 	case WM_LBUTTONUP:
 		mouse.x = LOWORD(_lParam);
 		mouse.y = HIWORD(_lParam);
 		CInput::GetInstance()->SetMousePosition(mouse);
+		break;
+	case WM_LBUTTONDOWN:
+		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_KEYDOWN:
 		CInput::GetInstance()->SetKey(_wParam);

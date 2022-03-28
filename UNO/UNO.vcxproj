@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -155,16 +156,17 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UNO.cpp" />
     <ClCompile Include="UserList.cpp" />
     <ClCompile Include="Wnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomScene.h" />
     <ClInclude Include="GameWnd.h" />
@@ -177,7 +179,6 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="UserList.h" />
     <ClInclude Include="Wnd.h" />
   </ItemGroup>

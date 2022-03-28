@@ -25,38 +25,26 @@ public:
 
 	enum eBitmap
 	{
-		MENU_AND_TEXT = 0,
-		ICON_OK,
+		LOGIN = 0,
+		LOBBY,
+		BUTTON,
 		MAX
 	};
 
 	enum eICON
 	{
-		RED = 0,
-		BLUE,
-		YELLOW,
-		GREEN,
-		OK,
-		BORD,
-		LOBBY,
-		NUM,
-		ROOMNAME,
-		STATE,
-		CREATE,
-		QUICK,
-		GAMEBORD,
-		USERLIST,
-		USERNAME,
+		LOBBY_BACKGROUND = 0,
+		LOGIN_BACKGROUND,
+		LOGIN_BUTTON,
+		LOGIN_OBJECT,
+		CREATE_BUTTON,
+		QUICK_BUTTON,
+		CHOOSE_BUTTON,
 		ICON_MAX
 	};
 
 private:
 	bitmapList_t m_bitmap;
-	spriteList_t m_redText;
-	spriteList_t m_blueText;
-	spriteList_t m_yellowText;
-	spriteList_t m_greenText;
-	spriteList_t m_OK;
 	spriteList_t* m_sprite;
 
 	ID2D1SolidColorBrush* m_pRedBrush;
@@ -72,8 +60,6 @@ public:
 	void SetSprite(CSprite* _sprite, int _size, int _index);
 
 	ID2D1Bitmap* GetBitmap(eBitmap _index) { return m_bitmap[_index]; }
-	CSprite GetRedText(int _index) { return m_redText.at(_index); }
-	CSprite GetOKIcon(int _index) { return m_OK.at(_index); }
 	spriteList_t* GetSprite() { return m_sprite; }
 	IDWriteTextFormat** GetWriteFormat() { return &m_pWriteTextFormat; }
 	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
