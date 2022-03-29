@@ -36,27 +36,8 @@ bool CGameWnd::Initialize()
 	if (FAILED(hr)) return false;
 	//──────────────────────────────────────────────────────────────────────────────────
 
-	//──────────────────────────────────────────────────────────────────────────────────
-	// Text 사용에 필요
-	//──────────────────────────────────────────────────────────────────────────────────
-	const WCHAR font[] = L"Consolas";
-	const FLOAT fontsize = 15;
-
-	hr = CDirect::GetInstance()->GetWriteFactory()->CreateTextFormat(
-		font, NULL,
-		DWRITE_FONT_WEIGHT_NORMAL,
-		DWRITE_FONT_STYLE_NORMAL,
-		DWRITE_FONT_STRETCH_NORMAL,
-		fontsize, L"en-us", CResourceManager::GetInstance()->GetWriteFormat());
-	if (FAILED(hr)) return false;
-	//──────────────────────────────────────────────────────────────────────────────────
-
-	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x9F0000, 1.0f),
-		CResourceManager::GetInstance()->GetRedBrush());
-	if (FAILED(hr)) return false;
-
-	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xFFFFCC, 1.0f),
-		CResourceManager::GetInstance()->GetYellowBrush());
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xFFFFFF, 1.0f),
+		CResourceManager::GetInstance()->GetWhiteBrush());
 	if (FAILED(hr)) return false;
 
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 1.0f),
@@ -75,7 +56,8 @@ bool CGameWnd::LoadBitmapFile()
 
 	TCHAR mapPngFileName[][_MAX_PATH] = {	L"PNG\\LOGIN.png",
 											L"PNG\\LOBBY.png",
-											L"PNG\\BUTTON.png"};
+											L"PNG\\BUTTON.png",
+											L"PNG\\character.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -83,7 +65,9 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\LOGIN_object1.spr",
 											"Resource\\CREATE_BUTTON2.spr",
 											"Resource\\QUICK_BUTTON2.spr",
-											"Resource\\CHOOSE_BUTTON2.spr"};
+											"Resource\\CHOOSE_BUTTON2.spr",
+											"Resource\\EXIT_BUTTON2.spr",
+											"Resource\\character5.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

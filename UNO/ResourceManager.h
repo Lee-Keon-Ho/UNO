@@ -28,6 +28,7 @@ public:
 		LOGIN = 0,
 		LOBBY,
 		BUTTON,
+		CHARCTER,
 		MAX
 	};
 
@@ -40,6 +41,8 @@ public:
 		CREATE_BUTTON,
 		QUICK_BUTTON,
 		CHOOSE_BUTTON,
+		EXIT_BUTTON,
+		CHARCTER_ICON,
 		ICON_MAX
 	};
 
@@ -47,11 +50,8 @@ private:
 	bitmapList_t m_bitmap;
 	spriteList_t* m_sprite;
 
-	ID2D1SolidColorBrush* m_pRedBrush;
-	ID2D1SolidColorBrush* m_pYellowBrush;
+	ID2D1SolidColorBrush* m_pWhiteBrush;
 	ID2D1SolidColorBrush* m_pBlackBrush;
-
-	IDWriteTextFormat* m_pWriteTextFormat;
 public:
 	bool Initialize();
 	void Cleanup();
@@ -61,9 +61,7 @@ public:
 
 	ID2D1Bitmap* GetBitmap(eBitmap _index) { return m_bitmap[_index]; }
 	spriteList_t* GetSprite() { return m_sprite; }
-	IDWriteTextFormat** GetWriteFormat() { return &m_pWriteTextFormat; }
-	ID2D1SolidColorBrush** GetRedBrush() { return &m_pRedBrush; }
-	ID2D1SolidColorBrush** GetYellowBrush() { return &m_pYellowBrush; }
+	ID2D1SolidColorBrush** GetWhiteBrush() { return &m_pWhiteBrush; }
 	ID2D1SolidColorBrush** GetBlackBrush() { return &m_pBlackBrush; }
 
 public:

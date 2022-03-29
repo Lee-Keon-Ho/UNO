@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Input.h"
+#include "information.h"
 #include "Timer.h"
 #define FRAME 15
 
@@ -23,6 +24,7 @@ bool CApp::Initialize()
 	//if (!CClient::GetInstance()->Initialize("14.54.160.37", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
+	if (!CInformation::GetInstance()->Initalize()) return false;
 	if (!CSceneManager::GetInstance()->Initialize()) return false;
 	if (!CInput::GetInstance()) return false;
 	if (!m_pGameWnd->Initialize()) return false;

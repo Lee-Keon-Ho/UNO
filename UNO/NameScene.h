@@ -23,9 +23,7 @@ public:
 
 private:
 	ID2D1SolidColorBrush* m_pBrush;
-	D2D1_POINT_2F m_rectangle;
-	D2D1_RECT_F m_barRect;
-	D2D1_RECT_F m_okRect;
+	IDWriteTextFormat* m_pWriteTextFormat;
 
 	CObject* m_pBackGround;
 	CObject* m_pLogin;

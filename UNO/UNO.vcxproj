@@ -143,6 +143,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="information.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomScene.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
+    <ClInclude Include="information.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Room.h" />

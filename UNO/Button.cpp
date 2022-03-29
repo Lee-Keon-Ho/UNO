@@ -20,14 +20,16 @@ void CButton::Render(ID2D1HwndRenderTarget* _pRT, float _alpha)
 	CObject::Render(_pRT, m_OnButton, _alpha);
 }
 
-void CButton::OnButton(POINT _mouse)
+bool CButton::OnButton(POINT _mouse)
 {
 	if (_mouse.x >= m_target.left && _mouse.x <= m_target.right &&
 		_mouse.y >= m_target.top && _mouse.y <= m_target.bottom)
 	{
 		m_OnButton = 1;
+		return true;
 	}
 	else m_OnButton = 0;
+	return false;
 }
 
 void CButton::OnButtonDown()

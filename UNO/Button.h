@@ -13,7 +13,7 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 
-	void OnButton(POINT _mouse);
+	bool OnButton(POINT _mouse);
 	void OnButtonDown();
 	void OnButtonUp();
 private:
