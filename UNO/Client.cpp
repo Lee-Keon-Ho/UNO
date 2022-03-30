@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "ResourceManager.h"
+#include "information.h"
 #include <stdio.h>
 #include <process.h>
 
@@ -15,13 +16,22 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 
 	while (1)
 	{
-		char recvBuffer[MAX];
+		char recvBuffer[MAX]; //delete «ÿ¡‡æﬂ «—¥Ÿ.
 		recvSize = recv(socket, recvBuffer, MAX, 0);
 		if (recvSize <= 0)
 		{
 			closesocket(socket);
 			break;
 		}
+
+		unsigned short packetSize = *(unsigned short*)recvBuffer;
+		unsigned short type = *(unsigned short*)(recvBuffer + 2);
+
+		if (type == 1)
+		{
+			CInformation::GetInstance()->SetUserList(recvBuffer);
+		}
+		
 		//recvSize = CClient::GetInstance()->Recv(socket);
 		//if (recvSize <= 0)break;
 

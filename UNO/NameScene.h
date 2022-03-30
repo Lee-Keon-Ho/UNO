@@ -31,8 +31,9 @@ private:
 
 	D2D1_RECT_F m_buttonRect;
 
-	//char* m_pBuffer;
-	WCHAR* m_pBuffer;
+	char* m_pBuffer;
+	WCHAR* m_pName;
+
 	int m_bufferCount;
 
 	unsigned m_nameMAX;
