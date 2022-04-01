@@ -24,6 +24,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 			break;
 		}
 
+		// recvBuffer을 전부 보내고 type은 다른 곳에서 확인하자.
 		unsigned short packetSize = *(unsigned short*)recvBuffer;
 		unsigned short type = *(unsigned short*)(recvBuffer + 2);
 

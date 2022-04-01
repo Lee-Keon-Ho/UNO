@@ -90,6 +90,9 @@
     <ClCompile Include="information.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>소스 파일\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h">
@@ -149,11 +152,14 @@
     <ClInclude Include="resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="information.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>소스 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="text.h">
+      <Filter>소스 파일\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,11 +4,13 @@
 #include "Input.h"
 #include "information.h"
 #include <ctime>
+#include <string>
 
 CLobbyScene::CLobbyScene()
 	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 390.0f, 226.0f, 562.0f, 299.0f }),
 	m_quickButtonRect({ 562.0f, 226.0f, 732.0f, 299.0f }), m_chooseButtonRect({ 732.0f, 226.0f, 904.0f, 299.0f }),
-	m_exitButtonRect({1160.0f, 665.0f, 1260.0f, 705.f}), m_peopleIconRect({1000.0f, 72.0f, 1070.0f, 142.0f})
+	m_exitButtonRect({ 1160.0f, 665.0f, 1260.0f, 705.f }), m_peopleIconRect({ 980.0f, 85.0f, 1050.0f, 155.0f }),
+	m_myNameTextRect({ 1070.0f, 100.0f, 1250.0f, 200.0f }), m_userListRect({ 920.0f, 270.0f, 1250.0f, 300.0f })
 {
 }
 
@@ -23,7 +25,6 @@ void CLobbyScene::Awake()
 
 	HRESULT hr;
 	const WCHAR font[] = L"Consolas";
-	const FLOAT fontsize = 30;
 
 	CResourceManager* pRM = CResourceManager::GetInstance();
 	ID2D1Bitmap* pLobbyBitmap = pRM->GetBitmap(bitmap_t::LOBBY);
@@ -31,18 +32,9 @@ void CLobbyScene::Awake()
 	ID2D1Bitmap* pCharcterBitmap = pRM->GetBitmap(bitmap_t::CHARCTER);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
-	//──────────────────────────────────────────────────────────────────────────────────
-	// Text 
-	//──────────────────────────────────────────────────────────────────────────────────
-	hr = CDirect::GetInstance()->GetWriteFactory()->CreateTextFormat(
-		font, NULL,
-		DWRITE_FONT_WEIGHT_NORMAL,
-		DWRITE_FONT_STYLE_NORMAL,
-		DWRITE_FONT_STRETCH_NORMAL,
-		fontsize, L"en-us", &m_pWriteTextFormat);
-	//──────────────────────────────────────────────────────────────────────────────────
+	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, 30);
 
-	m_pBrush = *pRM->GetWhiteBrush();
+	m_pUserListText = new CText(m_userListRect, 15, 25);
 
 	m_pName = CInformation::GetInstance()->GetName();
 
@@ -57,7 +49,6 @@ void CLobbyScene::Awake()
 	m_pExitButton = new CButton(sprite[CResourceManager::EXIT_BUTTON], pButtonBitmap, m_exitButtonRect);
 
 	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
-
 }
 
 void CLobbyScene::Start()
@@ -115,8 +106,13 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pCharacter->Render(_pRT, m_num, 1.0f);
 
-	_pRT->DrawTextW(m_pName, wcslen(m_pName), m_pWriteTextFormat, D2D1::Rect( 1090.0f, 90.0f, 1250.0f, 200.0f ), m_pBrush);
+	//TEXT class를 따로 만들어서 사용하자
+	m_pMyNameText->Render(_pRT);
 
+	// 특정 시간마다 Update에서 새로 갱신 하도록 만들자
+	UserList_t temp = CInformation::GetInstance()->GetUserList();
+	m_pUserListText->Render(_pRT, temp);
+	
 	_pRT->EndDraw();
 }
 
@@ -128,4 +124,6 @@ void CLobbyScene::Destroy()
 	if (m_pQuickButton) { delete m_pQuickButton; m_pQuickButton = nullptr; }
 	if (m_pCreateButton) { delete m_pCreateButton; m_pCreateButton = nullptr; }
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }
+	if (m_pMyNameText) { delete m_pMyNameText; m_pMyNameText = nullptr; }
+	if (m_pUserListText) { delete m_pUserListText; m_pUserListText = nullptr; }
 }

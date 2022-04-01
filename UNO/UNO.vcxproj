@@ -156,6 +156,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UNO.cpp" />
     <ClCompile Include="UserList.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserList.h" />
     <ClInclude Include="Wnd.h" />

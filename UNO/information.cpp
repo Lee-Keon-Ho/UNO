@@ -51,17 +51,17 @@ void CInformation::SetUserList(char* _user)
 
 	int count = 0;
 
-	while (count < packetSize)
+	while (count < packetSize - 4)
 	{
 		char* temp = new char[16];
 		int i = 0;
-		while (_user[count] != '\0')
+		while (tempBuffer[count] != '\0')
 		{
-			temp[i] = _user[count];
+			temp[i] = tempBuffer[count];
 			count++; i++;
 		}
+		temp[i] = tempBuffer[count];
 		count++; i++;
-		temp[i] = '\0';
 		m_userList.push_back(temp);
 	}
 }
