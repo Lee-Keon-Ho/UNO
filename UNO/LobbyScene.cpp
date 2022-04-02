@@ -68,6 +68,7 @@ void CLobbyScene::Update()
 	
 	if (key == VK_LBUTTON)
 	{
+		// 버튼이 늘어나도 신경쓰지 않는 방법이 있다.
 		if (m_pCreateButton->OnButton(mouse))
 		{
 

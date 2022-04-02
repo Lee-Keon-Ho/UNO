@@ -21,7 +21,7 @@ CApp::~CApp()
 
 bool CApp::Initialize()
 {
-	if (!CClient::GetInstance()->Initialize("192.168.123.17", 30002))return false;
+	if (!CClient::GetInstance()->Initialize("14.54.160.37", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CInformation::GetInstance()->Initalize()) return false;
@@ -53,7 +53,7 @@ int CApp::MessageLoop()
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&msg);
+			TranslateMessage(&msg); // 조금 더 보고 공부해보자.
 			DispatchMessage(&msg); // ==> WndProc() 호출
 		}
 		if (m_pFps->IsFrame())

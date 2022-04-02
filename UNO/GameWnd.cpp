@@ -138,6 +138,7 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_KEYDOWN:
+		// 대소문자 구분을 하지 않음 character를 사용해야함
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_DESTROY:
@@ -149,3 +150,27 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	}
 	return 0;
 }
+
+	/*case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_LBUTTONDBLCLK:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_RBUTTONDBLCLK:*/
+enum class eInputType : u_short
+{
+	MOUSE_MOVE = 0,
+	MOUSE_LBUTTONDOWN,
+	MOUSE_LBUTTONUP,
+	MOUSE_LBUTTONDBLCLK,
+	MOUSE_RBUTTONDOWN,
+	MOUSE_RBUTTONUP,
+	MOUSE_RBUTTONDBLCLK,
+
+	KEY_DOWN,
+	KEY_UP,
+	KEY_CHAR,
+
+	INPUT_TYPE_MAX
+};
