@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "information.h"
+#include "Timer.h"
 #include <ctime>
 #include <string>
 
@@ -71,7 +72,7 @@ void CLobbyScene::Update()
 		// 버튼이 늘어나도 신경쓰지 않는 방법이 있다.
 		if (m_pCreateButton->OnButton(mouse))
 		{
-
+			CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 		}
 		if (m_pQuickButton->OnButton(mouse))
 		{
@@ -85,6 +86,13 @@ void CLobbyScene::Update()
 		{
 			CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
 		}
+	}
+
+	int time = CTimer::GetInstance()->GetTime();
+	if (time == 10)
+	{
+		char buffer[10] = "hi";
+		CClient::GetInstance()->Send(buffer, 3);
 	}
 }
 

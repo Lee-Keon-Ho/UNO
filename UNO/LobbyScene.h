@@ -39,7 +39,7 @@ private:
 
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
-
+	CText* m_pTimeText;
 	RoomList m_roomList;
 	UserList_t* m_pUserList; // 특정 시간마다 Update에서 새로 갱신 하도록 만들자
 

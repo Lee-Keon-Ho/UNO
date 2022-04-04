@@ -57,7 +57,8 @@ bool CGameWnd::LoadBitmapFile()
 	TCHAR mapPngFileName[][_MAX_PATH] = {	L"PNG\\LOGIN.png",
 											L"PNG\\LOBBY.png",
 											L"PNG\\BUTTON.png",
-											L"PNG\\character.png"};
+											L"PNG\\character.png",
+											L"PNG\\waitingRoom.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -67,7 +68,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\QUICK_BUTTON2.spr",
 											"Resource\\CHOOSE_BUTTON2.spr",
 											"Resource\\EXIT_BUTTON2.spr",
-											"Resource\\character5.spr"};
+											"Resource\\character5.spr",
+											"Resource\\waitingRoom1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

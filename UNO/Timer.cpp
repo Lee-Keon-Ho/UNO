@@ -34,6 +34,7 @@ void CTimer::Start(void)
 	m_fps = 0;
 	m_fpsAvg = 0;
 	m_secTick = 0;
+	m_time = 0;
 }
 
 void CTimer::End(void)
@@ -47,13 +48,13 @@ void CTimer::Update()
 	m_deltaTick = nowTick - m_prevTick;
 	m_deltaTime = (float)m_deltaTick / 1000.0f;
 
-
 	m_fps++;
 
 	// 1초를 알기 위해서
 	m_secTick += m_deltaTick;
 	if (m_secTick > 999)
 	{
+		m_time += 1;
 		m_secTick -= 1000;
 		m_fpsAvg = m_fps;
 		m_fps = 0;

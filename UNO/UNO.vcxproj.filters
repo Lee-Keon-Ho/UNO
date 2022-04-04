@@ -93,6 +93,9 @@
     <ClCompile Include="text.cpp">
       <Filter>소스 파일\core</Filter>
     </ClCompile>
+    <ClCompile Include="waitingRoomScene.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="text.h">
       <Filter>소스 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="waitingRoomScene.h">
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

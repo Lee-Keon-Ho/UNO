@@ -11,13 +11,6 @@ private:
 	~CTimer();
 
 private:
-	int m_afterTimer;
-	int m_beforeTime;
-	int m_periodFrequency;
-	double m_timeScale;
-	double m_time;
-
-
 	//=================================
 	// gpm 
 	DWORD	m_prevTick;
@@ -26,7 +19,7 @@ private:
 	DWORD   m_secTick;
 	int		m_fps;
 	int		m_fpsAvg;
-
+	int		m_time;
 public :
 	void Start(void);
 	void End(void);
@@ -34,6 +27,7 @@ public :
 public:
 	void Update();
 	int GetFps(void) { return m_fpsAvg; }
+	float GetTime() { return m_time; }
 	//=================================
 
 public:

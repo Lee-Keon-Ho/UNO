@@ -32,6 +32,10 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 		{
 			CInformation::GetInstance()->SetUserList(recvBuffer);
 		}
+		if (type == 3)
+		{
+			CInformation::GetInstance()->SetUserList(recvBuffer);
+		}
 		
 		//recvSize = CClient::GetInstance()->Recv(socket);
 		//if (recvSize <= 0)break;

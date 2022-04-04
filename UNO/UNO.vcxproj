@@ -160,6 +160,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UNO.cpp" />
     <ClCompile Include="UserList.cpp" />
+    <ClCompile Include="waitingRoomScene.cpp" />
     <ClCompile Include="Wnd.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="text.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserList.h" />
+    <ClInclude Include="waitingRoomScene.h" />
     <ClInclude Include="Wnd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
