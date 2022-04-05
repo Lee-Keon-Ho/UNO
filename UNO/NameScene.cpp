@@ -79,7 +79,7 @@ void CNameScene::Update()
 
 	if (key == VK_RETURN)
 	{
-		m_pButton->OnButtonDown();
+		m_pButton->OnButton(mouse);
 		if (m_bufferCount > 3)
 		{
 			CClient::GetInstance()->Send(m_pBuffer, 1); // 변경 필요

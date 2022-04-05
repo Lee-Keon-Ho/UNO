@@ -118,13 +118,3 @@ bool CClient::Send(char* _data, int _type)
 		return false;
 	}
 }
-
-int CClient::Recv(SOCKET _socket)
-{
-	char recvBuffer[MAX];
-	int recvSize = recv(_socket, recvBuffer, MAX, 0);
-
-
-
-	return recvSize;
-}

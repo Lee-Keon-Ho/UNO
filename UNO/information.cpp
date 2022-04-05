@@ -62,6 +62,7 @@ void CInformation::SetUserList(char* _user)
 		}
 		temp[i] = tempBuffer[count];
 		count++; i++;
+		m_userList.clear();
 		m_userList.push_back(temp);
 	}
 }

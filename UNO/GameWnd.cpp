@@ -69,7 +69,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\CHOOSE_BUTTON2.spr",
 											"Resource\\EXIT_BUTTON2.spr",
 											"Resource\\character5.spr",
-											"Resource\\waitingRoom1.spr"};
+											"Resource\\waitingRoom1.spr",
+											"Resource\\ExitButton2.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
