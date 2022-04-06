@@ -1,17 +1,15 @@
-#include "UserList.h"
+#include "User.h"
 #include <string>
-CUserList::CUserList()
+CUser::CUser()
 {
 }
 
-CUserList::CUserList(char* _name)
+CUser::CUser(char* _name)
 {
 	int len = strlen(_name) + 1;
-	m_pName = new char[len];
-	memcpy(m_pName, _name, len);
+	memcpy(m_name, _name, len);
 }
 
-CUserList::~CUserList()
+CUser::~CUser()
 {
-	if (m_pName) { delete[] m_pName; m_pName = nullptr; }
 }

@@ -49,20 +49,21 @@ void CInformation::SetUserList(char* _user)
 	unsigned short type = *(unsigned short*)(_user + 2);
 	char* tempBuffer = _user + 4;
 
+	int size = sizeof(CUser);
 	int count = 0;
+
+	m_userList.clear(); //
 
 	while (count < packetSize - 4)
 	{
-		char* temp = new char[16];
-		int i = 0;
-		while (tempBuffer[count] != '\0')
-		{
-			temp[i] = tempBuffer[count];
-			count++; i++;
-		}
-		temp[i] = tempBuffer[count];
-		count++; i++;
-		m_userList.clear();
+		CUser* temp = new CUser();
+
+		memcpy(temp, tempBuffer, size);
+
+
+		tempBuffer += size;
+		count += size;
+
 		m_userList.push_back(temp);
 	}
 }

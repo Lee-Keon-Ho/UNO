@@ -11,7 +11,8 @@ CLobbyScene::CLobbyScene()
 	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 390.0f, 226.0f, 562.0f, 299.0f }),
 	m_quickButtonRect({ 562.0f, 226.0f, 732.0f, 299.0f }), m_chooseButtonRect({ 732.0f, 226.0f, 904.0f, 299.0f }),
 	m_exitButtonRect({ 1160.0f, 665.0f, 1260.0f, 705.f }), m_peopleIconRect({ 980.0f, 85.0f, 1050.0f, 155.0f }),
-	m_myNameTextRect({ 1070.0f, 100.0f, 1250.0f, 200.0f }), m_userListRect({ 920.0f, 270.0f, 1250.0f, 300.0f })
+	m_myNameTextRect({ 1070.0f, 100.0f, 1250.0f, 200.0f }), m_userListRect({ 920.0f, 270.0f, 1250.0f, 300.0f }),
+	m_pontSize1(30), m_pontSize2(15), m_textHeight(25)
 {
 }
 
@@ -33,14 +34,21 @@ void CLobbyScene::Awake()
 	ID2D1Bitmap* pCharcterBitmap = pRM->GetBitmap(bitmap_t::CHARCTER);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
-	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, 30);
+	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1);
 
-	m_pUserListText = new CText(m_userListRect, 15, 25);
+	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight); // 15 pontSize
 
 	m_pName = CInformation::GetInstance()->GetName();
 
 	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
+	m_button.reserve(BUTTON_MAX);
+	m_button.push_back(new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect));
+	m_button.push_back(new CButton(sprite[CResourceManager::QUICK_BUTTON], pButtonBitmap, m_quickButtonRect));
+	m_button.push_back(new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect));
+	m_button.push_back(new CButton(sprite[CResourceManager::EXIT_BUTTON], pButtonBitmap, m_exitButtonRect));
+
+	/*
 	m_pCreateButton = new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect);
 
 	m_pQuickButton = new CButton(sprite[CResourceManager::QUICK_BUTTON], pButtonBitmap, m_quickButtonRect);
@@ -48,7 +56,7 @@ void CLobbyScene::Awake()
 	m_pChooseButton = new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect);
 
 	m_pExitButton = new CButton(sprite[CResourceManager::EXIT_BUTTON], pButtonBitmap, m_exitButtonRect);
-
+	*/
 	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
 }
 
@@ -62,29 +70,27 @@ void CLobbyScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	m_pCreateButton->OnButtonUp();
-	m_pQuickButton->OnButtonUp();
-	m_pChooseButton->OnButtonUp();
-	m_pExitButton->OnButtonUp();
+	for (int i = 0; i < BUTTON_MAX; i++)
+	{
+		m_button[i]->OnButtonUp();
+	}
 	
 	if (key == VK_LBUTTON)
 	{
-		// 버튼이 늘어나도 신경쓰지 않는 방법이 있다.
-		if (m_pCreateButton->OnButton(mouse))
+		for (int i = 0; i < BUTTON_MAX; i++)
 		{
-			CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
-		}
-		if (m_pQuickButton->OnButton(mouse))
-		{
-
-		}
-		if (m_pChooseButton->OnButton(mouse))
-		{
-
-		}
-		if (m_pExitButton->OnButton(mouse))
-		{
-			CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
+			if (m_button[i]->OnButton(mouse))
+			{
+				switch (i)
+				{
+				case CREATE:
+					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
+					break;
+				case EXIT:
+					CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
+					break;
+				}
+			}
 		}
 	}
 
@@ -105,13 +111,10 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	// background
 	m_pBackGround->Render(_pRT, 1.0f);
 
-	m_pCreateButton->Render(_pRT, 1.0f);
-
-	m_pQuickButton->Render(_pRT, 1.0f);
-
-	m_pChooseButton->Render(_pRT, 1.0f);
-
-	m_pExitButton->Render(_pRT, 1.0f);
+	for (int i = 0; i < BUTTON_MAX; i++) // object까지는 이렇게 만들면 괜찮을 것 같다.
+	{
+		m_button[i]->Render(_pRT, 1.0f);
+	}
 
 	m_pCharacter->Render(_pRT, m_num, 1.0f);
 
@@ -128,10 +131,13 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 void CLobbyScene::Destroy()
 {
 	if (m_pCharacter) { delete m_pCharacter; m_pCharacter = nullptr; }
-	if (m_pExitButton) { delete m_pExitButton; m_pExitButton = nullptr; }
-	if (m_pChooseButton) { delete m_pChooseButton; m_pChooseButton = nullptr; }
-	if (m_pQuickButton) { delete m_pQuickButton; m_pQuickButton = nullptr; }
-	if (m_pCreateButton) { delete m_pCreateButton; m_pCreateButton = nullptr; }
+	
+	Button_t::iterator iter = m_button.begin();
+	for (; iter != m_button.end(); iter++)
+	{
+		
+	}
+
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }
 	if (m_pMyNameText) { delete m_pMyNameText; m_pMyNameText = nullptr; }
 	if (m_pUserListText) { delete m_pUserListText; m_pUserListText = nullptr; }

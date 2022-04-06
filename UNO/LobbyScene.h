@@ -4,16 +4,26 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Room.h"
-#include "UserList.h"
+#include "User.h"
 #include "text.h"
 #include <list>
+
 class CLobbyScene : public CScene
 {
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
-	typedef std::list<char*> UserList_t;
+	typedef std::vector<CButton*> Button_t;
+	typedef std::list<CUser*> UserList_t;
 	typedef std::list<CRoom*> RoomList;
-	//typedef std::list<CUserList*> UserList;
+
+	enum BUTTON
+	{
+		CREATE = 0,
+		QUICK,
+		CHOOSE,
+		EXIT,
+		BUTTON_MAX
+	};
 
 private:
 	ID2D1SolidColorBrush* m_pBrush;
@@ -22,6 +32,8 @@ private:
 
 	CObject* m_pBackGround;
 	CObject* m_pCharacter; 
+
+	Button_t m_button;
 
 	CButton* m_pCreateButton;
 	CButton* m_pQuickButton;
@@ -40,8 +52,15 @@ private:
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
 	CText* m_pTimeText;
-	RoomList m_roomList;
+
+	//test
+	RoomList m_roomList; 
 	UserList_t* m_pUserList; // 특정 시간마다 Update에서 새로 갱신 하도록 만들자
+	//
+
+	int m_pontSize1;
+	int m_pontSize2;
+	int m_textHeight;
 
 	WCHAR* m_pName;
 	int m_num;

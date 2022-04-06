@@ -149,7 +149,7 @@
     <ClInclude Include="Room.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UserList.h">
+    <ClInclude Include="User.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">

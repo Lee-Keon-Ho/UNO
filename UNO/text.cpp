@@ -7,7 +7,7 @@ CText::CText()
 	
 }
 
-CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _num)
+CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _height)
 {
 	HRESULT hr;
 	const WCHAR font[] = L"Consolas";
@@ -20,7 +20,7 @@ CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _num)
 		_fontSize, L"en-us", &m_pWriteTextFormat);
 
 	m_layoutRect = _layoutRect;
-	m_num = _num;
+	m_textHeight = _height;
 	m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
 }
 
@@ -59,13 +59,14 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 
 	for (int i = 0; iter != _userList.end(); iter++, i++)
 	{
+		CUser* temp = iter.operator*();
 		wchar_t* pStr;
-		int strSize = MultiByteToWideChar(CP_ACP, 0, *iter, -1, NULL, NULL);
+		int strSize = MultiByteToWideChar(CP_ACP, 0, temp->GetName(), -1, NULL, NULL);
 		pStr = new WCHAR[strSize];
-		MultiByteToWideChar(CP_ACP, 0, *iter, strlen(*iter) + 1, pStr, strSize);
+		MultiByteToWideChar(CP_ACP, 0, temp->GetName(), strlen(temp->GetName()) + 1, pStr, strSize);
 
 		_pRT->DrawTextW(pStr, wcslen(pStr), m_pWriteTextFormat, 
-			D2D1::Rect(m_layoutRect.left, m_layoutRect.top + (i * m_num), 
-				m_layoutRect.right, m_layoutRect.bottom + (i * m_num)), m_pBrush);
+			D2D1::Rect(m_layoutRect.left, m_layoutRect.top + (i * m_textHeight),
+				m_layoutRect.right, m_layoutRect.bottom + (i * m_textHeight)), m_pBrush);
 	}
 }

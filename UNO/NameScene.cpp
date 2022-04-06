@@ -82,6 +82,7 @@ void CNameScene::Update()
 		m_pButton->OnButton(mouse);
 		if (m_bufferCount > 3)
 		{
+			m_pName[m_bufferCount] = 0;
 			CClient::GetInstance()->Send(m_pBuffer, 1); // 변경 필요
 			CInformation::GetInstance()->SetName(m_pName);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);

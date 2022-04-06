@@ -1,10 +1,11 @@
 #pragma once
+#include "User.h"
 #include <windows.h>
 #include <list>
 class CInformation
 {
 public:
-	typedef std::list<char*> UserList_t;
+	typedef std::list<CUser*> UserList_t;
 
 private:
 	static CInformation* pInstance;

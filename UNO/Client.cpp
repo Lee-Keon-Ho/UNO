@@ -16,7 +16,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 
 	while (1)
 	{
-		char recvBuffer[MAX]; //delete 해줘야 한다.
+		char recvBuffer[MAX];
 		recvSize = recv(socket, recvBuffer, MAX, 0);
 		if (recvSize <= 0)
 		{
@@ -28,6 +28,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 		unsigned short packetSize = *(unsigned short*)recvBuffer;
 		unsigned short type = *(unsigned short*)(recvBuffer + 2);
 
+		// test중 수정 필수
 		if (type == 1)
 		{
 			CInformation::GetInstance()->SetUserList(recvBuffer);
@@ -36,11 +37,6 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 		{
 			CInformation::GetInstance()->SetUserList(recvBuffer);
 		}
-		
-		//recvSize = CClient::GetInstance()->Recv(socket);
-		//if (recvSize <= 0)break;
-
-		//CResourceManager::GetInstance()->SetData(recvBuffer);
 	}
 	return 0;
 }
