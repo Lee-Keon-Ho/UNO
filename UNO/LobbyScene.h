@@ -16,15 +16,14 @@ public:
 	typedef std::list<CUser*> UserList_t;
 	typedef std::list<CRoom*> RoomList;
 
-	enum BUTTON
+	enum eButton
 	{
-		CREATE = 0,
-		QUICK,
-		CHOOSE,
-		EXIT,
-		BUTTON_MAX
+		LB_CREATE = 0,
+		LB_QUICK,
+		LB_CHOOSE,
+		LB_EXIT,
+		LB_BUTTON_MAX
 	};
-
 private:
 	ID2D1SolidColorBrush* m_pBrush;
 	IDWriteTextFormat* m_pWriteTextFormat;
@@ -34,11 +33,6 @@ private:
 	CObject* m_pCharacter; 
 
 	Button_t m_button;
-
-	CButton* m_pCreateButton;
-	CButton* m_pQuickButton;
-	CButton* m_pChooseButton;
-	CButton* m_pExitButton;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_createButtonRect;
@@ -51,12 +45,6 @@ private:
 
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
-	CText* m_pTimeText;
-
-	//test
-	RoomList m_roomList; 
-	UserList_t* m_pUserList; // 특정 시간마다 Update에서 새로 갱신 하도록 만들자
-	//
 
 	int m_pontSize1;
 	int m_pontSize2;
@@ -64,6 +52,8 @@ private:
 
 	WCHAR* m_pName;
 	int m_num;
+
+	UserList_t* m_userList;
 public:
 	CLobbyScene();
 	~CLobbyScene();

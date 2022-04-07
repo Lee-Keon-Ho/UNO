@@ -1,5 +1,7 @@
 #include "information.h"
 
+#define MAX 255
+
 CInformation* CInformation::pInstance = nullptr;
 
 CInformation* CInformation::GetInstance()
@@ -25,8 +27,8 @@ CInformation::~CInformation()
 
 bool CInformation::Initalize()
 {
-	m_pMyName = new WCHAR[255];
-	memset(m_pMyName, 0, 255);
+	m_pMyName = new WCHAR[MAX];
+	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
 
 	return true;
@@ -39,6 +41,7 @@ void CInformation::Cleanup()
 
 void CInformation::SetName(const WCHAR* _name)
 {
+	memset(m_pMyName, 0, MAX);
 	int len = wcslen(_name) * sizeof(WCHAR);
 	memcpy(m_pMyName, _name, len);
 }
@@ -59,7 +62,6 @@ void CInformation::SetUserList(char* _user)
 		CUser* temp = new CUser();
 
 		memcpy(temp, tempBuffer, size);
-
 
 		tempBuffer += size;
 		count += size;

@@ -21,7 +21,7 @@ public:
 	void SetName(const WCHAR* _name);
 	void SetUserList(char* _user);
 	WCHAR* GetName() { return m_pMyName; }
-	UserList_t GetUserList() { return m_userList; }
+	UserList_t* GetUserList() { return &m_userList; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

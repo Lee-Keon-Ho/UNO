@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "information.h"
 #include "Timer.h"
+
 #define FRAME 15
 
 CApp::CApp()
@@ -21,7 +22,7 @@ CApp::~CApp()
 
 bool CApp::Initialize()
 {
-	if (!CClient::GetInstance()->Initialize("59.30.46.232", 30002))return false;
+	if (!CClient::GetInstance()->Initialize("192.168.123.20", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CInformation::GetInstance()->Initalize()) return false;

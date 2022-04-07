@@ -14,12 +14,6 @@ public:
 	typedef std::vector<ID2D1Bitmap*> bitmapList_t;
 	typedef std::vector<CSprite> spriteList_t;
 
-	enum TYPE
-	{
-		NICK_NAME = 1,
-		CHATTING
-	};
-
 	enum eBitmap
 	{
 		LOGIN = 0,

@@ -36,28 +36,20 @@ void CLobbyScene::Awake()
 
 	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1);
 
-	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight); // 15 pontSize
-
-	m_pName = CInformation::GetInstance()->GetName();
+	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight);
 
 	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
-	m_button.reserve(BUTTON_MAX);
+	m_button.reserve(LB_BUTTON_MAX);
 	m_button.push_back(new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::QUICK_BUTTON], pButtonBitmap, m_quickButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::EXIT_BUTTON], pButtonBitmap, m_exitButtonRect));
 
-	/*
-	m_pCreateButton = new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect);
-
-	m_pQuickButton = new CButton(sprite[CResourceManager::QUICK_BUTTON], pButtonBitmap, m_quickButtonRect);
-
-	m_pChooseButton = new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect);
-
-	m_pExitButton = new CButton(sprite[CResourceManager::EXIT_BUTTON], pButtonBitmap, m_exitButtonRect);
-	*/
 	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
+
+	m_userList = CInformation::GetInstance()->GetUserList();
+	m_pName = CInformation::GetInstance()->GetName();
 }
 
 void CLobbyScene::Start()
@@ -66,27 +58,28 @@ void CLobbyScene::Start()
 
 void CLobbyScene::Update()
 {
+	CTimer* pTimer = CTimer::GetInstance();
 	CInput* pInput = CInput::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	for (int i = 0; i < BUTTON_MAX; i++)
+	for (int i = 0; i < LB_BUTTON_MAX; i++)
 	{
 		m_button[i]->OnButtonUp();
 	}
 	
 	if (key == VK_LBUTTON)
 	{
-		for (int i = 0; i < BUTTON_MAX; i++)
+		for (int i = 0; i < LB_BUTTON_MAX; i++)
 		{
 			if (m_button[i]->OnButton(mouse))
 			{
 				switch (i)
 				{
-				case CREATE:
+				case LB_CREATE:
 					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 					break;
-				case EXIT:
+				case LB_EXIT:
 					CSceneManager::GetInstance()->ChangeScene(eScene::NAME_SCENE);
 					break;
 				}
@@ -94,11 +87,11 @@ void CLobbyScene::Update()
 		}
 	}
 
-	int time = CTimer::GetInstance()->GetTime();
-	if (time == 10)
+	if (pTimer->GetTime() == 10)
 	{
-		char buffer[10] = "hi";
+		char buffer[] = "UserList";
 		CClient::GetInstance()->Send(buffer, 3);
+		pTimer->ResetTimer();
 	}
 }
 
@@ -111,19 +104,16 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	// background
 	m_pBackGround->Render(_pRT, 1.0f);
 
-	for (int i = 0; i < BUTTON_MAX; i++) // object까지는 이렇게 만들면 괜찮을 것 같다.
+	for (int i = 0; i < LB_BUTTON_MAX; i++)
 	{
 		m_button[i]->Render(_pRT, 1.0f);
 	}
 
 	m_pCharacter->Render(_pRT, m_num, 1.0f);
 
-	//TEXT class를 따로 만들어서 사용하자
 	m_pMyNameText->Render(_pRT);
 
-	// 특정 시간마다 Update에서 새로 갱신 하도록 만들자
-	UserList_t temp = CInformation::GetInstance()->GetUserList();
-	m_pUserListText->Render(_pRT, temp);
+	m_pUserListText->Render(_pRT, *m_userList);
 	
 	_pRT->EndDraw();
 }
@@ -135,8 +125,9 @@ void CLobbyScene::Destroy()
 	Button_t::iterator iter = m_button.begin();
 	for (; iter != m_button.end(); iter++)
 	{
-		
+		if (*iter) { delete* iter; *iter = nullptr; }
 	}
+	m_button.clear();
 
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }
 	if (m_pMyNameText) { delete m_pMyNameText; m_pMyNameText = nullptr; }
