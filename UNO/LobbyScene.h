@@ -31,8 +31,12 @@ private:
 
 	CObject* m_pBackGround;
 	CObject* m_pCharacter; 
+	CObject* m_pExitBackGround;
 
 	Button_t m_button;
+
+	CButton* m_pExitOkButton;
+	CButton* m_pExitNoButton;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_createButtonRect;
@@ -42,7 +46,8 @@ private:
 	D2D1_RECT_F m_peopleIconRect;
 	D2D1_RECT_F m_myNameTextRect;
 	D2D1_RECT_F m_userListRect;
-
+	D2D1_RECT_F m_exitOkButtonRect;
+	
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
 
@@ -54,6 +59,8 @@ private:
 	int m_num;
 
 	UserList_t* m_userList;
+
+	bool m_bOnExit;
 public:
 	CLobbyScene();
 	~CLobbyScene();
