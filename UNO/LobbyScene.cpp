@@ -2,17 +2,17 @@
 #include "LobbyScene.h"
 #include "SceneManager.h"
 #include "Input.h"
-#include "information.h"
 #include "Timer.h"
 #include <ctime>
 #include <string>
 
 CLobbyScene::CLobbyScene()
-	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 390.0f, 226.0f, 562.0f, 299.0f }),
-	m_quickButtonRect({ 562.0f, 226.0f, 732.0f, 299.0f }), m_chooseButtonRect({ 732.0f, 226.0f, 904.0f, 299.0f }),
+	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 387.0f, 231.0f, 559.0f, 304.0f }),
+	m_quickButtonRect({ 559.0f, 231.0f, 729.0f, 304.0f }), m_chooseButtonRect({ 729.0f, 231.0f, 901.0f, 304.0f }),
 	m_exitButtonRect({ 1160.0f, 665.0f, 1260.0f, 705.f }), m_peopleIconRect({ 980.0f, 85.0f, 1050.0f, 155.0f }),
 	m_myNameTextRect({ 1070.0f, 100.0f, 1250.0f, 200.0f }), m_userListRect({ 920.0f, 270.0f, 1250.0f, 300.0f }),
-	m_exitOkButtonRect({421.0f, 250.0f, 858.0f, 469.0f}),
+	m_exitTextObject({ 421.0f, 250.0f, 858.0f, 405.0f }), m_exitOkButtonRect({ 640.0f, 405.0f, 858.0f, 469.0f }),
+	m_exitNoButtonRect({ 421.0f, 405.0f, 640.0f, 469.0f }),
 	m_pontSize1(30), m_pontSize2(15), m_textHeight(25), m_bOnExit(false)
 {
 }
@@ -43,6 +43,7 @@ void CLobbyScene::Awake()
 	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
 	m_pExitBackGround = new CObject(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_backGroundRect);
+	m_pExitTextObject = new CObject(sprite[CResourceManager::EXIT_TEXT_OBJECT], pExitBitmap, m_exitTextObject);
 
 	m_button.reserve(LB_BUTTON_MAX);
 	m_button.push_back(new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect));
@@ -50,8 +51,8 @@ void CLobbyScene::Awake()
 	m_button.push_back(new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::LOBYY_EXIT_BUTTON], pButtonBitmap, m_exitButtonRect));
 
-	m_pExitOkButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_OK], pExitBitmap, m_exitOkButtonRect);
-	m_pExitNoButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_NO], pExitBitmap, m_exitOkButtonRect);
+	m_pExitOkButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_OK], pButtonBitmap, m_exitOkButtonRect);
+	m_pExitNoButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_NO], pButtonBitmap, m_exitNoButtonRect);
 
 	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
 
@@ -80,11 +81,15 @@ void CLobbyScene::Update()
 
 	if (m_bOnExit)
 	{
-		if (key == VK_LBUTTON)
+		m_pExitOkButton->OnButton(mouse);
+		if (m_pExitNoButton->OnButton(mouse))
 		{
-			if (m_pExitOkButton->OnButton(mouse));
-			if (m_pExitNoButton->OnButton(mouse)) m_bOnExit = false;
-		}	
+			if (key == VK_LBUTTON)
+			{
+				m_pExitNoButton->OnButtonDown();
+				m_bOnExit = false;
+			}
+		}
 	}
 	else
 	{
@@ -139,6 +144,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	if (m_bOnExit)
 	{
 		m_pExitBackGround->Render(_pRT, 0.5f);
+		m_pExitTextObject->Render(_pRT, 1.0f);
 		m_pExitNoButton->Render(_pRT, 1.0f);
 		m_pExitOkButton->Render(_pRT, 1.0f);
 	}

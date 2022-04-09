@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Button.h"
 #include "ResourceManager.h"
+#include "information.h"
 #include "Room.h"
 #include "User.h"
 #include "text.h"
@@ -32,6 +33,7 @@ private:
 	CObject* m_pBackGround;
 	CObject* m_pCharacter; 
 	CObject* m_pExitBackGround;
+	CObject* m_pExitTextObject;
 
 	Button_t m_button;
 
@@ -46,7 +48,9 @@ private:
 	D2D1_RECT_F m_peopleIconRect;
 	D2D1_RECT_F m_myNameTextRect;
 	D2D1_RECT_F m_userListRect;
+	D2D1_RECT_F m_exitTextObject;
 	D2D1_RECT_F m_exitOkButtonRect;
+	D2D1_RECT_F m_exitNoButtonRect;
 	
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
