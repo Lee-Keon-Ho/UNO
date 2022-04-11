@@ -39,7 +39,7 @@ CText::CText(WCHAR* _pStr, D2D1_RECT_F _layoutRect, int _fontSize)
 	m_pStr = _pStr;
 	m_size = wcslen(_pStr);
 	m_layoutRect = _layoutRect;
-
+	m_textHeight = 0.0f;
 	m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
 }
 
@@ -62,7 +62,7 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 		CUser* temp = iter.operator*();
 		wchar_t* pStr;
 		int strSize = MultiByteToWideChar(CP_ACP, 0, temp->GetName(), -1, NULL, NULL);
-		pStr = new WCHAR[strSize];
+		pStr = new WCHAR[strSize]; // 수정 : 이 자식을 지워야 한다. 근데 왜? 저걸 켜야?
 		MultiByteToWideChar(CP_ACP, 0, temp->GetName(), strlen(temp->GetName()) + 1, pStr, strSize);
 
 		_pRT->DrawTextW(pStr, wcslen(pStr), m_pWriteTextFormat, 

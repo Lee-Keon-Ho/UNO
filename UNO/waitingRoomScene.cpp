@@ -19,9 +19,7 @@ void CWaitingRoomScene::Awake()
 
 	m_pBackGround = new CObject(sprite[CResourceManager::WAITING_ROOM], pBitmap, m_backGroundRect);
 
-
-
-	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 688.0f, 1280.0f, 720.0f });
+	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 686.0f, 1280.0f, 720.0f });
 }
 
 void CWaitingRoomScene::Start()

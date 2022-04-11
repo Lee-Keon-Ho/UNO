@@ -34,11 +34,14 @@ private:
 	CObject* m_pCharacter; 
 	CObject* m_pExitBackGround;
 	CObject* m_pExitTextObject;
+	CObject* m_pCreateRoomObject;
 
 	Button_t m_button;
 
 	CButton* m_pExitOkButton;
 	CButton* m_pExitNoButton;
+	CButton* m_pCreateOkButton;
+	CButton* m_pCreateNoButton;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_createButtonRect;
@@ -51,7 +54,10 @@ private:
 	D2D1_RECT_F m_exitTextObject;
 	D2D1_RECT_F m_exitOkButtonRect;
 	D2D1_RECT_F m_exitNoButtonRect;
-	
+	D2D1_RECT_F m_createRoomRect;
+	D2D1_RECT_F m_createOkButtonRect;
+	D2D1_RECT_F m_createNoButtonRect;
+
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
 
@@ -65,6 +71,7 @@ private:
 	UserList_t* m_userList;
 
 	bool m_bOnExit;
+	bool m_bOnCreate;
 public:
 	CLobbyScene();
 	~CLobbyScene();

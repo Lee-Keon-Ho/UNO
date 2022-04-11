@@ -59,7 +59,8 @@ bool CGameWnd::LoadBitmapFile()
 											L"PNG\\BUTTON.png",
 											L"PNG\\character.png",
 											L"PNG\\waitingRoom.png",
-											L"PNG\\exit.png"};
+											L"PNG\\exit.png",
+											L"PNG\\Create.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -75,7 +76,10 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\exit_ok2.spr",
 											"Resource\\exit_no2.spr",
 											"Resource\\exitbackground1.spr",
-											"Resource\\exitTextObject1.spr"};
+											"Resource\\exitTextObject1.spr",
+											"Resource\\CreateRoom1.spr",
+											"Resource\\CreateNoButton2.spr",
+											"Resource\\CreateOkButton2.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
