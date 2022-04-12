@@ -27,3 +27,8 @@ void CRoom::SetTarget(D2D1_RECT_F _target)
 	rect.top = rect.top + (51.0f * m_room.number - 1);
 	rect.bottom = rect.bottom + (51.0f * m_room.number - 1);;
 }
+
+void CRoom::SetName(wchar_t* _name)
+{
+	memcpy(m_room.name, _name, wcslen(_name));
+}

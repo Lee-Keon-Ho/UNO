@@ -2,14 +2,15 @@
 #include <string>
 CUser::CUser()
 {
-}
-
-CUser::CUser(char* _name)
-{
-	int len = strlen(_name) + 1;
-	memcpy(m_name, _name, len);
+	memset(m_name, 0, NAME_MAX);
 }
 
 CUser::~CUser()
 {
+}
+
+void CUser::SetName(wchar_t* _name)
+{
+	int len = sizeof(wchar_t) * wcslen(_name);
+	memcpy(m_name, _name, len);
 }

@@ -7,10 +7,10 @@ CText::CText()
 	
 }
 
-CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _height)
+CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color)
 {
 	HRESULT hr;
-	const WCHAR font[] = L"Consolas";
+	const wchar_t font[] = L"Consolas";
 
 	hr = CDirect::GetInstance()->GetWriteFactory()->CreateTextFormat(
 		font, NULL,
@@ -21,13 +21,22 @@ CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _height)
 
 	m_layoutRect = _layoutRect;
 	m_textHeight = _height;
-	m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
+
+	if (_color == 0)
+	{
+		m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
+	}
+	else
+	{
+		m_pBrush = *CResourceManager::GetInstance()->GetBlackBrush();
+	}
+	
 }
 
-CText::CText(WCHAR* _pStr, D2D1_RECT_F _layoutRect, int _fontSize)
+CText::CText(wchar_t* _pStr, D2D1_RECT_F _layoutRect, int _fontSize, int _color)
 {
 	HRESULT hr;
-	const WCHAR font[] = L"Consolas";
+	const wchar_t font[] = L"Consolas";
 
 	hr = CDirect::GetInstance()->GetWriteFactory()->CreateTextFormat(
 		font, NULL,
@@ -59,14 +68,14 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 
 	for (int i = 0; iter != _userList.end(); iter++, i++)
 	{
-		CUser* temp = iter.operator*();
-		wchar_t* pStr;
-		int strSize = MultiByteToWideChar(CP_ACP, 0, temp->GetName(), -1, NULL, NULL);
-		pStr = new WCHAR[strSize]; // 수정 : 이 자식을 지워야 한다. 근데 왜? 저걸 켜야?
-		MultiByteToWideChar(CP_ACP, 0, temp->GetName(), strlen(temp->GetName()) + 1, pStr, strSize);
-
-		_pRT->DrawTextW(pStr, wcslen(pStr), m_pWriteTextFormat, 
+		wchar_t* pStr = iter.operator*()->GetName();
+		_pRT->DrawTextW(pStr, wcslen(pStr), m_pWriteTextFormat,
 			D2D1::Rect(m_layoutRect.left, m_layoutRect.top + (i * m_textHeight),
 				m_layoutRect.right, m_layoutRect.bottom + (i * m_textHeight)), m_pBrush);
 	}
+}
+
+void CText::Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str)
+{
+	_pRT->DrawTextW(_str, wcslen(_str), m_pWriteTextFormat, m_layoutRect, m_pBrush);
 }

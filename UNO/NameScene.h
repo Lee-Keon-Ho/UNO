@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Button.h"
+#include "User.h"
 #include "ResourceManager.h"
 #include <d2d1.h>
  
@@ -31,8 +32,8 @@ private:
 
 	D2D1_RECT_F m_buttonRect;
 
-	char* m_pBuffer;
-	WCHAR* m_pName;
+	CUser* m_pUser;
+	wchar_t* m_pName;
 
 	int m_bufferCount;
 

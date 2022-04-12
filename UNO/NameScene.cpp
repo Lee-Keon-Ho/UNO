@@ -17,7 +17,7 @@ CNameScene::~CNameScene()
 void CNameScene::Awake()
 {
 	HRESULT hr;
-	const WCHAR font[] = L"Consolas";
+	const wchar_t font[] = L"Consolas";
 	const FLOAT fontsize = 15;
 
 	CResourceManager* pRM = CResourceManager::GetInstance();
@@ -44,10 +44,10 @@ void CNameScene::Awake()
 
 	m_pButton = new CButton(sprite[CResourceManager::LOGIN_BUTTON], pBitmap, m_buttonRect);
 
-	m_pName = new WCHAR[MAX_PATH];
-	m_pBuffer = new char[MAX_PATH];
+	m_pUser = new CUser();
+
+	m_pName = new wchar_t[MAX_PATH];
 	memset(m_pName, 0, MAX_PATH);
-	memset(m_pBuffer, 0, MAX_PATH);
 }
 
 void CNameScene::Start()
@@ -64,7 +64,6 @@ void CNameScene::Update()
 
 	if (key >= 'A' && key <= 'z')
 	{
-		m_pBuffer[m_bufferCount] = key;
 		m_pName[m_bufferCount] = key;
 		m_bufferCount++;
 		if (m_bufferCount >= m_nameMAX) m_bufferCount = m_nameMAX;
@@ -73,7 +72,6 @@ void CNameScene::Update()
 	{
 		--m_bufferCount;
 		if(m_bufferCount < 0) m_bufferCount = 0;
-		m_pBuffer[m_bufferCount] = 0;
 		m_pName[m_bufferCount] = 0;
 	}
 
@@ -83,7 +81,8 @@ void CNameScene::Update()
 		if (m_bufferCount > 3)
 		{
 			m_pName[m_bufferCount] = 0;
-			CClient::GetInstance()->Send(m_pBuffer, 1); // 변경 필요
+			m_pUser->SetName(m_pName);
+			CClient::GetInstance()->Send(m_pUser, 1); // 수정 : TYPE
 			CInformation::GetInstance()->SetName(m_pName);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
@@ -108,6 +107,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_pLogin->Render(_pRT, 1.0f);
 	m_pButton->Render(_pRT, 1.0f);
 
+	// 수정
 	_pRT->DrawTextW(m_pName, m_nameMAX, m_pWriteTextFormat, D2D1::Rect(565.0f, 330.0f, 820.0f, 430.0f), m_pBrush);
 
 	_pRT->EndDraw();
@@ -116,8 +116,8 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 void CNameScene::Destroy()
 {
 	m_bufferCount = 0;
-	if (m_pBuffer) { delete[] m_pBuffer; m_pBuffer = nullptr; }
 	if (m_pName) { delete[] m_pName; m_pName = nullptr; }
+	if (m_pUser) { delete m_pUser; m_pUser = nullptr; }
 	if (m_pButton) { delete m_pButton; m_pButton = nullptr; }
 	if (m_pLogin) { delete m_pLogin; m_pLogin = nullptr; }
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }

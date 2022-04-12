@@ -60,15 +60,20 @@ private:
 
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
+	CText* m_pCreateRoomText;
+
+	wchar_t* m_pRoomName;
 
 	int m_pontSize1;
 	int m_pontSize2;
 	int m_textHeight;
-
-	WCHAR* m_pName;
+	int m_roomNameCount;
+	int m_roomNameMax;
+	wchar_t* m_pName;
 	int m_num;
 
 	UserList_t* m_userList;
+	CRoom* m_pRoom; // 2022-04-12 수정필요
 
 	bool m_bOnExit;
 	bool m_bOnCreate;

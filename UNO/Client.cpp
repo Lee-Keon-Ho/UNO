@@ -28,7 +28,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 		unsigned short packetSize = *(unsigned short*)recvBuffer;
 		unsigned short type = *(unsigned short*)(recvBuffer + 2);
 
-		// test중 수정 필수
+		// 수정 : test중
 		if (type == 1)
 		{
 			CInformation::GetInstance()->SetUserList(recvBuffer);
@@ -108,6 +108,28 @@ bool CClient::Send(char* _data, int _type)
 
 	strcpy_s(tempBuffer, strlen(_data) + 1, _data);
 	int len = tempBuffer - sendBuffer + strlen(_data) + 1;
+	int sendSize = send(m_socket, sendBuffer, len, 0);
+	if (sendSize < 0)
+	{
+		return false;
+	}
+}
+
+bool CClient::Send(CUser* _user, int _type)
+{
+	char sendBuffer[MAX];
+	char* tempBuffer = sendBuffer;
+
+	int size = sizeof(CUser);
+
+	*(unsigned short*)tempBuffer = 2 + 2 + size;
+	tempBuffer += sizeof(unsigned short);
+	*(unsigned short*)tempBuffer = _type;
+	tempBuffer += sizeof(unsigned short);
+	
+	memcpy(tempBuffer, _user, sizeof(CUser));
+
+	int len = tempBuffer - sendBuffer + size;
 	int sendSize = send(m_socket, sendBuffer, len, 0);
 	if (sendSize < 0)
 	{

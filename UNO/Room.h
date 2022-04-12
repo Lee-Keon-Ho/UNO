@@ -7,11 +7,11 @@ public:
 	struct Room
 	{
 		int number;
-		char name[64];
+		wchar_t name[32];
 		int playerCount;
 		bool state;
 	};
-public:
+private:
 	Room m_room;
 
 public:
@@ -21,6 +21,7 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 	void SetTarget(D2D1_RECT_F _target);
+	void SetName(wchar_t* _name);
 private:
 };
 
