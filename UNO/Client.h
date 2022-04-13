@@ -11,7 +11,14 @@ private:
 	CClient();
 	~CClient();
 public:
-
+	enum ePacketType
+	{
+		CS_PT_NICKNAME = 1,
+		CS_PT_CREATEROOM,
+		CS_PT_USERLIST,
+		CS_PT_ROOMLIST,
+		CS_PT_MAX
+	};
 private:
 	SOCKET m_socket;
 	HANDLE m_hThread;
@@ -20,8 +27,7 @@ public:
 	bool Initialize(const char* _ip, int _port);
 	void Cleanup();
 
-	bool Send(char* _buffer, int _type);
-	bool Send(CUser* _user, int _type);
+	bool Send(void* _buffer, int _type);
 	SOCKET GetSocket() { return m_socket; }
 public:
 	static CClient* GetInstance();

@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "ResourceManager.h"
 #include "information.h"
+#include "Room.h"
 #include <stdio.h>
 #include <process.h>
 
@@ -23,20 +24,8 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 			closesocket(socket);
 			break;
 		}
-
-		// recvBuffer을 전부 보내고 type은 다른 곳에서 확인하자.
-		unsigned short packetSize = *(unsigned short*)recvBuffer;
-		unsigned short type = *(unsigned short*)(recvBuffer + 2);
-
-		// 수정 : test중
-		if (type == 1)
-		{
-			CInformation::GetInstance()->SetUserList(recvBuffer);
-		}
-		if (type == 3)
-		{
-			CInformation::GetInstance()->SetUserList(recvBuffer);
-		}
+		// 2022-04-13
+		CInformation::GetInstance()->Recv(recvBuffer);
 	}
 	return 0;
 }
@@ -96,38 +85,28 @@ void CClient::Cleanup()
 	WSACleanup();
 }
 
-bool CClient::Send(char* _data, int _type)
+bool CClient::Send(void* _buffer, int _type)
 {
 	char sendBuffer[MAX];
 	char* tempBuffer = sendBuffer;
 
-	*(unsigned short*)tempBuffer = 2 + 2 + strlen(_data) + 1;
-	tempBuffer += sizeof(unsigned short);
-	*(unsigned short*)tempBuffer = _type;
-	tempBuffer += sizeof(unsigned short);
-
-	strcpy_s(tempBuffer, strlen(_data) + 1, _data);
-	int len = tempBuffer - sendBuffer + strlen(_data) + 1;
-	int sendSize = send(m_socket, sendBuffer, len, 0);
-	if (sendSize < 0)
+	int size = 0;
+	switch (_type)
 	{
-		return false;
+	case CS_PT_NICKNAME:
+		size = sizeof(CUser);
+		break;
+	case CS_PT_CREATEROOM:
+		size = wcslen((wchar_t*)_buffer) + 1;
+		break;
 	}
-}
-
-bool CClient::Send(CUser* _user, int _type)
-{
-	char sendBuffer[MAX];
-	char* tempBuffer = sendBuffer;
-
-	int size = sizeof(CUser);
-
+	
 	*(unsigned short*)tempBuffer = 2 + 2 + size;
 	tempBuffer += sizeof(unsigned short);
 	*(unsigned short*)tempBuffer = _type;
 	tempBuffer += sizeof(unsigned short);
 	
-	memcpy(tempBuffer, _user, sizeof(CUser));
+	memcpy(tempBuffer, _buffer, size);
 
 	int len = tempBuffer - sendBuffer + size;
 	int sendSize = send(m_socket, sendBuffer, len, 0);

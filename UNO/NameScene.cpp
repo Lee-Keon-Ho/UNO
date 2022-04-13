@@ -82,7 +82,7 @@ void CNameScene::Update()
 		{
 			m_pName[m_bufferCount] = 0;
 			m_pUser->SetName(m_pName);
-			CClient::GetInstance()->Send(m_pUser, 1); // 수정 : TYPE
+			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_NICKNAME); // 수정 : TYPE
 			CInformation::GetInstance()->SetName(m_pName);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}

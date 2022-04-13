@@ -4,7 +4,7 @@
 class CRoom : public CObject
 {
 public:
-	struct Room
+	struct stRoom
 	{
 		int number;
 		wchar_t name[32];
@@ -12,7 +12,7 @@ public:
 		bool state;
 	};
 private:
-	Room m_room;
+	stRoom m_room;
 
 public:
 	CRoom();

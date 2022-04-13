@@ -39,6 +39,25 @@ void CInformation::Cleanup()
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
 }
 
+void CInformation::Recv(char* _buffer)
+{
+	unsigned short packetSize = *(unsigned short*)_buffer;
+	unsigned short type = *(unsigned short*)(_buffer + 2);
+
+	switch (type)
+	{
+	case CS_PT_NICKNAME:
+		SetUserList(_buffer);
+		break;
+	case CS_PT_CREATEROOM:
+		SetRoomList(_buffer);
+		break;
+	case CS_PT_USERLIST:
+		SetUserList(_buffer);
+		break;
+	}
+}
+
 void CInformation::SetName(const WCHAR* _name)
 {
 	memset(m_pMyName, 0, MAX);
@@ -49,12 +68,17 @@ void CInformation::SetName(const WCHAR* _name)
 void CInformation::SetUserList(char* _user)
 {
 	unsigned short packetSize = *(unsigned short*)_user;
-	unsigned short type = *(unsigned short*)(_user + 2);
 	char* tempBuffer = _user + 4;
 
 	int size = sizeof(CUser);
 	int count = 0;
 
+	// 2022-04-13 요청 받을 때 마다 delete를 하면 안좋은데...
+	UserList_t::iterator iter = m_userList.begin();
+	for (; iter != m_userList.end(); iter++)
+	{
+		delete *iter;
+	}
 	m_userList.clear(); //
 
 	while (count < packetSize - 4)
@@ -68,4 +92,10 @@ void CInformation::SetUserList(char* _user)
 
 		m_userList.push_back(temp);
 	}
+}
+
+// 2022-04-13 여기부터 진행
+void CInformation::SetRoomList(char* _room)
+{
+	
 }

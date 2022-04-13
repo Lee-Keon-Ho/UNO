@@ -131,7 +131,7 @@ void CLobbyScene::Update()
 			if (m_roomNameCount >= 4)
 			{
 				m_pCreateOkButton->OnButtonDown();
-				m_pRoom->SetName(m_pRoomName);
+				CClient::GetInstance()->Send(m_pRoomName, 2);
 				CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 			}
 		}
