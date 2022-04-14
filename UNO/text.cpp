@@ -75,6 +75,45 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 	}
 }
 
+void CText::Render(ID2D1HwndRenderTarget* _pRT, RoomList_t _roomList) 
+{
+	// 2022-04-14 수정
+	RoomList_t::iterator iter = _roomList.begin();
+	D2D1_RECT_F num = { 222, m_layoutRect.top, 300.0f, m_layoutRect.bottom };
+	D2D1_RECT_F playercountrect = { 605.0f , m_layoutRect.top, 700.0f, m_layoutRect.bottom };
+	D2D1_RECT_F play = { 767.0f , m_layoutRect.top, 900.0f, m_layoutRect.bottom };
+	for (int i = 0; iter != _roomList.end(); iter++, i++)
+	{
+		wchar_t number[4];
+		wchar_t temp[10] = L" / 5";
+		wchar_t playercount[10];
+		CRoom::stROOM* pRoom = iter.operator*()->GetRoom();
+		_itow_s(pRoom->number, number, 10);
+		_itow_s(pRoom->playerCount, playercount, 10);
+		wcscat_s(playercount, temp);
+
+		_pRT->DrawTextW(number, wcslen(number) + 1, m_pWriteTextFormat,
+			num, m_pBrush);
+
+		_pRT->DrawTextW(pRoom->name, wcslen(pRoom->name), m_pWriteTextFormat,
+			m_layoutRect, m_pBrush);
+		
+		_pRT->DrawTextW(playercount, wcslen(playercount) + 1, m_pWriteTextFormat,
+			playercountrect, m_pBrush);
+
+		if (pRoom->state)
+		{
+			_pRT->DrawTextW(L"대기중", wcslen(L"대기중") + 1, m_pWriteTextFormat,
+				play, m_pBrush);
+		}
+		else
+		{
+			_pRT->DrawTextW(L"게임중", wcslen(L"게임중") + 1, m_pWriteTextFormat,
+				play, m_pBrush);
+		}
+	}
+}
+
 void CText::Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str)
 {
 	_pRT->DrawTextW(_str, wcslen(_str), m_pWriteTextFormat, m_layoutRect, m_pBrush);

@@ -32,11 +32,12 @@ public:
 	void Cleanup();
 
 	void Recv(char* _buffer);
-	void SetName(const wchar_t* _name);
-	void SetUserList(char* _user);
-	void SetRoomList(char* _room);
+	void SetName(const wchar_t* _buffer);
+	void SetUserList(char* _buffer);
+	void SetRoomList(char* _buffer);
 	wchar_t* GetName() { return m_pMyName; }
 	UserList_t* GetUserList() { return &m_userList; }
+	RoomList_t* GetRoomList() { return &m_roomList; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

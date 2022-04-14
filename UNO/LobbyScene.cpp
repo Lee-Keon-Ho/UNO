@@ -6,14 +6,17 @@
 #include <ctime>
 #include <string>
 
+#define ROOM_NAME_MAX_SIZE 64
+
 CLobbyScene::CLobbyScene()
 	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 386.0f, 230.0f, 558.0f, 303.0f }),
 	m_quickButtonRect({ 558.0f, 230.0f, 728.0f, 303.0f }), m_chooseButtonRect({ 728.0f, 230.0f, 900.0f, 303.0f }),
 	m_exitButtonRect({ 1160.0f, 665.0f, 1260.0f, 705.f }), m_peopleIconRect({ 980.0f, 85.0f, 1050.0f, 155.0f }),
 	m_myNameTextRect({ 1070.0f, 100.0f, 1250.0f, 200.0f }), m_userListRect({ 920.0f, 270.0f, 1250.0f, 300.0f }),
 	m_exitTextObject({ 421.0f, 250.0f, 858.0f, 405.0f }), m_exitOkButtonRect({ 639.0f, 405.0f, 858.0f, 469.0f }),
-	m_exitNoButtonRect({ 420.0f, 405.0f, 639.0f, 469.0f }), m_createRoomRect({426.0f, 250.0f, 854.0f, 470.f}),
-	m_createOkButtonRect({ 588.0f,412.0f, 692.0f, 452.0f }), m_createNoButtonRect({820.0f, 264.0f, 836.0f, 280.0f}),
+	m_exitNoButtonRect({ 420.0f, 405.0f, 639.0f, 469.0f }), m_createRoomRect({ 426.0f, 250.0f, 854.0f, 470.f }),
+	m_createOkButtonRect({ 588.0f,412.0f, 692.0f, 452.0f }), m_createNoButtonRect({ 820.0f, 264.0f, 836.0f, 280.0f }),
+	m_createRoomTextRect({ 538.0f, 331.0f, 884.0f, 370.f }), m_roomListRect({350.0f, 347.0f, 700.0f, 500.0f}),
 	m_pontSize1(30), m_pontSize2(15), m_textHeight(25), m_bOnExit(false), m_bOnCreate(false),
 	m_roomNameCount(0), m_roomNameMax(24)
 {
@@ -43,6 +46,11 @@ void CLobbyScene::Awake()
 
 	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight, 0);
 
+	// 2022-04-14
+	m_pRoomListText = new CText(m_roomListRect, m_pontSize2, m_textHeight, 1);
+
+	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, 1);
+
 	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
 	m_pExitBackGround = new CObject(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_backGroundRect);
@@ -67,11 +75,11 @@ void CLobbyScene::Awake()
 	m_userList = CInformation::GetInstance()->GetUserList();
 	m_pName = CInformation::GetInstance()->GetName();
 
-	// 2022-04-12 test중 수정필요
-	m_pRoom = new CRoom();
-	m_pRoomName = new wchar_t[64];
-	memset(m_pRoomName, 0, sizeof(wchar_t) * 64);
-	m_pCreateRoomText = new CText({ 538.0f, 331.0f, 884.0f, 370.f }, 15, 0, 1);
+	m_pRoomName = new wchar_t[ROOM_NAME_MAX_SIZE];
+	memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
+
+	m_userList = CInformation::GetInstance()->GetUserList();
+	m_roomList = CInformation::GetInstance()->GetRoomList();
 }
 
 void CLobbyScene::Start()
@@ -131,7 +139,7 @@ void CLobbyScene::Update()
 			if (m_roomNameCount >= 4)
 			{
 				m_pCreateOkButton->OnButtonDown();
-				CClient::GetInstance()->Send(m_pRoomName, 2);
+				CClient::GetInstance()->Send(m_pRoomName, CClient::CS_PT_CREATEROOM);
 				CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 			}
 		}
@@ -142,15 +150,20 @@ void CLobbyScene::Update()
 				m_pCreateOkButton->OnButtonDown();
 				if (m_roomNameCount >= 4)
 				{
-					m_pRoom->SetName(m_pRoomName);
+					CClient::GetInstance()->Send(m_pRoomName, CClient::CS_PT_CREATEROOM);
 					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 				}
 			}
 			if (m_pCreateNoButton->OnButton(mouse))
 			{
-				memset(m_pRoomName, 0, sizeof(wchar_t) * 64);
+				memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
 				m_bOnCreate = false;
 			}
+		}
+		if (key == VK_END)
+		{
+			memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
+			m_bOnCreate = false;
 		}
 	}
 	else
@@ -175,13 +188,15 @@ void CLobbyScene::Update()
 		}
 	}
 
+	// roomList 갱신 추가
 	if (pTimer->GetTime() == 10)
 	{
 		char buffer[] = "UserList";
 		CClient::GetInstance()->Send(buffer, 3);
 		pTimer->ResetTimer();
+		m_userList = CInformation::GetInstance()->GetUserList();
+		m_roomList = CInformation::GetInstance()->GetRoomList();
 	}
-	m_userList = CInformation::GetInstance()->GetUserList();
 }
 
 void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -204,6 +219,8 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pUserListText->Render(_pRT, *m_userList);
 	
+	m_pRoomListText->Render(_pRT, *m_roomList);
+
 	if (m_bOnExit)
 	{
 		m_pExitBackGround->Render(_pRT, 0.5f);
@@ -227,22 +244,28 @@ void CLobbyScene::Destroy()
 	if (m_pCharacter) { delete m_pCharacter; m_pCharacter = nullptr; }
 	if (m_pExitNoButton) { delete m_pExitNoButton; m_pExitNoButton = nullptr; }
 	if (m_pExitOkButton) { delete m_pExitOkButton; m_pExitOkButton = nullptr; }
+	if (m_pCreateRoomText) { delete m_pCreateRoomText; m_pCreateRoomText = nullptr; }
+	if (m_pRoomName) { delete m_pRoomName; m_pRoomName = nullptr; }
+	
+
+
 	Button_t::iterator iter = m_button.begin();
 	for (; iter != m_button.end(); iter++)
 	{
 		if (*iter) { delete* iter; *iter = nullptr; }
 	}
 	m_button.clear();
+
 	if (m_pCreateRoomObject) { delete m_pCreateRoomObject; m_pCreateRoomObject = nullptr; }
 	if (m_pExitTextObject) { delete m_pExitTextObject; m_pExitTextObject = nullptr; }
 	if (m_pExitBackGround) { delete m_pExitBackGround; m_pExitBackGround = nullptr; }
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }
+	if (m_pCreateRoomText) { delete m_pCreateRoomText; m_pCreateRoomText = nullptr; }
+	if (m_pRoomListText) { delete m_pRoomListText; m_pRoomListText = nullptr; }
 	if (m_pUserListText) { delete m_pUserListText; m_pUserListText = nullptr; }
 	if (m_pMyNameText) { delete m_pMyNameText; m_pMyNameText = nullptr; }
 
-	// 2022-04-12 test 수정필요
 	m_bOnCreate = false;
 	m_bOnExit = false;
 	m_roomNameCount = 0;
-	if (m_pRoomName) { delete m_pRoomName; m_pRoomName = nullptr; }
 }

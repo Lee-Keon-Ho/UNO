@@ -97,7 +97,11 @@ bool CClient::Send(void* _buffer, int _type)
 		size = sizeof(CUser);
 		break;
 	case CS_PT_CREATEROOM:
-		size = wcslen((wchar_t*)_buffer) + 1;
+		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 1;
+		break;
+	case CS_PT_USERLIST:
+		break;
+	case CS_PT_ROOMLIST:
 		break;
 	}
 	

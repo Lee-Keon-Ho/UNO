@@ -5,12 +5,6 @@ CRoom::CRoom()
 
 }
 
-CRoom::CRoom(spriteList_t _sprite, ID2D1Bitmap* _bitmap)
-{
-	m_sprite = _sprite;
-	m_bitmap = _bitmap;
-}
-
 CRoom::~CRoom()
 {
 	
@@ -26,9 +20,4 @@ void CRoom::SetTarget(D2D1_RECT_F _target)
 	D2D1_RECT_F rect = _target;
 	rect.top = rect.top + (51.0f * m_room.number - 1);
 	rect.bottom = rect.bottom + (51.0f * m_room.number - 1);;
-}
-
-void CRoom::SetName(wchar_t* _name)
-{
-	memcpy(m_room.name, _name, wcslen(_name));
 }

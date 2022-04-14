@@ -41,7 +41,6 @@ void CInformation::Cleanup()
 
 void CInformation::Recv(char* _buffer)
 {
-	unsigned short packetSize = *(unsigned short*)_buffer;
 	unsigned short type = *(unsigned short*)(_buffer + 2);
 
 	switch (type)
@@ -55,20 +54,23 @@ void CInformation::Recv(char* _buffer)
 	case CS_PT_USERLIST:
 		SetUserList(_buffer);
 		break;
+	case CS_PT_ROOMLIST:
+		SetRoomList(_buffer);
+		break;
 	}
 }
 
-void CInformation::SetName(const WCHAR* _name)
+void CInformation::SetName(const WCHAR* _buffer)
 {
 	memset(m_pMyName, 0, MAX);
-	int len = wcslen(_name) * sizeof(WCHAR);
-	memcpy(m_pMyName, _name, len);
+	int len = wcslen(_buffer) * sizeof(WCHAR);
+	memcpy(m_pMyName, _buffer, len);
 }
 
-void CInformation::SetUserList(char* _user)
+void CInformation::SetUserList(char* _buffer)
 {
-	unsigned short packetSize = *(unsigned short*)_user;
-	char* tempBuffer = _user + 4;
+	unsigned short packetSize = *(unsigned short*)_buffer;
+	char* tempBuffer = _buffer + 4;
 
 	int size = sizeof(CUser);
 	int count = 0;
@@ -80,8 +82,9 @@ void CInformation::SetUserList(char* _user)
 		delete *iter;
 	}
 	m_userList.clear(); //
+	packetSize -= 4;
 
-	while (count < packetSize - 4)
+	while (count < packetSize)
 	{
 		CUser* temp = new CUser();
 
@@ -94,8 +97,31 @@ void CInformation::SetUserList(char* _user)
 	}
 }
 
-// 2022-04-13 여기부터 진행
-void CInformation::SetRoomList(char* _room)
+void CInformation::SetRoomList(char* _buffer)
 {
-	
+	unsigned short packetSize = *(unsigned short*)_buffer;
+	char* tempBuffer = _buffer + 4;
+
+	int size = sizeof(CRoom);
+	int count = 0;
+
+	RoomList_t::iterator iter = m_roomList.begin();
+	for (; iter != m_roomList.end(); iter++)
+	{
+		delete* iter;
+	}
+	m_roomList.clear();
+
+	packetSize -= 4;
+	while (count < packetSize)
+	{
+		CRoom* temp = new CRoom();
+
+		memcpy(temp, tempBuffer, size);
+
+		tempBuffer += size;
+		count += size;
+
+		m_roomList.push_back(temp);
+	}
 }

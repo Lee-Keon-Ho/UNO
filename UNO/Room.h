@@ -1,10 +1,10 @@
 #pragma once
 #include "Object.h"
 
-class CRoom : public CObject
+class CRoom
 {
 public:
-	struct stRoom
+	struct stROOM
 	{
 		int number;
 		wchar_t name[32];
@@ -12,16 +12,15 @@ public:
 		bool state;
 	};
 private:
-	stRoom m_room;
+	stROOM m_room;
 
 public:
 	CRoom();
-	CRoom(spriteList_t _sprite, ID2D1Bitmap* _bitmap);
 	~CRoom();
 
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 	void SetTarget(D2D1_RECT_F _target);
-	void SetName(wchar_t* _name);
+	stROOM* GetRoom() { return &m_room; }
 private:
 };
 

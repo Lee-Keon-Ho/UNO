@@ -15,7 +15,7 @@ public:
 	typedef CResourceManager::eBitmap bitmap_t;
 	typedef std::vector<CButton*> Button_t;
 	typedef std::list<CUser*> UserList_t;
-	typedef std::list<CRoom*> RoomList;
+	typedef std::list<CRoom*> RoomList_t;
 
 	enum eButton
 	{
@@ -57,10 +57,13 @@ private:
 	D2D1_RECT_F m_createRoomRect;
 	D2D1_RECT_F m_createOkButtonRect;
 	D2D1_RECT_F m_createNoButtonRect;
+	D2D1_RECT_F m_createRoomTextRect;
+	D2D1_RECT_F m_roomListRect;
 
 	CText* m_pMyNameText;
 	CText* m_pUserListText;
 	CText* m_pCreateRoomText;
+	CText* m_pRoomListText;
 
 	wchar_t* m_pRoomName;
 
@@ -73,7 +76,7 @@ private:
 	int m_num;
 
 	UserList_t* m_userList;
-	CRoom* m_pRoom; // 2022-04-12 수정필요
+	RoomList_t* m_roomList;
 
 	bool m_bOnExit;
 	bool m_bOnCreate;
