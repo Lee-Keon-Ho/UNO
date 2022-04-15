@@ -7,7 +7,7 @@
 
 #pragma comment( lib, "ws2_32.lib")
 
-#define MAX 255
+#define MAX 10000
 
 unsigned int __stdcall ThreadFunc(void* _pArgs)
 {
@@ -97,11 +97,13 @@ bool CClient::Send(void* _buffer, int _type)
 		size = sizeof(CUser);
 		break;
 	case CS_PT_CREATEROOM:
-		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 1;
+		size = sizeof(CRoom);
 		break;
 	case CS_PT_USERLIST:
 		break;
 	case CS_PT_ROOMLIST:
+		break;
+	case CS_PT_DESTROYROOM:
 		break;
 	}
 	

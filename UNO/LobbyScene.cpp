@@ -6,7 +6,7 @@
 #include <ctime>
 #include <string>
 
-#define ROOM_NAME_MAX_SIZE 64
+#define ROOM_NAME_MAX_SIZE 128
 
 CLobbyScene::CLobbyScene()
 	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 386.0f, 230.0f, 558.0f, 303.0f }),
@@ -41,6 +41,8 @@ void CLobbyScene::Awake()
 	ID2D1Bitmap* pExitBitmap = pRM->GetBitmap(bitmap_t::EXIT);
 	ID2D1Bitmap* pCreateRoomBitmap = pRM->GetBitmap(bitmap_t::CREATE);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
+
+	m_pRoom = new CRoom();
 
 	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1, 1);
 
@@ -80,6 +82,10 @@ void CLobbyScene::Awake()
 
 	m_userList = CInformation::GetInstance()->GetUserList();
 	m_roomList = CInformation::GetInstance()->GetRoomList();
+
+
+	// 2022-04-15 수정 : test
+	test = new CObject(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, { 161.0f, 334.0f, 882.0f, 380.0f });
 }
 
 void CLobbyScene::Start()
@@ -136,10 +142,11 @@ void CLobbyScene::Update()
 		}
 		if (key == VK_RETURN)
 		{
+			m_pCreateOkButton->OnButtonDown();
 			if (m_roomNameCount >= 4)
 			{
-				m_pCreateOkButton->OnButtonDown();
-				CClient::GetInstance()->Send(m_pRoomName, CClient::CS_PT_CREATEROOM);
+				m_pRoom->SetRoom(m_pRoomName);
+				CClient::GetInstance()->Send(m_pRoom, CClient::CS_PT_CREATEROOM);
 				CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 			}
 		}
@@ -150,7 +157,8 @@ void CLobbyScene::Update()
 				m_pCreateOkButton->OnButtonDown();
 				if (m_roomNameCount >= 4)
 				{
-					CClient::GetInstance()->Send(m_pRoomName, CClient::CS_PT_CREATEROOM);
+					m_pRoom->SetRoom(m_pRoomName);
+					CClient::GetInstance()->Send(m_pRoom, CClient::CS_PT_CREATEROOM);
 					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 				}
 			}
@@ -188,11 +196,14 @@ void CLobbyScene::Update()
 		}
 	}
 
-	// roomList 갱신 추가
-	if (pTimer->GetTime() == 10)
+	// 가장 단순한 방법으로 render에서 요청을 하면된다...
+	if (pTimer->GetTime() == 5)
 	{
-		char buffer[] = "UserList";
-		CClient::GetInstance()->Send(buffer, 3);
+		char buffer[] = "List";
+		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);
+		// 2022-04-15 이건 진짜 아닌데... 허허
+		Sleep(100);
+		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
 		m_userList = CInformation::GetInstance()->GetUserList();
 		m_roomList = CInformation::GetInstance()->GetRoomList();
@@ -236,6 +247,10 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pCreateNoButton->Render(_pRT, 1.0f);
 		m_pCreateRoomText->Render(_pRT, m_pRoomName);
 	}
+
+	// 2022-04-15 test
+	test->Render(_pRT, 0.5f);
+
 	_pRT->EndDraw();
 }
 
@@ -264,6 +279,7 @@ void CLobbyScene::Destroy()
 	if (m_pRoomListText) { delete m_pRoomListText; m_pRoomListText = nullptr; }
 	if (m_pUserListText) { delete m_pUserListText; m_pUserListText = nullptr; }
 	if (m_pMyNameText) { delete m_pMyNameText; m_pMyNameText = nullptr; }
+	if (m_pRoom) { delete m_pRoom; m_pRoom = nullptr; }
 
 	m_bOnCreate = false;
 	m_bOnExit = false;

@@ -66,7 +66,7 @@ void CNameScene::Update()
 	{
 		m_pName[m_bufferCount] = key;
 		m_bufferCount++;
-		if (m_bufferCount >= m_nameMAX) m_bufferCount = m_nameMAX;
+		if (m_bufferCount > m_nameMAX) m_bufferCount = m_nameMAX;
 	}
 	if (key == VK_BACK)
 	{
@@ -83,6 +83,7 @@ void CNameScene::Update()
 			m_pName[m_bufferCount] = 0;
 			m_pUser->SetName(m_pName);
 			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_NICKNAME);
+			Sleep(100);
 			//2022-04-14 ¼öÁ¤ : test
 			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_ROOMLIST);
 			CInformation::GetInstance()->SetName(m_pName);

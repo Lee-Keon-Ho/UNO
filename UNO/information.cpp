@@ -60,7 +60,7 @@ void CInformation::Recv(char* _buffer)
 	}
 }
 
-void CInformation::SetName(const WCHAR* _buffer)
+void CInformation::SetName(const wchar_t* _buffer)
 {
 	memset(m_pMyName, 0, MAX);
 	int len = wcslen(_buffer) * sizeof(WCHAR);

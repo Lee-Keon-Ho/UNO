@@ -1,3 +1,4 @@
+#include "Client.h"
 #include "waitingRoomScene.h"
 #include "Input.h"
 #include "SceneManager.h"
@@ -38,7 +39,9 @@ void CWaitingRoomScene::Update()
 	{
 		if (m_pExitButton->OnButton(mouse))
 		{
+			char buffer[] = "destroy";
 			m_pExitButton->OnButtonUp();
+			CClient::GetInstance()->Send(buffer, CClient::CS_PT_DESTROYROOM);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}

@@ -15,6 +15,7 @@ public:
 		CS_PT_CREATEROOM,
 		CS_PT_USERLIST,
 		CS_PT_ROOMLIST,
+		CS_PT_DESTROYROOM,
 		CS_PT_MAX
 	};
 
@@ -26,6 +27,7 @@ private:
 	wchar_t* m_pMyName;
 
 	UserList_t m_userList;
+	UserList_t m_currentUserList;
 	RoomList_t m_roomList;
 public:
 	bool Initalize();

@@ -7,7 +7,7 @@ public:
 	struct stROOM
 	{
 		int number;
-		wchar_t name[32];
+		wchar_t name[64];
 		int playerCount;
 		bool state;
 	};
@@ -18,8 +18,7 @@ public:
 	CRoom();
 	~CRoom();
 
-	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
-	void SetTarget(D2D1_RECT_F _target);
+	void SetRoom(wchar_t* _name);
 	stROOM* GetRoom() { return &m_room; }
 private:
 };

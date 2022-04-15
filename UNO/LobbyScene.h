@@ -80,6 +80,11 @@ private:
 
 	bool m_bOnExit;
 	bool m_bOnCreate;
+
+	CRoom* m_pRoom;
+
+	//2022-04-15 ¼öÁ¤ : test
+	CObject* test;
 public:
 	CLobbyScene();
 	~CLobbyScene();
