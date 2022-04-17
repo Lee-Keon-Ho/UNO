@@ -71,6 +71,7 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 		for (int i = 0; iter != _userList.end(); iter++, i++)
 		{
 			wchar_t* pStr = iter.operator*()->GetName();
+			//wchar_t* pStr = (*iter)->GetName();
 			_pRT->DrawTextW(pStr, wcslen(pStr), m_pWriteTextFormat,
 				D2D1::Rect(m_layoutRect.left, m_layoutRect.top + (i * m_textHeight),
 					m_layoutRect.right, m_layoutRect.bottom + (i * m_textHeight)), m_pBrush);

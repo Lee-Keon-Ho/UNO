@@ -196,7 +196,6 @@ void CLobbyScene::Update()
 		}
 	}
 
-	// 가장 단순한 방법으로 render에서 요청을 하면된다...
 	if (pTimer->GetTime() == 5)
 	{
 		char buffer[] = "List";
@@ -249,7 +248,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	}
 
 	// 2022-04-15 test
-	test->Render(_pRT, 0.5f);
+	//test->Render(_pRT, 0.5f);
 
 	_pRT->EndDraw();
 }

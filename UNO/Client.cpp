@@ -14,11 +14,11 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 	SOCKET socket = *(SOCKET*)_pArgs;
 	int recvSize = 0;
 	
-
+	// 2022-04-16 완전 수정 : 이거 해결못하면 다른건 손대지 마라!
 	while (1)
 	{
 		char recvBuffer[MAX];
-		recvSize = recv(socket, recvBuffer, MAX, 0);
+		recvSize = recv(socket, recvBuffer, MAX, 0); // -------|====   =====
 		if (recvSize <= 0)
 		{
 			closesocket(socket);
@@ -40,6 +40,7 @@ CClient* CClient::GetInstance()
 
 void CClient::DeleteInstance()
 {
+	// 2022-04-16 정신 차례...
 }
 
 CClient::CClient()

@@ -99,6 +99,7 @@ void CInformation::SetUserList(char* _buffer)
 
 void CInformation::SetRoomList(char* _buffer)
 {
+	// 2022-04-16 수정 : 수업중 말씀해주신 방향으로 생각해서.
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 
