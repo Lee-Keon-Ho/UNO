@@ -39,6 +39,13 @@ private:
 
 	Button_t m_button;
 
+	// 2022-04-18 test
+	Button_t m_roomListButton;
+	int m_count = 0;
+	int m_roomCount = 0;
+	//
+
+
 	CButton* m_pExitOkButton;
 	CButton* m_pExitNoButton;
 	CButton* m_pCreateOkButton;
@@ -84,9 +91,7 @@ private:
 	bool m_bOnRoom;
 
 	CRoom* m_pRoom;
-
-	//2022-04-15 ¼öÁ¤ : test
-	CButton* m_test;
+	
 public:
 	CLobbyScene();
 	~CLobbyScene();

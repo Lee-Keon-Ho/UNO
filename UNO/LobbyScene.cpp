@@ -44,14 +44,13 @@ void CLobbyScene::Awake()
 
 	m_pRoom = new CRoom();
 
-	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1, 1);
+	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1, CText::T_BLACK);
 
-	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight, 0);
+	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight, CText::T_WHITE);
 
-	// 2022-04-14
-	m_pRoomListText = new CText(m_roomListRect, m_pontSize2, m_textHeight, 1);
+	m_pRoomListText = new CText(m_roomListRect, m_pontSize2, m_textHeight, CText::T_BLACK);
 
-	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, 1);
+	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, CText::T_BLACK);
 
 	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
@@ -65,6 +64,13 @@ void CLobbyScene::Awake()
 	m_button.push_back(new CButton(sprite[CResourceManager::QUICK_BUTTON], pButtonBitmap, m_quickButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::CHOOSE_BUTTON], pButtonBitmap, m_chooseButtonRect));
 	m_button.push_back(new CButton(sprite[CResourceManager::LOBYY_EXIT_BUTTON], pButtonBitmap, m_exitButtonRect));
+
+	// 2022-04-18 수정 : test
+	m_roomListButton.reserve(8);
+	for (int i = 0; i < 8; i++)
+	{
+		m_roomListButton.push_back(new CButton(sprite[CResourceManager::ROOM_LIST_BUTTON], pExitBitmap, { 161.0f, 334.0f + (47 * i), 882.0f, 380.0f + (47 * i) }));
+	}
 
 	m_pExitOkButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_OK], pButtonBitmap, m_exitOkButtonRect);
 	m_pExitNoButton = new CButton(sprite[CResourceManager::EXIT_BUTTON_NO], pButtonBitmap, m_exitNoButtonRect);
@@ -83,10 +89,10 @@ void CLobbyScene::Awake()
 	m_userList = CInformation::GetInstance()->GetUserList();
 	m_roomList = CInformation::GetInstance()->GetRoomList();
 
+	CTimer::GetInstance()->ResetTimer(); // 타이머 초기화
 
-	// 2022-04-15 수정 : test
-	m_test = new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, { 161.0f, 334.0f, 882.0f, 380.0f });
-	CTimer::GetInstance()->ResetTimer();
+	// 2022-04-18 수정 : roomList test
+	m_roomCount = m_roomList.size();
 }
 
 void CLobbyScene::Start()
@@ -195,12 +201,17 @@ void CLobbyScene::Update()
 				}
 			}
 
-			//test
-			if (m_test->OnButton(mouse))
+			// 2022-04-18 수정 : test
+			for (int i = 0; i < m_roomCount; i++)
 			{
-				m_bOnRoom = true;
+				if (m_roomListButton[i]->OnButton(mouse))
+				{
+					m_count = i;
+					m_bOnRoom = true;
+					break;
+				}
+				else m_bOnRoom = false;
 			}
-			else m_bOnRoom = false;
 		}
 	}
 
@@ -212,6 +223,7 @@ void CLobbyScene::Update()
 		pTimer->ResetTimer();
 		m_userList = CInformation::GetInstance()->GetUserList();
 		m_roomList = CInformation::GetInstance()->GetRoomList();
+		m_roomCount = m_roomList.size();
 	}
 }
 
@@ -255,7 +267,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	// 2022-04-15 test
 	if (m_bOnRoom)
 	{
-		m_test->Render(_pRT, 1.0f);
+		m_roomListButton[m_count]->Render(_pRT, 0.5f);
 	}
 
 	_pRT->EndDraw();

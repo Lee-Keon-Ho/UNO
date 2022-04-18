@@ -11,6 +11,12 @@ class CText : public CObject
 public:
 	typedef std::list<CUser*> UserList_t;
 	typedef std::vector<CRoom::stROOM> Room_t;
+
+	enum eTEXT_COLOR
+	{
+		T_WHITE = 0,
+		T_BLACK
+	};
 private:
 	IDWriteTextFormat* m_pWriteTextFormat;
 	ID2D1SolidColorBrush* m_pBrush;

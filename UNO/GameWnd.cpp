@@ -79,7 +79,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\exitTextObject1.spr",
 											"Resource\\CreateRoom1.spr",
 											"Resource\\CreateNoButton2.spr",
-											"Resource\\CreateOkButton2.spr"};
+											"Resource\\CreateOkButton2.spr",
+											"Resource\\roomListButton2.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
