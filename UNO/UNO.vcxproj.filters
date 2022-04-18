@@ -57,7 +57,7 @@
     <ClCompile Include="FPS.cpp">
       <Filter>소스 파일\utill</Filter>
     </ClCompile>
-    <ClCompile Include="NameScene.cpp">
+    <ClCompile Include="LoginScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="LobbyScene.cpp">
@@ -125,7 +125,7 @@
     <ClInclude Include="FPS.h">
       <Filter>소스 파일\utill</Filter>
     </ClInclude>
-    <ClInclude Include="NameScene.h">
+    <ClInclude Include="LoginScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="LobbyScene.h">

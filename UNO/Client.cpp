@@ -12,20 +12,34 @@
 unsigned int __stdcall ThreadFunc(void* _pArgs)
 {
 	SOCKET socket = *(SOCKET*)_pArgs;
-	int recvSize = 0;
-	
+	char recvBuffer[MAX];
+	int recvedSize = 0;
 	// 2022-04-16 완전 수정 : 이거 해결못하면 다른건 손대지 마라!
+	// 2022-04-18 test
 	while (1)
 	{
-		char recvBuffer[MAX];
-		recvSize = recv(socket, recvBuffer, MAX, 0); // -------|====   =====
-		if (recvSize <= 0)
+		int recvLen = 0;
+		recvLen = recv(socket, recvBuffer + recvedSize, MAX - recvedSize, 0);
+		if (recvLen < 1)	break;
+
+		recvedSize += recvLen;
+
+		if (recvedSize < 2)	break;
+
+		unsigned short packetSize = *(unsigned short*)recvBuffer;
+		unsigned short type = *(unsigned short*)(recvBuffer + 2);
+
+		while (recvedSize >= packetSize)
 		{
-			closesocket(socket);
-			break;
+			CInformation::GetInstance()->HandlePacket(recvBuffer);
+			recvedSize -= packetSize;
+			if (recvedSize > 0)
+			{
+				memcpy(recvBuffer, recvBuffer + packetSize, recvedSize);
+				packetSize = *(unsigned short*)recvBuffer;
+				type = *(unsigned short*)(recvBuffer + 2);
+			}
 		}
-		// 2022-04-13
-		CInformation::GetInstance()->Recv(recvBuffer);
 	}
 	return 0;
 }
@@ -40,7 +54,7 @@ CClient* CClient::GetInstance()
 
 void CClient::DeleteInstance()
 {
-	// 2022-04-16 정신 차례...
+	if (pInstance) { delete pInstance; pInstance = nullptr; }
 }
 
 CClient::CClient()
@@ -49,6 +63,7 @@ CClient::CClient()
 
 CClient::~CClient()
 {
+	Cleanup();
 }
 
 
@@ -82,6 +97,7 @@ bool CClient::Initialize(const char* _ip, int _port)
 
 void CClient::Cleanup()
 {
+	CloseHandle(m_hThread);
 	closesocket(m_socket);
 	WSACleanup();
 }
@@ -94,7 +110,7 @@ bool CClient::Send(void* _buffer, int _type)
 	int size = 0;
 	switch (_type)
 	{
-	case CS_PT_NICKNAME:
+	case CS_PT_LOGIN:
 		size = sizeof(CUser);
 		break;
 	case CS_PT_CREATEROOM:

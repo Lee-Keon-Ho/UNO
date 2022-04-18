@@ -79,12 +79,12 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList)
 	}
 }
 
-void CText::Render(ID2D1HwndRenderTarget* _pRT, RoomList_t _roomList) 
+void CText::Render(ID2D1HwndRenderTarget* _pRT, Room_t _roomList)
 {
 	// 2022-04-15 수정 : test중
 	if (_roomList.size() > 0)// 721
 	{
-		RoomList_t::iterator iter = _roomList.begin();
+		Room_t::iterator iter = _roomList.begin();
 		D2D1_RECT_F name = { 350.0f, m_layoutRect.top, 500.0f, m_layoutRect.bottom };
 		D2D1_RECT_F num = { 222.0f, m_layoutRect.top, 300.0f, m_layoutRect.bottom };
 		D2D1_RECT_F playercountrect = { 605.0f , m_layoutRect.top, 700.0f, m_layoutRect.bottom };
@@ -94,34 +94,34 @@ void CText::Render(ID2D1HwndRenderTarget* _pRT, RoomList_t _roomList)
 			wchar_t number[4];
 			wchar_t temp[10] = L" / 5";
 			wchar_t playercount[32];
-			CRoom::stROOM* pRoom = iter.operator*()->GetRoom();
-			_itow_s(pRoom->number, number, 10);
-			_itow_s(pRoom->playerCount, playercount, 10);
+			CRoom::stROOM pRoom = *iter;
+			_itow_s(pRoom.number, number, 10);
+			_itow_s(pRoom.playerCount, playercount, 10);
 			wcscat_s(playercount, temp);
 
 			_pRT->DrawTextW(number, wcslen(number) + 1, m_pWriteTextFormat,
-				D2D1::Rect(num.left, num.top + (46 * (pRoom->number - 1)),
-					num.right, num.bottom + (46 * (pRoom->number - 1))), m_pBrush);
+				D2D1::Rect(num.left, num.top + (46 * (pRoom.number - 1)),
+					num.right, num.bottom + (46 * (pRoom.number - 1))), m_pBrush);
 
-			_pRT->DrawTextW(pRoom->name, wcslen(pRoom->name), m_pWriteTextFormat,
-				D2D1::Rect(name.left, m_layoutRect.top + (46 * (pRoom->number - 1)),
-					name.right, m_layoutRect.bottom + (46 * (pRoom->number - 1))), m_pBrush);
+			_pRT->DrawTextW(pRoom.name, wcslen(pRoom.name), m_pWriteTextFormat,
+				D2D1::Rect(name.left, m_layoutRect.top + (46 * (pRoom.number - 1)),
+					name.right, m_layoutRect.bottom + (46 * (pRoom.number - 1))), m_pBrush);
 
 			_pRT->DrawTextW(playercount, wcslen(playercount) + 1, m_pWriteTextFormat,
-				D2D1::Rect(playercountrect.left, playercountrect.top + (46 * (pRoom->number - 1)),
-					playercountrect.right, playercountrect.bottom + (46 * (pRoom->number - 1))), m_pBrush);
+				D2D1::Rect(playercountrect.left, playercountrect.top + (46 * (pRoom.number - 1)),
+					playercountrect.right, playercountrect.bottom + (46 * (pRoom.number - 1))), m_pBrush);
 
-			if (pRoom->state)
+			if (pRoom.state)
 			{
 				_pRT->DrawTextW(L"대기중", wcslen(L"대기중") + 1, m_pWriteTextFormat,
-					D2D1::Rect(play.left, play.top + (46 * (pRoom->number - 1)),
-						play.right, play.bottom + (46 * (pRoom->number - 1))), m_pBrush);
+					D2D1::Rect(play.left, play.top + (46 * (pRoom.number - 1)),
+						play.right, play.bottom + (46 * (pRoom.number - 1))), m_pBrush);
 			}
 			else
 			{
 				_pRT->DrawTextW(L"게임중", wcslen(L"게임중") + 1, m_pWriteTextFormat,
-					D2D1::Rect(play.left, play.top + (46 * (pRoom->number - 1)),
-						play.right, play.bottom + (46 * (pRoom->number - 1))), m_pBrush);
+					D2D1::Rect(play.left, play.top + (46 * (pRoom.number - 1)),
+						play.right, play.bottom + (46 * (pRoom.number - 1))), m_pBrush);
 			}
 		}
 	}

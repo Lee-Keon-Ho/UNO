@@ -39,17 +39,16 @@ void CInformation::Cleanup()
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
 }
 
-void CInformation::Recv(char* _buffer)
+void CInformation::HandlePacket(char* _buffer)
 {
 	unsigned short type = *(unsigned short*)(_buffer + 2);
 
 	switch (type)
 	{
-	case CS_PT_NICKNAME:
+	case CS_PT_LOGIN:
 		SetUserList(_buffer);
 		break;
 	case CS_PT_CREATEROOM:
-		SetRoomList(_buffer);
 		break;
 	case CS_PT_USERLIST:
 		SetUserList(_buffer);
@@ -58,6 +57,11 @@ void CInformation::Recv(char* _buffer)
 		SetRoomList(_buffer);
 		break;
 	}
+}
+
+void CInformation::CreateRoom(char* _buffer)
+{
+
 }
 
 void CInformation::SetName(const wchar_t* _buffer)
@@ -75,7 +79,7 @@ void CInformation::SetUserList(char* _buffer)
 	int size = sizeof(CUser);
 	int count = 0;
 
-	// 2022-04-13 요청 받을 때 마다 delete를 하면 안좋은데...
+	// 2022-04-18 여긴 list가 아니라 전광판이다! + 번호로 몇번 방인지 확인한다
 	UserList_t::iterator iter = m_userList.begin();
 	for (; iter != m_userList.end(); iter++)
 	{
@@ -100,25 +104,21 @@ void CInformation::SetUserList(char* _buffer)
 void CInformation::SetRoomList(char* _buffer)
 {
 	// 2022-04-16 수정 : 수업중 말씀해주신 방향으로 생각해서.
+	// 이건 전광판이다 
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 
-	int size = sizeof(CRoom);
+	int size = sizeof(CRoom::stROOM);
 	int count = 0;
 
-	RoomList_t::iterator iter = m_roomList.begin();
-	for (; iter != m_roomList.end(); iter++)
-	{
-		delete* iter;
-	}
 	m_roomList.clear();
 
 	packetSize -= 4;
 	while (count < packetSize)
 	{
-		CRoom* temp = new CRoom();
+		CRoom::stROOM temp;
 
-		memcpy(temp, tempBuffer, size);
+		memcpy(&temp, tempBuffer, size);
 
 		tempBuffer += size;
 		count += size;

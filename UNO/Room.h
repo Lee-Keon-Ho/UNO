@@ -22,5 +22,3 @@ public:
 	stROOM* GetRoom() { return &m_room; }
 private:
 };
-
-// 한번의 요구는 한번에 보내준다.

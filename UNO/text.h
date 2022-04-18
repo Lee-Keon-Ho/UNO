@@ -4,12 +4,13 @@
 #include "Room.h"
 #include <d2d1.h>
 #include <list>
+#include <vector>
 
 class CText : public CObject
 {
 public:
 	typedef std::list<CUser*> UserList_t;
-	typedef std::list<CRoom*> RoomList_t;
+	typedef std::vector<CRoom::stROOM> Room_t;
 private:
 	IDWriteTextFormat* m_pWriteTextFormat;
 	ID2D1SolidColorBrush* m_pBrush;
@@ -26,7 +27,7 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, UserList_t _userList);
-	void Render(ID2D1HwndRenderTarget* _pRT, RoomList_t _roomList);
+	void Render(ID2D1HwndRenderTarget* _pRT, Room_t _roomList);
 	void Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str);
 private:
 	

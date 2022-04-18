@@ -18,7 +18,7 @@ CLobbyScene::CLobbyScene()
 	m_createOkButtonRect({ 588.0f,412.0f, 692.0f, 452.0f }), m_createNoButtonRect({ 820.0f, 264.0f, 836.0f, 280.0f }),
 	m_createRoomTextRect({ 538.0f, 331.0f, 884.0f, 370.f }), m_roomListRect({350.0f, 347.0f, 700.0f, 500.0f}),
 	m_pontSize1(30), m_pontSize2(15), m_textHeight(25), m_bOnExit(false), m_bOnCreate(false),
-	m_roomNameCount(0), m_roomNameMax(24)
+	m_roomNameCount(0), m_roomNameMax(24), m_bOnRoom(false)
 {
 }
 
@@ -85,7 +85,8 @@ void CLobbyScene::Awake()
 
 
 	// 2022-04-15 수정 : test
-	test = new CObject(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, { 161.0f, 334.0f, 882.0f, 380.0f });
+	m_test = new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, { 161.0f, 334.0f, 882.0f, 380.0f });
+	CTimer::GetInstance()->ResetTimer();
 }
 
 void CLobbyScene::Start()
@@ -193,15 +194,20 @@ void CLobbyScene::Update()
 					}
 				}
 			}
+
+			//test
+			if (m_test->OnButton(mouse))
+			{
+				m_bOnRoom = true;
+			}
+			else m_bOnRoom = false;
 		}
 	}
 
-	if (pTimer->GetTime() == 5)
+	if (pTimer->GetTime() >= 5)
 	{
 		char buffer[] = "List";
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);
-		// 2022-04-15 이건 진짜 아닌데... 허허
-		Sleep(100);
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
 		m_userList = CInformation::GetInstance()->GetUserList();
@@ -215,7 +221,6 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	_pRT->BeginDraw();
 
-	// background
 	m_pBackGround->Render(_pRT, 1.0f);
 
 	for (int i = 0; i < LB_BUTTON_MAX; i++)
@@ -229,7 +234,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pUserListText->Render(_pRT, *m_userList);
 	
-	m_pRoomListText->Render(_pRT, *m_roomList);
+	m_pRoomListText->Render(_pRT, m_roomList);
 
 	if (m_bOnExit)
 	{
@@ -248,7 +253,10 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 	}
 
 	// 2022-04-15 test
-	//test->Render(_pRT, 0.5f);
+	if (m_bOnRoom)
+	{
+		m_test->Render(_pRT, 1.0f);
+	}
 
 	_pRT->EndDraw();
 }

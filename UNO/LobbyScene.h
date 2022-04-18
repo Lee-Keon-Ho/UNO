@@ -8,6 +8,7 @@
 #include "User.h"
 #include "text.h"
 #include <list>
+#include <vector>
 
 class CLobbyScene : public CScene
 {
@@ -15,7 +16,7 @@ public:
 	typedef CResourceManager::eBitmap bitmap_t;
 	typedef std::vector<CButton*> Button_t;
 	typedef std::list<CUser*> UserList_t;
-	typedef std::list<CRoom*> RoomList_t;
+	typedef std::vector<CRoom::stROOM> room_t;
 
 	enum eButton
 	{
@@ -76,15 +77,16 @@ private:
 	int m_num;
 
 	UserList_t* m_userList;
-	RoomList_t* m_roomList;
+	room_t m_roomList;
 
 	bool m_bOnExit;
 	bool m_bOnCreate;
+	bool m_bOnRoom;
 
 	CRoom* m_pRoom;
 
 	//2022-04-15 ¼öÁ¤ : test
-	CObject* test;
+	CButton* m_test;
 public:
 	CLobbyScene();
 	~CLobbyScene();

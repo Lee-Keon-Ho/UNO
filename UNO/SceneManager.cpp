@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "NameScene.h"
+#include "LoginScene.h"
 #include "LobbyScene.h"
 #include "RoomScene.h"
 #include "waitingRoomScene.h"
@@ -30,12 +30,12 @@ CSceneManager::~CSceneManager()
 bool CSceneManager::Initialize()
 {
 	m_scene.reserve((int)eScene::MAX);
-	m_scene.push_back(new CNameScene());
+	m_scene.push_back(new CLoginScene());
 	m_scene.push_back(new CLobbyScene());
 	m_scene.push_back(new CRoomScene());
 	m_scene.push_back(new CWaitingRoomScene());
 
-	m_nextScene = m_scene[(int)eScene::NAME_SCENE];
+	m_nextScene = m_scene[(int)eScene::LOGIN_SCENE];
 
 	return true;
 }

@@ -149,7 +149,7 @@
     <ClCompile Include="RoomScene.cpp" />
     <ClCompile Include="GameWnd.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
-    <ClCompile Include="NameScene.cpp" />
+    <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -174,7 +174,7 @@
     <ClInclude Include="RoomScene.h" />
     <ClInclude Include="GameWnd.h" />
     <ClInclude Include="LobbyScene.h" />
-    <ClInclude Include="NameScene.h" />
+    <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />

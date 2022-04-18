@@ -10,21 +10,22 @@ CResourceManager* CResourceManager::GetInstance()
 
 void CResourceManager::DeleteInstance()
 {
-	if (pInstance) delete pInstance;
+	if (pInstance) { delete pInstance; pInstance = nullptr; }
 }
 
 CResourceManager::CResourceManager()
 {
-	m_sprite = new spriteList_t[eICON::ICON_MAX];
+	
 }
 
 CResourceManager::~CResourceManager()
 {
-	if (m_sprite) { delete[] m_sprite; m_sprite = nullptr; }
+	
 }
 
 bool CResourceManager::Initialize()
 {
+	m_sprite = new spriteList_t[eICON::ICON_MAX];
 	m_bitmap.reserve((int)MAX);
 	return true;
 }
@@ -36,6 +37,7 @@ void CResourceManager::Cleanup()
 	{
 		if (*iter) { delete* iter; *iter = nullptr; }
 	}
+	if (m_sprite) { delete[] m_sprite; m_sprite = nullptr; }
 }
 
 void CResourceManager::SetSprite(CSprite* _sprite, int _size, int _index)

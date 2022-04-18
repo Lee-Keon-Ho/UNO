@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include <d2d1.h>
  
-class CNameScene : public CScene
+class CLoginScene : public CScene
 {
 public:
 	typedef std::vector<D2D1_RECT_F> targetList_t;
@@ -39,8 +39,8 @@ private:
 
 	unsigned m_nameMAX;
 public:
-	CNameScene();
-	~CNameScene();
+	CLoginScene();
+	~CLoginScene();
 
 	void Awake();
 	void Start();

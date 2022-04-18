@@ -13,7 +13,7 @@ private:
 public:
 	enum ePacketType
 	{
-		CS_PT_NICKNAME = 1,
+		CS_PT_LOGIN = 1,
 		CS_PT_CREATEROOM,
 		CS_PT_USERLIST,
 		CS_PT_ROOMLIST,

@@ -6,7 +6,7 @@ typedef std::vector<CScene*> scenelist_t;
 
 enum class eScene : int
 {
-	NAME_SCENE = 0,
+	LOGIN_SCENE = 0,
 	LOBBY_SCENE,
 	GAME_SCENE,
 	WAITING_SCENE,

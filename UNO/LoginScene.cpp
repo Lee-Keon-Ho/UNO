@@ -1,20 +1,20 @@
 #include "Client.h"
-#include "NameScene.h"
+#include "LoginScene.h"
 #include "SceneManager.h"
 #include "Input.h"
 #include "information.h"
 
-CNameScene::CNameScene() 
+CLoginScene::CLoginScene()
 	: m_bufferCount(0), m_buttonRect({ 460.0f, 400.0f, 820.0f, 430.0f }), m_nameMAX(8)
 {
 	
 }
 
-CNameScene::~CNameScene()
+CLoginScene::~CLoginScene()
 {
 }
 
-void CNameScene::Awake()
+void CLoginScene::Awake()
 {
 	HRESULT hr;
 	const wchar_t font[] = L"Consolas";
@@ -50,11 +50,11 @@ void CNameScene::Awake()
 	memset(m_pName, 0, MAX_PATH);
 }
 
-void CNameScene::Start()
+void CLoginScene::Start()
 {
 }
 
-void CNameScene::Update()
+void CLoginScene::Update()
 {
 	CInput* pInput = CInput::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
@@ -82,9 +82,7 @@ void CNameScene::Update()
 		{
 			m_pName[m_bufferCount] = 0;
 			m_pUser->SetName(m_pName);
-			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_NICKNAME);
-			Sleep(100);
-			//2022-04-14 ¼öÁ¤ : test
+			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_LOGIN);
 			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_ROOMLIST);
 			CInformation::GetInstance()->SetName(m_pName);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
@@ -100,7 +98,7 @@ void CNameScene::Update()
 	}
 }
 
-void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
+void CLoginScene::Render(ID2D1HwndRenderTarget* _pRT)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
 
@@ -116,7 +114,7 @@ void CNameScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->EndDraw();
 }
 
-void CNameScene::Destroy()
+void CLoginScene::Destroy()
 {
 	m_bufferCount = 0;
 	if (m_pName) { delete[] m_pName; m_pName = nullptr; }
