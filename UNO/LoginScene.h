@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Button.h"
-#include "User.h"
+#include "text.h"
 #include "ResourceManager.h"
 #include <d2d1.h>
  
@@ -29,11 +29,11 @@ private:
 	CObject* m_pBackGround;
 	CObject* m_pLogin;
 	CButton* m_pButton;
-
+	CText* m_pName;
 	D2D1_RECT_F m_buttonRect;
+	D2D1_RECT_F m_nameRect;
 
-	CUser* m_pUser;
-	wchar_t* m_pName;
+	wchar_t* m_pBuffer;
 
 	int m_bufferCount;
 

@@ -5,10 +5,12 @@
 #include <list>
 #include <vector>
 
+#define ROOM_MAX 8
+#define USER_MAX 15
+
 class CInformation
 {
 public:
-	typedef std::list<CUser*> UserList_t;
 	typedef std::vector<CRoom::stROOM> room_t;
 
 	enum ePacketType
@@ -18,6 +20,7 @@ public:
 		CS_PT_USERLIST,
 		CS_PT_ROOMLIST,
 		CS_PT_DESTROYROOM,
+		CS_PT_INROOM,
 		CS_PT_MAX
 	};
 
@@ -28,8 +31,15 @@ private:
 private:
 	wchar_t* m_pMyName;
 
-	UserList_t m_userList; // 필요 없어질 예정
+	// 2022-04-19 : 수정 필요
 	room_t m_roomList;
+
+	CRoom::stROOM m_room[ROOM_MAX];
+	CUser* m_pUser;
+
+	int m_roomCount;
+	int m_userCount;
+
 public:
 	bool Initalize();
 	void Cleanup();
@@ -40,8 +50,8 @@ public:
 	void SetUserList(char* _buffer);
 	void SetRoomList(char* _buffer);
 	wchar_t* GetName() { return m_pMyName; }
-	UserList_t* GetUserList() { return &m_userList; }
 	room_t GetRoomList() { return m_roomList; }
+	CUser* GetUser() { return m_pUser; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

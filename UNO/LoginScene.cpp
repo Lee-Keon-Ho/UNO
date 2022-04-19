@@ -5,7 +5,8 @@
 #include "information.h"
 
 CLoginScene::CLoginScene()
-	: m_bufferCount(0), m_buttonRect({ 460.0f, 400.0f, 820.0f, 430.0f }), m_nameMAX(8)
+	: m_bufferCount(0), m_buttonRect({ 460.0f, 400.0f, 820.0f, 430.0f }), m_nameMAX(8),
+	m_nameRect({ 565.0f, 330.0f, 820.0f, 430.0f })
 {
 	
 }
@@ -44,10 +45,10 @@ void CLoginScene::Awake()
 
 	m_pButton = new CButton(sprite[CResourceManager::LOGIN_BUTTON], pBitmap, m_buttonRect);
 
-	m_pUser = new CUser();
+	m_pName = new CText(m_nameRect, 15, 0, CText::T_BLACK);
 
-	m_pName = new wchar_t[MAX_PATH];
-	memset(m_pName, 0, MAX_PATH);
+	m_pBuffer = new wchar_t[MAX_PATH];
+	memset(m_pBuffer, 0, MAX_PATH);
 }
 
 void CLoginScene::Start()
@@ -64,7 +65,7 @@ void CLoginScene::Update()
 
 	if (key >= 'A' && key <= 'z')
 	{
-		m_pName[m_bufferCount] = key;
+		m_pBuffer[m_bufferCount] = key;
 		m_bufferCount++;
 		if (m_bufferCount > m_nameMAX) m_bufferCount = m_nameMAX;
 	}
@@ -72,7 +73,7 @@ void CLoginScene::Update()
 	{
 		--m_bufferCount;
 		if(m_bufferCount < 0) m_bufferCount = 0;
-		m_pName[m_bufferCount] = 0;
+		m_pBuffer[m_bufferCount] = 0;
 	}
 
 	if (key == VK_RETURN)
@@ -80,11 +81,10 @@ void CLoginScene::Update()
 		m_pButton->OnButton(mouse);
 		if (m_bufferCount > 3)
 		{
-			m_pName[m_bufferCount] = 0;
-			m_pUser->SetName(m_pName);
-			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_LOGIN);
-			CClient::GetInstance()->Send(m_pUser, CInformation::CS_PT_ROOMLIST);
-			CInformation::GetInstance()->SetName(m_pName);
+			m_pBuffer[m_bufferCount] = 0;
+			CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_LOGIN);
+			CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_ROOMLIST);
+			CInformation::GetInstance()->SetName(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}
@@ -93,7 +93,14 @@ void CLoginScene::Update()
 	{
 		if (m_pButton->OnButton(mouse) && m_bufferCount > 0)
 		{
-			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
+			if (m_bufferCount > 3)
+			{
+				m_pBuffer[m_bufferCount] = 0;
+				CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_LOGIN);
+				CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_ROOMLIST);
+				CInformation::GetInstance()->SetName(m_pBuffer);
+				CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
+			}
 		}
 	}
 }
@@ -107,9 +114,7 @@ void CLoginScene::Render(ID2D1HwndRenderTarget* _pRT)
 	m_pBackGround->Render(_pRT, 1.0f);
 	m_pLogin->Render(_pRT, 1.0f);
 	m_pButton->Render(_pRT, 1.0f);
-
-	// ¼öÁ¤
-	_pRT->DrawTextW(m_pName, m_nameMAX, m_pWriteTextFormat, D2D1::Rect(565.0f, 330.0f, 820.0f, 430.0f), m_pBrush);
+	m_pName->Render(_pRT, m_pBuffer);
 
 	_pRT->EndDraw();
 }
@@ -117,8 +122,7 @@ void CLoginScene::Render(ID2D1HwndRenderTarget* _pRT)
 void CLoginScene::Destroy()
 {
 	m_bufferCount = 0;
-	if (m_pName) { delete[] m_pName; m_pName = nullptr; }
-	if (m_pUser) { delete m_pUser; m_pUser = nullptr; }
+	if (m_pName) { delete m_pName; m_pName = nullptr; }
 	if (m_pButton) { delete m_pButton; m_pButton = nullptr; }
 	if (m_pLogin) { delete m_pLogin; m_pLogin = nullptr; }
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }

@@ -18,6 +18,7 @@ public:
 		CS_PT_USERLIST,
 		CS_PT_ROOMLIST,
 		CS_PT_DESTROYROOM,
+		CS_PT_INROOM,
 		CS_PT_MAX
 	};
 private:

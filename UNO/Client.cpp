@@ -111,7 +111,7 @@ bool CClient::Send(void* _buffer, int _type)
 	switch (_type)
 	{
 	case CS_PT_LOGIN:
-		size = sizeof(CUser);
+		size = sizeof(WCHAR) * 32; // 2022-04-19 수정 : 수정 필요
 		break;
 	case CS_PT_CREATEROOM:
 		size = sizeof(CRoom);

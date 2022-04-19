@@ -15,7 +15,6 @@ class CLobbyScene : public CScene
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
 	typedef std::vector<CButton*> Button_t;
-	typedef std::list<CUser*> UserList_t;
 	typedef std::vector<CRoom::stROOM> room_t;
 
 	enum eButton
@@ -83,7 +82,8 @@ private:
 	wchar_t* m_pName;
 	int m_num;
 
-	UserList_t* m_userList;
+	//2022-04-19
+	CUser* m_user;
 	room_t m_roomList;
 
 	bool m_bOnExit;

@@ -27,6 +27,7 @@ CInformation::~CInformation()
 
 bool CInformation::Initalize()
 {
+	m_pUser = new CUser();
 	m_pMyName = new WCHAR[MAX];
 	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
@@ -37,6 +38,7 @@ bool CInformation::Initalize()
 void CInformation::Cleanup()
 {
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
+	if (m_pUser) { delete m_pUser; m_pUser = nullptr; }
 }
 
 void CInformation::HandlePacket(char* _buffer)
@@ -76,35 +78,15 @@ void CInformation::SetUserList(char* _buffer)
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 
-	int size = sizeof(CUser);
 	int count = 0;
 
-	// 2022-04-18 여긴 list가 아니라 전광판이다! + 번호로 몇번 방인지 확인한다
-	UserList_t::iterator iter = m_userList.begin();
-	for (; iter != m_userList.end(); iter++)
-	{
-		delete *iter;
-	}
-	m_userList.clear(); //
-	packetSize -= 4;
-
-	while (count < packetSize)
-	{
-		CUser* temp = new CUser();
-
-		memcpy(temp, tempBuffer, size);
-
-		tempBuffer += size;
-		count += size;
-
-		m_userList.push_back(temp);
-	}
+	// 2022-04-19 수정 : start
+	m_pUser->SetData(tempBuffer, packetSize - 4);
 }
 
 void CInformation::SetRoomList(char* _buffer)
 {
-	// 2022-04-16 수정 : 수업중 말씀해주신 방향으로 생각해서.
-	// 이건 전광판이다 
+	// 2022-04-19 수정 : 완료
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 

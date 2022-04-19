@@ -48,7 +48,7 @@ void CLobbyScene::Awake()
 
 	m_pUserListText = new CText(m_userListRect, m_pontSize2, m_textHeight, CText::T_WHITE);
 
-	m_pRoomListText = new CText(m_roomListRect, m_pontSize2, m_textHeight, CText::T_BLACK);
+	m_pRoomListText = new CText(m_roomListRect, m_pontSize2, 46, CText::T_BLACK); // 수정 필요
 
 	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, CText::T_BLACK);
 
@@ -80,13 +80,13 @@ void CLobbyScene::Awake()
 
 	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
 
-	m_userList = CInformation::GetInstance()->GetUserList();
 	m_pName = CInformation::GetInstance()->GetName();
 
 	m_pRoomName = new wchar_t[ROOM_NAME_MAX_SIZE];
 	memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
 
-	m_userList = CInformation::GetInstance()->GetUserList();
+	//2022-04-18 수정 : test
+	m_user = CInformation::GetInstance()->GetUser();
 	m_roomList = CInformation::GetInstance()->GetRoomList();
 
 	CTimer::GetInstance()->ResetTimer(); // 타이머 초기화
@@ -221,7 +221,7 @@ void CLobbyScene::Update()
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
-		m_userList = CInformation::GetInstance()->GetUserList();
+		m_user = CInformation::GetInstance()->GetUser();
 		m_roomList = CInformation::GetInstance()->GetRoomList();
 		m_roomCount = m_roomList.size();
 	}
@@ -244,7 +244,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pMyNameText->Render(_pRT);
 
-	m_pUserListText->Render(_pRT, *m_userList);
+	m_pUserListText->Render(_pRT, m_user);
 	
 	m_pRoomListText->Render(_pRT, m_roomList);
 
@@ -264,7 +264,7 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pCreateRoomText->Render(_pRT, m_pRoomName);
 	}
 
-	// 2022-04-15 test
+	// 2022-04-19 수정 : test
 	if (m_bOnRoom)
 	{
 		m_roomListButton[m_count]->Render(_pRT, 0.5f);
