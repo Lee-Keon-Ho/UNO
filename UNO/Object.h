@@ -17,6 +17,7 @@ public:
 	~CObject();
 	CObject(spriteList_t _sprite, ID2D1Bitmap* _bitmap, D2D1_RECT_F _target);
 
+	virtual void Rneder(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, float _alpha);
 	void Render(ID2D1HwndRenderTarget* _pRT, int _index, float _alpha);
 

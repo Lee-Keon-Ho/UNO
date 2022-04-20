@@ -1,22 +1,34 @@
 #include "User.h"
-#include <string>
-
-#define NAME_MAX 32
-#define USER_MAX 15
+#include "information.h"
 
 CUser::CUser()
 {
-	m_pData = new wchar_t[USER_MAX * NAME_MAX];
-	memset(m_pData, 0, (USER_MAX * NAME_MAX) * sizeof(wchar_t));
+
+}
+
+CUser::CUser(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color)
+{
+	CText::init(_layoutRect, _fontSize, _height, _color);
 }
 
 CUser::~CUser()
 {
-	if (m_pData) { delete[] m_pData; }
+
 }
 
-void CUser::SetData(char* _name, int _size)
+void CUser::SetUserList()
 {
-	memset(m_pData, 0, (USER_MAX * NAME_MAX) * sizeof(wchar_t));
-	memcpy(m_pData, _name, _size);
+	m_pData = CInformation::GetInstance()->GetUserList();
+}
+
+void CUser::Render(ID2D1HwndRenderTarget* _pRT)
+{
+	wchar_t* temp = m_pData;
+	for (int i = 0; i < USER_MAX; i++)
+	{
+		_pRT->DrawTextW(temp, USER_NAME_MAX_SIZE, m_pWriteTextFormat,
+			D2D1::Rect(m_layoutRect.left, m_layoutRect.top + (m_textHeight * i),
+				m_layoutRect.right, m_layoutRect.bottom + (m_textHeight * i)), m_pBrush);
+		temp += USER_NAME_MAX_SIZE;
+	}
 }

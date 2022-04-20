@@ -27,7 +27,7 @@ CInformation::~CInformation()
 
 bool CInformation::Initalize()
 {
-	m_pUser = new CUser();
+	m_pUserList = new wchar_t[USER_MAX * USER_NAME_MAX_SIZE];
 	m_pMyName = new WCHAR[MAX];
 	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
@@ -38,7 +38,7 @@ bool CInformation::Initalize()
 void CInformation::Cleanup()
 {
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
-	if (m_pUser) { delete m_pUser; m_pUser = nullptr; }
+	if (m_pUserList) { delete[] m_pUserList; m_pUserList = nullptr; }
 }
 
 void CInformation::HandlePacket(char* _buffer)
@@ -48,15 +48,20 @@ void CInformation::HandlePacket(char* _buffer)
 	switch (type)
 	{
 	case CS_PT_LOGIN:
-		SetUserList(_buffer);
+		UserList(_buffer);
 		break;
 	case CS_PT_CREATEROOM:
 		break;
 	case CS_PT_USERLIST:
-		SetUserList(_buffer);
+		UserList(_buffer);
 		break;
 	case CS_PT_ROOMLIST:
-		SetRoomList(_buffer);
+		RoomList(_buffer);
+		break;
+	case CS_PT_INROOM:
+		break;
+	case CS_PT_ROOMSTATE:
+		RoomState(_buffer);
 		break;
 	}
 }
@@ -73,18 +78,16 @@ void CInformation::SetName(const wchar_t* _buffer)
 	memcpy(m_pMyName, _buffer, len);
 }
 
-void CInformation::SetUserList(char* _buffer)
+void CInformation::UserList(char* _buffer)
 {
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 
-	int count = 0;
-
-	// 2022-04-19 수정 : start
-	m_pUser->SetData(tempBuffer, packetSize - 4);
+	memset(m_pUserList, 0, (USER_MAX * USER_NAME_MAX_SIZE) * sizeof(wchar_t));
+	memcpy(m_pUserList, tempBuffer, packetSize - 4);
 }
 
-void CInformation::SetRoomList(char* _buffer)
+void CInformation::RoomList(char* _buffer)
 {
 	// 2022-04-19 수정 : 완료
 	unsigned short packetSize = *(unsigned short*)_buffer;
@@ -107,4 +110,12 @@ void CInformation::SetRoomList(char* _buffer)
 
 		m_roomList.push_back(temp);
 	}
+}
+
+void CInformation::RoomState(char* _buffer)
+{
+	unsigned short packetSize = *(unsigned short*)_buffer;
+	char* tempBuffer = _buffer + 4;
+
+	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
 }

@@ -1,12 +1,8 @@
 #pragma once
 #include "Scene.h"
-#include "Object.h"
 #include "Button.h"
 #include "ResourceManager.h"
 #include "information.h"
-#include "Room.h"
-#include "User.h"
-#include "text.h"
 #include <list>
 #include <vector>
 
@@ -37,12 +33,13 @@ private:
 	CObject* m_pCreateRoomObject;
 
 	Button_t m_button;
-
-	// 2022-04-18 test
-	Button_t m_roomListButton;
-	int m_count = 0;
-	int m_roomCount = 0;
-	//
+	Button_t m_roomListButton; // 2022-04-18
+	
+	//2022-04-19
+	CRoom* m_pRoomList; // Àü±¤ÆÇ
+	CUser* m_pUserList; // Àü±¤ÆÇ
+	CRoom::stROOM* m_pstRoom;
+	
 
 
 	CButton* m_pExitOkButton;
@@ -68,9 +65,7 @@ private:
 	D2D1_RECT_F m_roomListRect;
 
 	CText* m_pMyNameText;
-	CText* m_pUserListText;
 	CText* m_pCreateRoomText;
-	CText* m_pRoomListText;
 
 	wchar_t* m_pRoomName;
 
@@ -79,18 +74,14 @@ private:
 	int m_textHeight;
 	int m_roomNameCount;
 	int m_roomNameMax;
-	wchar_t* m_pName;
-	int m_num;
-
-	//2022-04-19
-	CUser* m_user;
-	room_t m_roomList;
+	int m_userImageNum;
+	int m_roomButtonNum;
+	int m_roomCount;
+	int m_roomButtonMAX;
 
 	bool m_bOnExit;
 	bool m_bOnCreate;
 	bool m_bOnRoom;
-
-	CRoom* m_pRoom;
 	
 public:
 	CLobbyScene();

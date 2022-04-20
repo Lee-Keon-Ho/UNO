@@ -13,6 +13,10 @@ CObject::CObject(spriteList_t _sprite, ID2D1Bitmap* _bitmap, D2D1_RECT_F _target
 {
 }
 
+void CObject::Rneder(ID2D1HwndRenderTarget* _pRT)
+{
+}
+
 void CObject::Render(ID2D1HwndRenderTarget* _pRT, float _alpha)
 {
 	m_sprite[0].Render(_pRT, m_bitmap, m_target, _alpha);

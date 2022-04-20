@@ -23,6 +23,7 @@ public:
 		WAITING,
 		EXIT,
 		CREATE,
+		ROOM_IN_PLAYER,
 		MAX
 	};
 
@@ -47,6 +48,7 @@ public:
 		CREATE_BUTTON_NO,
 		CREATE_BUTTON_OK,
 		ROOM_LIST_BUTTON,
+		ROOM_PLAYER,
 		ICON_MAX
 	};
 
