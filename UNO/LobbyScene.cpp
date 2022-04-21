@@ -83,8 +83,8 @@ void CLobbyScene::Awake()
 	m_pRoomName = new wchar_t[ROOM_NAME_MAX_SIZE];
 	memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
 
-	m_pRoomList->SetRoomList();
-	m_pUserList->SetUserList();
+	m_pRoomList->SetList();
+	m_pUserList->SetList();
 
 	// 2022-04-18 ¼öÁ¤
 	m_roomCount = m_pRoomList->GetSize();
@@ -239,8 +239,8 @@ void CLobbyScene::Update()
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
-		m_pUserList->SetUserList();
-		m_pRoomList->SetRoomList();
+		m_pUserList->SetList();
+		m_pRoomList->SetList();
 		m_roomCount = m_pRoomList->GetSize();
 	}
 }

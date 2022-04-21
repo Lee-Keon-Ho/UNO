@@ -7,10 +7,11 @@ CRoom::CRoom()
 }
 
 CRoom::CRoom(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color) :
+	CText(_layoutRect, _fontSize, _height, _color),
 	m_nameRect({ 350.0f, 0.0f, 500.0f, 0.0f }), m_numberRect({222.0f, 0.0f, 300.0f, 0.0f}),
 	m_playerCountRect({ 605.0f, 0.0f, 700.0f, 0.0f }), m_stateRect({767.0f, 0.0f, 900.0f, 0.0f})
 {
-	CText::init(_layoutRect, _fontSize, _height, _color); // 질문 생성자를 호출해서 사용하고 싶다.
+	
 }
 
 CRoom::~CRoom()
@@ -61,7 +62,7 @@ void CRoom::Render(ID2D1HwndRenderTarget* _pRT)
 	}
 }
 
-void CRoom::SetRoomList()
+void CRoom::SetList()
 {
 	m_list = CInformation::GetInstance()->GetRoomList();
 }

@@ -6,9 +6,10 @@ CUser::CUser()
 
 }
 
-CUser::CUser(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color)
+CUser::CUser(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color) :
+	CText(_layoutRect, _fontSize, _height, _color)
 {
-	CText::init(_layoutRect, _fontSize, _height, _color);
+	
 }
 
 CUser::~CUser()
@@ -16,7 +17,7 @@ CUser::~CUser()
 
 }
 
-void CUser::SetUserList()
+void CUser::SetList()
 {
 	m_pData = CInformation::GetInstance()->GetUserList();
 }

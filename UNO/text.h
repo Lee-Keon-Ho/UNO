@@ -29,8 +29,6 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str);
-
-	void init(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color);
 private:
 	
 };

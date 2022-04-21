@@ -29,7 +29,7 @@ public:
 	~CRoom();
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
-	void SetRoomList(); //2022-04-20 수정 : test
+	void SetList(); //2022-04-20 수정 : test
 
 	int GetSize() { return m_list.size(); }
 	room_t GetRoomList() { return m_list; }

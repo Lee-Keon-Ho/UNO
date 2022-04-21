@@ -82,7 +82,11 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\CreateNoButton2.spr",
 											"Resource\\CreateOkButton2.spr",
 											"Resource\\roomListButton2.spr",
-											"Resource\\playerCount5.spr"};
+											"Resource\\PlayerOne1.spr",
+											"Resource\\PlayerTwo1.spr" ,
+											"Resource\\PlayerThree1.spr" ,
+											"Resource\\PlayerFour1.spr" ,
+											"Resource\\PlayerFive1.spr" };
 
 	FILE* pFile;
 	CSprite* tmpSprite;
