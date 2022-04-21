@@ -11,6 +11,7 @@ CWaitingRoomScene::CWaitingRoomScene() : m_backGroundRect({0.0f, 0.0f, 1280.0f, 
 
 CWaitingRoomScene::~CWaitingRoomScene()
 {
+	Destroy();
 }
 
 void CWaitingRoomScene::Awake()

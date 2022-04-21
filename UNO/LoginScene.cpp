@@ -13,6 +13,7 @@ CLoginScene::CLoginScene()
 
 CLoginScene::~CLoginScene()
 {
+	Destroy();
 }
 
 void CLoginScene::Awake()

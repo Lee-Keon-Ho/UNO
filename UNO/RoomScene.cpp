@@ -7,6 +7,7 @@ CRoomScene::CRoomScene()
 
 CRoomScene::~CRoomScene()
 {
+	Destroy();
 }
 
 void CRoomScene::Awake()

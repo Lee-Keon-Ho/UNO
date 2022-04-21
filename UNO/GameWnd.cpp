@@ -16,6 +16,7 @@ CGameWnd::CGameWnd()
 
 CGameWnd::~CGameWnd()
 {
+	Cleanup();
 }
 
 bool CGameWnd::Initialize()

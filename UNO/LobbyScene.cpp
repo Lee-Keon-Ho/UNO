@@ -25,6 +25,7 @@ CLobbyScene::CLobbyScene()
 
 CLobbyScene::~CLobbyScene()
 {
+	Destroy();
 }
 
 void CLobbyScene::Awake()
