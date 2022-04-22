@@ -207,7 +207,6 @@ void CLobbyScene::Update()
 							char buffer[sizeof(int)];
 							*buffer = m_roomButtonNum + 1;
 							CClient::GetInstance()->Send(buffer, CClient::CS_PT_INROOM);
-							CClient::GetInstance()->Send(buffer, CClient::CS_PT_ROOMSTATE);
 							CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 						}
 						break;
@@ -234,7 +233,7 @@ void CLobbyScene::Update()
 		}
 	}
 
-	if (pTimer->GetTime() >= 5)
+	if (pTimer->GetTime() >= 1)
 	{
 		char buffer[] = "List";
 		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);

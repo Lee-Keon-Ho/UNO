@@ -47,6 +47,14 @@ void CWaitingRoomScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
+	if (pTimer->GetTime() >= 1)
+	{
+		char buffer[] = "game";
+		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMSTATE);
+		m_pRoominfo = CInformation::GetInstance()->GetRoomInfo();
+		pTimer->ResetTimer();
+	}
+
 	m_pExitButton->OnButton(mouse);
 
 	if (key == VK_LBUTTON)
@@ -58,14 +66,6 @@ void CWaitingRoomScene::Update()
 			CClient::GetInstance()->Send(buffer, CClient::CS_PT_DESTROYROOM);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
-	}
-	
-	if (pTimer->GetTime() >= 1)
-	{
-		char buffer[] = "game";
-		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMSTATE);
-		m_pRoominfo = CInformation::GetInstance()->GetRoomInfo();
-		pTimer->ResetTimer();
 	}
 }
 
@@ -80,10 +80,7 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_player[i]->Render(_pRT, 0.5f);
 	}
 	
-
 	m_pExitButton->Render(_pRT, 1.0f);
-
-	
 
 	_pRT->EndDraw();
 }
