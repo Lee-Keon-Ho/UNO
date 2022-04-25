@@ -72,9 +72,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>소스 파일\core</Filter>
     </ClCompile>
-    <ClCompile Include="RoomScene.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -140,9 +137,6 @@
     <ClInclude Include="Object.h">
       <Filter>소스 파일\core</Filter>
     </ClInclude>
-    <ClInclude Include="RoomScene.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -163,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="waitingRoomScene.h">
       <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketType.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

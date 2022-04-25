@@ -1,4 +1,5 @@
 #include "information.h"
+#include "PacketType.h"
 
 #define MAX 255
 

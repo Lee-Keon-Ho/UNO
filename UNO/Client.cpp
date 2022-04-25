@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "ResourceManager.h"
 #include "information.h"
+#include "PacketType.h"
 #include "Room.h"
 #include <stdio.h>
 #include <process.h>
@@ -20,7 +21,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 	{
 		int recvLen = 0;
 		recvLen = recv(socket, recvBuffer + recvedSize, MAX - recvedSize, 0);
-		if (recvLen < 1)	break;
+		if (recvLen < 1) break;
 
 		recvedSize += recvLen;
 
@@ -36,8 +37,16 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 			if (recvedSize > 0)
 			{
 				memcpy(recvBuffer, recvBuffer + packetSize, recvedSize);
-				packetSize = *(unsigned short*)recvBuffer;
-				type = *(unsigned short*)(recvBuffer + 2);
+				// 2022-04-25 수정
+				if (recvedSize > 1)
+				{
+					packetSize = *(unsigned short*)recvBuffer;
+				}
+				// 2022-04-25 수정
+				if (recvedSize > 3)
+				{
+					type = *(unsigned short*)(recvBuffer + 2);
+				}
 			}
 		}
 	}
@@ -111,16 +120,16 @@ bool CClient::Send(void* _buffer, int _type)
 	switch (_type)
 	{
 	case CS_PT_LOGIN:
-		size = sizeof(WCHAR) * USER_NAME_MAX_SIZE; // 2022-04-19 수정 : 수정 필요
+		size = sizeof(WCHAR) * USER_NAME_MAX_SIZE; // 2022-04-19 수정
 		break;
 	case CS_PT_CREATEROOM:
-		size = sizeof(CRoom::stROOM);
+		size = sizeof(WCHAR) * ROOM_NAME_MAX_SIZE; // 2022-04-25 수정
 		break;
 	case CS_PT_USERLIST:
 		break;
 	case CS_PT_ROOMLIST:
 		break;
-	case CS_PT_DESTROYROOM:
+	case CS_PT_OUTROOM:
 		break;
 	case CS_PT_INROOM:
 		size = sizeof(int);

@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "PacketType.h"
 #include "waitingRoomScene.h"
 #include "timer.h"
 #include "Input.h"
@@ -50,7 +51,7 @@ void CWaitingRoomScene::Update()
 	if (pTimer->GetTime() >= 1)
 	{
 		char buffer[] = "game";
-		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMSTATE);
+		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
 		m_pRoominfo = CInformation::GetInstance()->GetRoomInfo();
 		pTimer->ResetTimer();
 	}
@@ -63,7 +64,7 @@ void CWaitingRoomScene::Update()
 		{
 			char buffer[] = "destroy";
 			m_pExitButton->OnButtonUp();
-			CClient::GetInstance()->Send(buffer, CClient::CS_PT_DESTROYROOM);
+			CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 	}

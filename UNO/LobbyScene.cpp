@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "LobbyScene.h"
 #include "SceneManager.h"
+#include "PacketType.h"
 #include "Input.h"
 #include "Timer.h"
 #include <ctime>
@@ -157,7 +158,7 @@ void CLobbyScene::Update()
 			if (m_roomNameCount >= 4)
 			{
 				memcpy(m_pstRoom->name, m_pRoomName, ROOM_NAME_MAX_SIZE);
-				CClient::GetInstance()->Send(m_pstRoom, CClient::CS_PT_CREATEROOM);
+				CClient::GetInstance()->Send(m_pRoomName, CS_PT_CREATEROOM);
 				CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 			}
 		}
@@ -169,7 +170,7 @@ void CLobbyScene::Update()
 				if (m_roomNameCount >= 4)
 				{
 					memcpy(m_pstRoom->name, m_pRoomName, ROOM_NAME_MAX_SIZE);
-					CClient::GetInstance()->Send(m_pstRoom, CClient::CS_PT_CREATEROOM);
+					CClient::GetInstance()->Send(m_pRoomName, CS_PT_CREATEROOM);
 					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 				}
 			}
@@ -206,7 +207,7 @@ void CLobbyScene::Update()
 						{
 							char buffer[sizeof(int)];
 							*buffer = m_roomButtonNum + 1;
-							CClient::GetInstance()->Send(buffer, CClient::CS_PT_INROOM);
+							CClient::GetInstance()->Send(buffer, CS_PT_INROOM);
 							CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 						}
 						break;
@@ -236,8 +237,8 @@ void CLobbyScene::Update()
 	if (pTimer->GetTime() >= 1)
 	{
 		char buffer[] = "List";
-		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_USERLIST);
-		CClient::GetInstance()->Send(buffer, CInformation::CS_PT_ROOMLIST);
+		CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
+		CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
 		m_pUserList->SetList();
 		m_pRoomList->SetList();

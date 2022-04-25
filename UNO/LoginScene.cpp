@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "PacketType.h"
 #include "LoginScene.h"
 #include "SceneManager.h"
 #include "Input.h"
@@ -83,8 +84,8 @@ void CLoginScene::Update()
 		if (m_bufferCount > 3)
 		{
 			m_pBuffer[m_bufferCount] = 0;
-			CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_LOGIN);
-			CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_ROOMLIST);
+			CClient::GetInstance()->Send(m_pBuffer, CS_PT_LOGIN);
+			CClient::GetInstance()->Send(m_pBuffer, CS_PT_ROOMLIST);
 			CInformation::GetInstance()->SetName(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
@@ -97,8 +98,8 @@ void CLoginScene::Update()
 			if (m_bufferCount > 3)
 			{
 				m_pBuffer[m_bufferCount] = 0;
-				CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_LOGIN);
-				CClient::GetInstance()->Send(m_pBuffer, CInformation::CS_PT_ROOMLIST);
+				CClient::GetInstance()->Send(m_pBuffer, CS_PT_LOGIN);
+				CClient::GetInstance()->Send(m_pBuffer, CS_PT_ROOMLIST);
 				CInformation::GetInstance()->SetName(m_pBuffer);
 				CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 			}

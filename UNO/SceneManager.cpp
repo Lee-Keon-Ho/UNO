@@ -1,7 +1,6 @@
 #include "SceneManager.h"
 #include "LoginScene.h"
 #include "LobbyScene.h"
-#include "RoomScene.h"
 #include "waitingRoomScene.h"
 #include "Input.h"
 CSceneManager* CSceneManager::pInstance = nullptr;
@@ -32,7 +31,6 @@ bool CSceneManager::Initialize()
 	m_scene.reserve((int)eScene::MAX);
 	m_scene.push_back(new CLoginScene());
 	m_scene.push_back(new CLobbyScene());
-	m_scene.push_back(new CRoomScene());
 	m_scene.push_back(new CWaitingRoomScene());
 
 	m_nextScene = m_scene[(int)eScene::LOGIN_SCENE];
