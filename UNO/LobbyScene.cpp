@@ -33,6 +33,7 @@ void CLobbyScene::Awake()
 {
 	srand((unsigned int)time(NULL));
 	m_userImageNum = rand() % 5;
+	CInformation::GetInstance()->SetImage(m_userImageNum);
 
 	HRESULT hr;
 	const WCHAR font[] = L"Consolas";
@@ -45,7 +46,6 @@ void CLobbyScene::Awake()
 	ID2D1Bitmap* pCreateRoomBitmap = pRM->GetBitmap(bitmap_t::CREATE);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
-	// 2022-04-20 수정 
 	m_pRoomList = new CRoom(m_roomListRect, m_pontSize2, 46, CText::T_BLACK);
 
 	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1, CText::T_BLACK);
@@ -54,12 +54,12 @@ void CLobbyScene::Awake()
 
 	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, CText::T_BLACK);
 
-	m_pBackGround = new CObject(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
+	m_pBackGround = new CObject2D(sprite[CResourceManager::LOBBY_BACKGROUND], pLobbyBitmap, m_backGroundRect);
 
-	m_pExitBackGround = new CObject(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_backGroundRect);
-	m_pExitTextObject = new CObject(sprite[CResourceManager::EXIT_TEXT_OBJECT], pExitBitmap, m_exitTextObject);
+	m_pExitBackGround = new CObject2D(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_backGroundRect);
+	m_pExitTextObject = new CObject2D(sprite[CResourceManager::EXIT_TEXT_OBJECT], pExitBitmap, m_exitTextObject);
 	
-	m_pCreateRoomObject = new CObject(sprite[CResourceManager::CREATE_ROOM], pCreateRoomBitmap, m_createRoomRect);
+	m_pCreateRoomObject = new CObject2D(sprite[CResourceManager::CREATE_ROOM], pCreateRoomBitmap, m_createRoomRect);
 
 	m_button.reserve(LB_BUTTON_MAX);
 	m_button.push_back(new CButton(sprite[CResourceManager::CREATE_BUTTON], pButtonBitmap, m_createButtonRect));
@@ -80,7 +80,7 @@ void CLobbyScene::Awake()
 	m_pCreateOkButton = new CButton(sprite[CResourceManager::CREATE_BUTTON_OK], pButtonBitmap, m_createOkButtonRect);
 	m_pCreateNoButton = new CButton(sprite[CResourceManager::CREATE_BUTTON_NO], pButtonBitmap, m_createNoButtonRect);
 
-	m_pCharacter = new CObject(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
+	m_pCharacter = new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pCharcterBitmap, m_peopleIconRect);
 
 	m_pRoomName = new wchar_t[ROOM_NAME_MAX_SIZE];
 	memset(m_pRoomName, 0, sizeof(wchar_t) * ROOM_NAME_MAX_SIZE);
@@ -90,12 +90,6 @@ void CLobbyScene::Awake()
 
 	// 2022-04-18 수정
 	m_roomCount = m_pRoomList->GetSize();
-
-	// 2022-04-20 수정
-	m_pstRoom = new CRoom::stROOM();
-	m_pstRoom->number = 0;
-	m_pstRoom->playerCount = 1;
-	m_pstRoom->state = true;
 
 	CTimer::GetInstance()->ResetTimer(); // 타이머 초기화
 }
@@ -157,8 +151,7 @@ void CLobbyScene::Update()
 			m_pCreateOkButton->OnButtonDown();
 			if (m_roomNameCount >= 4)
 			{
-				memcpy(m_pstRoom->name, m_pRoomName, ROOM_NAME_MAX_SIZE);
-				CClient::GetInstance()->Send(m_pRoomName, CS_PT_CREATEROOM);
+				Send(CS_PT_CREATEROOM);
 				CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 			}
 		}
@@ -169,8 +162,7 @@ void CLobbyScene::Update()
 				m_pCreateOkButton->OnButtonDown();
 				if (m_roomNameCount >= 4)
 				{
-					memcpy(m_pstRoom->name, m_pRoomName, ROOM_NAME_MAX_SIZE);
-					CClient::GetInstance()->Send(m_pRoomName, CS_PT_CREATEROOM);
+					Send(CS_PT_CREATEROOM);
 					CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 				}
 			}
@@ -204,10 +196,8 @@ void CLobbyScene::Update()
 						break;
 					case LB_CHOOSE:
 						if (m_bOnRoom)
-						{
-							char buffer[sizeof(int)];
-							*buffer = m_roomButtonNum + 1;
-							CClient::GetInstance()->Send(buffer, CS_PT_INROOM);
+						{							
+							Send(CS_PT_INROOM);
 							CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 						}
 						break;
@@ -294,7 +284,6 @@ void CLobbyScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CLobbyScene::Destroy()
 {
-	if (m_pstRoom) { delete m_pstRoom; m_pstRoom = nullptr; }
 	if (m_pCharacter) { delete m_pCharacter; m_pCharacter = nullptr; }
 	if (m_pExitNoButton) { delete m_pExitNoButton; m_pExitNoButton = nullptr; }
 	if (m_pExitOkButton) { delete m_pExitOkButton; m_pExitOkButton = nullptr; }
@@ -320,4 +309,28 @@ void CLobbyScene::Destroy()
 	m_bOnCreate = false;
 	m_bOnExit = false;
 	m_roomNameCount = 0;
+}
+
+void CLobbyScene::Send(int _type)
+{
+	// 2022-04-26 수정 : test
+	char sendBuffer[1000];
+	char* tempBuffer = sendBuffer;
+	switch (_type)
+	{
+	case CS_PT_CREATEROOM:
+		*(unsigned short*)tempBuffer = m_userImageNum;
+		tempBuffer += sizeof(unsigned short);
+		memcpy(tempBuffer, m_pRoomName, ROOM_NAME_MAX_SIZE);
+		break;
+	case CS_PT_INROOM:
+		*(unsigned short*)tempBuffer = m_roomButtonNum + 1;
+		tempBuffer += sizeof(unsigned short);
+		*(unsigned short*)tempBuffer = m_userImageNum;
+		tempBuffer += sizeof(unsigned short);
+		memcpy(tempBuffer, CInformation::GetInstance()->GetName(), 32);
+		break;
+	}
+	
+	CClient::GetInstance()->Send(sendBuffer, _type);
 }

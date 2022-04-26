@@ -56,7 +56,7 @@ CText::CText(wchar_t* _pStr, D2D1_RECT_F _layoutRect, int _fontSize, int _color)
 
 CText::~CText()
 {
-	CObject::~CObject();
+	CObject2D::~CObject2D();
 }
 
 void CText::Render(ID2D1HwndRenderTarget* _pRT)

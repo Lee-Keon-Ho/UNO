@@ -17,7 +17,7 @@ CButton::CButton(spriteList_t _sprite, ID2D1Bitmap* _bitmap, D2D1_RECT_F _target
 
 void CButton::Render(ID2D1HwndRenderTarget* _pRT, float _alpha)
 {
-	CObject::Render(_pRT, m_OnButton, _alpha);
+	CObject2D::Render(_pRT, m_OnButton, _alpha);
 }
 
 bool CButton::OnButton(POINT _mouse)

@@ -1,7 +1,7 @@
 #pragma once
-#include "Object.h"
+#include "Object2D.h"
 
-class CButton : public CObject
+class CButton : public CObject2D
 {
 public:
 private:

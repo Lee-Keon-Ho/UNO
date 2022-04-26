@@ -41,9 +41,9 @@ void CLoginScene::Awake()
 
 	m_pBrush = *pRM->GetBlackBrush();
 
-	m_pBackGround = new CObject(sprite[CResourceManager::LOGIN_BACKGROUND], pBitmap, { 0.0f, 0.0f, 1280.0f, 720.0f });
+	m_pBackGround = new CObject2D(sprite[CResourceManager::LOGIN_BACKGROUND], pBitmap, { 0.0f, 0.0f, 1280.0f, 720.0f });
 
-	m_pLogin = new CObject(sprite[CResourceManager::LOGIN_OBJECT], pBitmap, { 450.0f, 240.0f, 830.0f, 440.0f });
+	m_pLogin = new CObject2D(sprite[CResourceManager::LOGIN_OBJECT], pBitmap, { 450.0f, 240.0f, 830.0f, 440.0f });
 
 	m_pButton = new CButton(sprite[CResourceManager::LOGIN_BUTTON], pBitmap, m_buttonRect);
 

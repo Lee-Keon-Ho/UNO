@@ -19,12 +19,9 @@ private:
 	~CInformation();
 private:
 	wchar_t* m_pMyName;
-
-	// 2022-04-19 : 수정
-	room_t m_roomList;
-	// 2022-04-20 : 수정
+	int m_MyImage;
 	wchar_t* m_pUserList;
-	// 2022-04-20 : 수정 test
+	room_t m_roomList;
 	CRoom::stROOM m_room;
 public:
 	bool Initalize();
@@ -37,6 +34,7 @@ public:
 	void RoomState(char* _buffer);
 
 	void SetName(const wchar_t* _buffer);
+	void SetImage(int _num) { m_MyImage = _num; }
 
 	wchar_t* GetName() { return m_pMyName; }
 	room_t GetRoomList() { return m_roomList; }

@@ -15,8 +15,6 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 	SOCKET socket = *(SOCKET*)_pArgs;
 	char recvBuffer[MAX];
 	int recvedSize = 0;
-	// 2022-04-16 완전 수정 : 이거 해결못하면 다른건 손대지 마라!
-	// 2022-04-18 test
 	while (1)
 	{
 		int recvLen = 0;
@@ -132,7 +130,8 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_OUTROOM:
 		break;
 	case CS_PT_INROOM:
-		size = sizeof(int);
+		// 2022-04-26
+		size = 2 + 2 + 32; // unsigned short + unsigned short + buffer Size 
 		break;
 	}
 	

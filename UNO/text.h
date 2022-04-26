@@ -1,9 +1,9 @@
 #pragma once
-#include "Object.h"
+#include "Object2D.h"
 #include <d2d1.h>
 #include <vector>
 
-class CText : public CObject
+class CText : public CObject2D
 {
 public:
 	typedef std::vector<wchar_t*> user_t;
@@ -29,6 +29,9 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str);
+
+	//
+	void setlayout(D2D1_RECT_F _test) { m_layoutRect = _test; }
 private:
 	
 };

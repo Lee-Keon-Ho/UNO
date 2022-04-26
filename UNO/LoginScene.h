@@ -26,8 +26,8 @@ private:
 	ID2D1SolidColorBrush* m_pBrush;
 	IDWriteTextFormat* m_pWriteTextFormat;
 
-	CObject* m_pBackGround;
-	CObject* m_pLogin;
+	CObject2D* m_pBackGround;
+	CObject2D* m_pLogin;
 	CButton* m_pButton;
 	CText* m_pName;
 	D2D1_RECT_F m_buttonRect;

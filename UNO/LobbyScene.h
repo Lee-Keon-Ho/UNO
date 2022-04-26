@@ -26,11 +26,11 @@ private:
 	IDWriteTextFormat* m_pWriteTextFormat;
 	IDWriteTextFormat* m_pUserListWriteTextFormat;
 
-	CObject* m_pBackGround;
-	CObject* m_pCharacter; 
-	CObject* m_pExitBackGround;
-	CObject* m_pExitTextObject;
-	CObject* m_pCreateRoomObject;
+	CObject2D* m_pBackGround;
+	CObject2D* m_pCharacter;
+	CObject2D* m_pExitBackGround;
+	CObject2D* m_pExitTextObject;
+	CObject2D* m_pCreateRoomObject;
 
 	Button_t m_button;
 	Button_t m_roomListButton; // 2022-04-18
@@ -38,9 +38,6 @@ private:
 	//2022-04-19
 	CRoom* m_pRoomList; // Àü±¤ÆÇ
 	CUser* m_pUserList; // Àü±¤ÆÇ
-	CRoom::stROOM* m_pstRoom;
-	
-
 
 	CButton* m_pExitOkButton;
 	CButton* m_pExitNoButton;
@@ -92,5 +89,7 @@ public:
 	void Update();
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Destroy();
+
+	void Send(int _type);
 private:
 };
