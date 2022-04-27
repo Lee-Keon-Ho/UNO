@@ -107,7 +107,7 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 	{
 		int count = m_pUserInfo[i].number;
 		m_player[count]->Render(_pRT, 1.0f);
-		m_playerIma	ge[count]->Render(_pRT, m_pUserInfo[i].image, 1.0f);
+		m_playerImage[count]->Render(_pRT, m_pUserInfo[i].image, 1.0f);
 		m_pName[count]->Render(_pRT, m_pUserInfo[i].playerName);
 	}
 
