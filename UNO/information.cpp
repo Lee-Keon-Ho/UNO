@@ -33,6 +33,9 @@ bool CInformation::Initalize()
 	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
 
+	//2022-04-27 ¼öÁ¤
+	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
+
 	return true;
 }
 
@@ -118,5 +121,8 @@ void CInformation::RoomState(char* _buffer)
 	unsigned short packetSize = *(unsigned short*)_buffer;
 	char* tempBuffer = _buffer + 4;
 
-	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
+	m_room.playerCount = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short);
+
+	memcpy(m_user, tempBuffer, packetSize - 6);
 }

@@ -133,6 +133,8 @@ bool CClient::Send(void* _buffer, int _type)
 		// 2022-04-26
 		size = 2 + 2 + 32; // unsigned short + unsigned short + buffer Size 
 		break;
+	case CS_PT_ROOMSTATE:
+		break;
 	}
 	
 	*(unsigned short*)tempBuffer = 2 + 2 + size;

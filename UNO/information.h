@@ -23,6 +23,8 @@ private:
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
+	CRoom::stUSER m_user[5]; // 2022-04-27 ¼öÁ¤
+
 public:
 	bool Initalize();
 	void Cleanup();
@@ -40,6 +42,7 @@ public:
 	room_t GetRoomList() { return m_roomList; }
 	wchar_t* GetUserList() { return m_pUserList; }
 	CRoom::stROOM* GetRoomInfo() { return &m_room; }
+	CRoom::stUSER* GetUserInfo() { return m_user; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

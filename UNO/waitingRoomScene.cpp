@@ -44,7 +44,9 @@ void CWaitingRoomScene::Awake()
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player4ImageRect));
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player5ImageRect));
 
-	m_pRoominfo = CInformation::GetInstance()->GetRoomInfo();
+	m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
+	m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
+
 	m_player.reserve(PLAYER_MAX);
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_ONE], pPlayerCountBitmap, m_player1Rect));
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_TWO], pPlayerCountBitmap, m_player2Rect));
@@ -75,7 +77,8 @@ void CWaitingRoomScene::Update()
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
-		m_pRoominfo = CInformation::GetInstance()->GetRoomInfo();
+		m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
+		m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
 		pTimer->ResetTimer();
 	}
 
@@ -98,13 +101,14 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 	_pRT->BeginDraw();
 
 	m_pBackGround->Render(_pRT, 1.0f);
-
-	// 2022-04-26 수정 : 필요
-	for (int i = 0; i < m_pRoominfo->playerCount; i++)
+	
+	// 2022-04-26 수정
+	for (int i = 0; i < m_pRoomInfo->playerCount; i++)
 	{
-		m_player[i]->Render(_pRT, 1.0f);
-		m_playerImage[i]->Render(_pRT, 2, 1.0f); wchar_t test[] = L"TEST";
-		m_pName[i]->Render(_pRT, test);
+		int count = m_pUserInfo[i].number;
+		m_player[count]->Render(_pRT, 1.0f);
+		m_playerIma	ge[count]->Render(_pRT, m_pUserInfo[i].image, 1.0f);
+		m_pName[count]->Render(_pRT, m_pUserInfo[i].playerName);
 	}
 
 	m_pExitButton->Render(_pRT, 1.0f);

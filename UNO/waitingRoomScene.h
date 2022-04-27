@@ -50,7 +50,9 @@ private:
 	D2D1_RECT_F m_player4NameRect;
 	D2D1_RECT_F m_player5NameRect;
 
-	CRoom::stROOM* m_pRoominfo;
+	// 2022-04-27 ¼öÁ¤ : test
+	CRoom::stROOM* m_pRoomInfo;
+	CRoom::stUSER* m_pUserInfo;
 public:
 	CWaitingRoomScene();
 	~CWaitingRoomScene();

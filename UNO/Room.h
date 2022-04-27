@@ -2,6 +2,7 @@
 #include "text.h"
 
 #define ROOM_NAME_MAX_SIZE 64
+#define USER_NAME_MAX 32
 
 class CRoom : public CText
 {
@@ -12,6 +13,13 @@ public:
 		wchar_t name[ROOM_NAME_MAX_SIZE];
 		int playerCount;
 		bool state;
+	};
+
+	struct stUSER
+	{
+		int number;
+		wchar_t playerName[USER_NAME_MAX];
+		int image;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;
