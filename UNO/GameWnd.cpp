@@ -157,8 +157,8 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	case WM_LBUTTONDOWN:
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
-	case WM_KEYDOWN:
-		// 대소문자 구분을 하지 않음 character를 사용해야함
+	case WM_CHAR:
+		key = _wParam;
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_DESTROY:

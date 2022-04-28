@@ -15,7 +15,8 @@ CWaitingRoomScene::CWaitingRoomScene() :
 	m_player5ImageRect({ 1129.0f, 330.0f, 1209.0f, 410.0f }), m_player1NameRect({ 424.0f, 602.0f, 504.0f, 682.0f }),
 	m_player2NameRect({ 103.0f, 197.0f, 183.0f, 277.0f }), m_player3NameRect({ 1153.0f, 197.0f, 1233.0f, 277.0f }),
 	m_player4NameRect({ 103.0f, 412.0f, 183.0f, 492.0f }), m_player5NameRect({ 1153.0f, 412.0f, 1233.0f, 492.0f }),
-	fontSize(15)
+	m_chatBackGroundRect({ 0.0f, 486.0f, 353.0f, 686.0f }),
+	fontSize(15), m_MyNumber(0), m_bChatting(false), m_chatCount(0)
 {
 }
 
@@ -31,11 +32,15 @@ void CWaitingRoomScene::Awake()
 	ID2D1Bitmap* pButtonBitmap = pRM->GetBitmap(bitmap_t::BUTTON);
 	ID2D1Bitmap* pPlayerCountBitmap = pRM->GetBitmap(bitmap_t::ROOM_IN_PLAYER);
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
+	ID2D1Bitmap* pExitBitmap = pRM->GetBitmap(bitmap_t::EXIT);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_pBackGround = new CObject2D(sprite[CResourceManager::WAITING_ROOM], pBitmap, m_backGroundRect);
+	m_pChatBackGround = new CObject2D(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_chatBackGroundRect);
 
 	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 686.0f, 1280.0f, 720.0f });
+
+	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
 
 	m_playerImage.reserve(PLAYER_MAX);
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player1ImageRect));
@@ -60,6 +65,12 @@ void CWaitingRoomScene::Awake()
 	m_pName.push_back(new CText(m_player3NameRect, fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText(m_player4NameRect, fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText(m_player5NameRect, fontSize, 0, CText::T_WHITE));
+	
+	//
+	m_chatBuffer = new wchar_t[32];
+	memset(m_chatBuffer, 0, 64);
+
+	CTimer::GetInstance()->ResetTimer();
 }
 
 void CWaitingRoomScene::Start()
@@ -93,6 +104,44 @@ void CWaitingRoomScene::Update()
 			CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
+		m_bChatting = false;
+	}
+
+	if (key == VK_RETURN)
+	{
+		m_bChatting = true;
+	}
+
+	// 2022-04-28 수정 : test
+	if (m_bChatting)
+	{
+		if ((key >= 'A' && key <= 'z') || (key >= '0' && key <= '9') || key == VK_SPACE)
+		{
+			m_chatBuffer[m_chatCount] = key;
+			m_chatCount++;
+			if (m_chatCount > 33) m_chatCount = 33;
+		}
+		if (key == VK_BACK)
+		{
+			--m_chatCount;
+			if (m_chatCount < 0) m_chatCount = 0;
+			m_chatBuffer[m_chatCount] = 0;
+		}
+		if (key == VK_RETURN)
+		{
+			if (m_chatCount > 0)
+			{
+				//Send(CS_PT_CREATEROOM);
+			}
+		}
+	}
+
+	for (int i = 0; i < m_pRoomInfo->playerCount; i++)
+	{
+		if (wcsncmp(m_pUserInfo[i].playerName, CInformation::GetInstance()->GetName(), wcslen(CInformation::GetInstance()->GetName())) == 0)
+		{
+			m_MyNumber = m_pUserInfo[i].number;
+		}
 	}
 }
 
@@ -102,13 +151,30 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pBackGround->Render(_pRT, 1.0f);
 	
-	// 2022-04-26 수정
-	for (int i = 0; i < m_pRoomInfo->playerCount; i++)
+	// 2022-04-28 수정 필요
+	for (int iObject = 1, iUserInfo = 0; iUserInfo < m_pRoomInfo->playerCount; iUserInfo++)
 	{
-		int count = m_pUserInfo[i].number;
-		m_player[count]->Render(_pRT, 1.0f);
-		m_playerImage[count]->Render(_pRT, m_pUserInfo[i].image, 1.0f);
-		m_pName[count]->Render(_pRT, m_pUserInfo[i].playerName);
+		int count = m_pUserInfo[iUserInfo].number;
+		if (m_MyNumber == count)
+		{
+			m_player[0]->Render(_pRT, 1.0f);
+			m_playerImage[0]->Render(_pRT, m_pUserInfo[count].image, 1.0f);
+			m_pName[0]->Render(_pRT, m_pUserInfo[count].playerName);
+		}
+		else
+		{
+			m_player[iObject]->Render(_pRT, 1.0f);
+			m_playerImage[iObject]->Render(_pRT, m_pUserInfo[count].image, 1.0f);
+			m_pName[iObject]->Render(_pRT, m_pUserInfo[count].playerName);
+			iObject++;
+		}
+	}
+	
+	m_pChatBackGround->Render(_pRT, 0.3f);
+
+	if (m_bChatting)
+	{
+		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
 
 	m_pExitButton->Render(_pRT, 1.0f);
@@ -143,5 +209,6 @@ void CWaitingRoomScene::Destroy()
 	m_pName.clear();
 
 	if (m_pExitButton) { delete m_pExitButton; m_pExitButton = nullptr; }
+	if (m_pChatBackGround) { delete m_pChatBackGround; m_pChatBackGround = nullptr; }
 	if (m_pBackGround) { delete m_pBackGround; m_pBackGround = nullptr; }
 }
