@@ -20,6 +20,7 @@ public:
 		int number;
 		wchar_t playerName[USER_NAME_MAX];
 		int image;
+		SOCKET socket;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

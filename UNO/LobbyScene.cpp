@@ -140,9 +140,9 @@ void CLobbyScene::Update()
 		}
 		if (key == VK_BACK)
 		{
+			m_pRoomName[m_roomNameCount] = 0;
 			--m_roomNameCount;
 			if (m_roomNameCount < 0) m_roomNameCount = 0;
-			m_pRoomName[m_roomNameCount] = 0;
 		}
 		if (key == VK_RETURN)
 		{

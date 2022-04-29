@@ -28,6 +28,7 @@ CWaitingRoomScene::~CWaitingRoomScene()
 void CWaitingRoomScene::Awake()
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
+	CInformation* pInformation = CInformation::GetInstance();
 	ID2D1Bitmap* pBitmap = pRM->GetBitmap(bitmap_t::WAITING);
 	ID2D1Bitmap* pButtonBitmap = pRM->GetBitmap(bitmap_t::BUTTON);
 	ID2D1Bitmap* pPlayerCountBitmap = pRM->GetBitmap(bitmap_t::ROOM_IN_PLAYER);
@@ -41,6 +42,7 @@ void CWaitingRoomScene::Awake()
 	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 686.0f, 1280.0f, 720.0f });
 
 	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
+	m_pChatting = new CText({ 10.0f, 400.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
 
 	m_playerImage.reserve(PLAYER_MAX);
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player1ImageRect));
@@ -66,11 +68,16 @@ void CWaitingRoomScene::Awake()
 	m_pName.push_back(new CText(m_player4NameRect, fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText(m_player5NameRect, fontSize, 0, CText::T_WHITE));
 	
-	//
+	// 2022-04-28 ¼öÁ¤
 	m_chatBuffer = new wchar_t[32];
-	memset(m_chatBuffer, 0, 64);
+	memset(m_chatBuffer, 0, 68);
+	memset(m_test, 0, 64);
 
 	CTimer::GetInstance()->ResetTimer();
+
+	m_pUserInfo = pInformation->GetUserInfo();
+	m_pRoomInfo = pInformation->GetRoomInfo();
+	m_chatting = pInformation->GetChatting();
 }
 
 void CWaitingRoomScene::Start()
@@ -81,6 +88,7 @@ void CWaitingRoomScene::Update()
 {
 	CInput* pInput = CInput::GetInstance();
 	CTimer* pTimer = CTimer::GetInstance();
+	CInformation* pInformation = CInformation::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
@@ -88,8 +96,9 @@ void CWaitingRoomScene::Update()
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
-		m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
-		m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
+		m_pUserInfo = pInformation->GetUserInfo();
+		m_pRoomInfo = pInformation->GetRoomInfo();
+		m_chatting = pInformation->GetChatting();
 		pTimer->ResetTimer();
 	}
 
@@ -118,20 +127,24 @@ void CWaitingRoomScene::Update()
 		if ((key >= 'A' && key <= 'z') || (key >= '0' && key <= '9') || key == VK_SPACE)
 		{
 			m_chatBuffer[m_chatCount] = key;
+			m_test[m_chatCount] = key;
 			m_chatCount++;
-			if (m_chatCount > 33) m_chatCount = 33;
+			if (m_chatCount > 31) m_chatCount = 31;
 		}
 		if (key == VK_BACK)
 		{
+			m_chatBuffer[m_chatCount] = 0;
+			m_test[m_chatCount] = 0;
 			--m_chatCount;
 			if (m_chatCount < 0) m_chatCount = 0;
-			m_chatBuffer[m_chatCount] = 0;
 		}
 		if (key == VK_RETURN)
 		{
 			if (m_chatCount > 0)
 			{
-				//Send(CS_PT_CREATEROOM);
+				CClient::GetInstance()->Send(m_chatBuffer, CS_PT_CHATTING);
+				memset(m_chatBuffer, 0, 64);
+				m_chatCount = 0;
 			}
 		}
 	}
@@ -177,7 +190,11 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
 
+	m_pChatting->Render(_pRT, (wchar_t*)m_chatting);
+
 	m_pExitButton->Render(_pRT, 1.0f);
+
+	
 
 	_pRT->EndDraw();
 }

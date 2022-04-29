@@ -135,6 +135,9 @@ bool CClient::Send(void* _buffer, int _type)
 		break;
 	case CS_PT_ROOMSTATE:
 		break;
+	case CS_PT_CHATTING:
+		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 1;
+		break;
 	}
 	
 	*(unsigned short*)tempBuffer = 2 + 2 + size;

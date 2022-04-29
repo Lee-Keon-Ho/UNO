@@ -73,9 +73,9 @@ void CLoginScene::Update()
 	}
 	if (key == VK_BACK)
 	{
+		m_pBuffer[m_bufferCount] = 0;
 		--m_bufferCount;
 		if(m_bufferCount < 0) m_bufferCount = 0;
-		m_pBuffer[m_bufferCount] = 0;
 	}
 
 	if (key == VK_RETURN)
