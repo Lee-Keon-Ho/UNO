@@ -1,5 +1,5 @@
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #include "app.h"
-
 #include <Windows.h>
 
 HINSTANCE hInst;

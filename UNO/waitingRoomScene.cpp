@@ -41,8 +41,9 @@ void CWaitingRoomScene::Awake()
 
 	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 686.0f, 1280.0f, 720.0f });
 
+	// 2022-04-29
 	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
-	m_pChatting = new CText({ 10.0f, 400.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
+	m_pChatting = new CText({ 10.0f, 500.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
 
 	m_playerImage.reserve(PLAYER_MAX);
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player1ImageRect));

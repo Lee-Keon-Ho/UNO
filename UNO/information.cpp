@@ -138,5 +138,12 @@ void CInformation::Chatting(char* _chat)
 	unsigned short packetSize = *(unsigned short*)_chat;
 	char* tempBuffer = _chat + 4;
 
+	for (int i = 0; i < packetSize; i++)
+	{
+		printf("%d ", *_chat);
+		_chat++;
+	}
+	
+
 	memcpy(m_pChatting, tempBuffer, packetSize);
 }

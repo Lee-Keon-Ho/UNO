@@ -136,7 +136,7 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_ROOMSTATE:
 		break;
 	case CS_PT_CHATTING:
-		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 1;
+		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 2;
 		break;
 	}
 	
