@@ -4,6 +4,8 @@
 #include "SceneManager.h"
 #include "Input.h"
 
+#pragma comment( lib, "imm32.lib")
+
 #define WINDOW_WIDTH 1296
 #define WINDOW_HEIGHT 759
 
@@ -144,8 +146,12 @@ void CGameWnd::Render()
 
 LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
+	HIMC himc;
 	POINT mouse;
 	char key;
+	int len;
+	WCHAR tempStr[10];
+	WCHAR* str;
 	switch (_message)
 	{
 	case WM_MOUSEMOVE :
@@ -160,6 +166,8 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	case WM_CHAR:
 		key = _wParam;
 		CInput::GetInstance()->SetKey(_wParam);
+		break;
+	case WM_IME_COMPOSITION:
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

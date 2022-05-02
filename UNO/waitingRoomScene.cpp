@@ -43,7 +43,7 @@ void CWaitingRoomScene::Awake()
 
 	// 2022-04-29
 	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
-	m_pChatting = new CText({ 10.0f, 500.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
+	m_pChatting = new CChatting({ 10.0f, 680.0f, 343.0f, 720.0f }, fontSize, 15, CText::T_WHITE);
 
 	m_playerImage.reserve(PLAYER_MAX);
 	m_playerImage.push_back(new CObject2D(sprite[CResourceManager::CHARCTER_ICON], pPlayerImage, m_player1ImageRect));
@@ -71,14 +71,13 @@ void CWaitingRoomScene::Awake()
 	
 	// 2022-04-28 수정
 	m_chatBuffer = new wchar_t[32];
-	memset(m_chatBuffer, 0, 68);
-	memset(m_test, 0, 64);
+	memset(m_chatBuffer, 0, 64);
 
 	CTimer::GetInstance()->ResetTimer();
 
 	m_pUserInfo = pInformation->GetUserInfo();
 	m_pRoomInfo = pInformation->GetRoomInfo();
-	m_chatting = pInformation->GetChatting();
+	m_pChatting->SetList();
 }
 
 void CWaitingRoomScene::Start()
@@ -93,13 +92,13 @@ void CWaitingRoomScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1)
+	if (pTimer->GetTime() >= 1.0)
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
 		m_pUserInfo = pInformation->GetUserInfo();
 		m_pRoomInfo = pInformation->GetRoomInfo();
-		m_chatting = pInformation->GetChatting();
+		m_pChatting->SetList();
 		pTimer->ResetTimer();
 	}
 
@@ -128,22 +127,22 @@ void CWaitingRoomScene::Update()
 		if ((key >= 'A' && key <= 'z') || (key >= '0' && key <= '9') || key == VK_SPACE)
 		{
 			m_chatBuffer[m_chatCount] = key;
-			m_test[m_chatCount] = key;
 			m_chatCount++;
 			if (m_chatCount > 31) m_chatCount = 31;
 		}
 		if (key == VK_BACK)
 		{
-			m_chatBuffer[m_chatCount] = 0;
-			m_test[m_chatCount] = 0;
 			--m_chatCount;
 			if (m_chatCount < 0) m_chatCount = 0;
+			m_chatBuffer[m_chatCount] = 0;
 		}
 		if (key == VK_RETURN)
 		{
 			if (m_chatCount > 0)
 			{
+				m_chatBuffer[m_chatCount] = 0;
 				CClient::GetInstance()->Send(m_chatBuffer, CS_PT_CHATTING);
+				m_pChatting->SetList();
 				memset(m_chatBuffer, 0, 64);
 				m_chatCount = 0;
 			}
@@ -191,17 +190,21 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
 
-	m_pChatting->Render(_pRT, (wchar_t*)m_chatting);
+	m_pChatting->Render(_pRT);
 
 	m_pExitButton->Render(_pRT, 1.0f);
-
-	
 
 	_pRT->EndDraw();
 }
 
 void CWaitingRoomScene::Destroy()
 {
+	// 2022-05-02 수정
+	memset(m_chatBuffer, 0, 32);
+	CInformation::GetInstance()->ReSetChatting();
+
+	if (m_pChatting) { delete m_pChatting; m_pChatting = nullptr; }
+
 	player_t::iterator iter = m_player.begin();
 	player_t::iterator endIter = m_player.end();
 	for (; iter != endIter; iter++)

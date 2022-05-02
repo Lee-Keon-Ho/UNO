@@ -73,9 +73,9 @@ void CLoginScene::Update()
 	}
 	if (key == VK_BACK)
 	{
-		m_pBuffer[m_bufferCount] = 0;
 		--m_bufferCount;
-		if(m_bufferCount < 0) m_bufferCount = 0;
+		if (m_bufferCount < 0) m_bufferCount = 0;
+		m_pBuffer[m_bufferCount] = 0;
 	}
 
 	if (key == VK_RETURN)
@@ -124,6 +124,7 @@ void CLoginScene::Render(ID2D1HwndRenderTarget* _pRT)
 void CLoginScene::Destroy()
 {
 	m_bufferCount = 0;
+	if (m_pBuffer) { delete[] m_pBuffer; m_pBuffer = nullptr; }
 	if (m_pName) { delete m_pName; m_pName = nullptr; }
 	if (m_pButton) { delete m_pButton; m_pButton = nullptr; }
 	if (m_pLogin) { delete m_pLogin; m_pLogin = nullptr; }

@@ -24,7 +24,10 @@ private:
 	room_t m_roomList;
 	CRoom::stROOM m_room;
 	CRoom::stUSER m_user[5]; // 2022-04-27 수정
-	char* m_pChatting;
+	wchar_t* m_pChatting;
+
+	// 2022-05-02 수정 : test
+	int m_chatCount;
 public:
 	bool Initalize();
 	void Cleanup();
@@ -36,15 +39,18 @@ public:
 	void RoomState(char* _roomState);
 	void Chatting(char* _chat);
 
+	void ReSetChatting();
+
 	void SetName(const wchar_t* _buffer);
 	void SetImage(int _num) { m_MyImage = _num; }
 
 	wchar_t* GetName() { return m_pMyName; }
 	room_t GetRoomList() { return m_roomList; }
 	wchar_t* GetUserList() { return m_pUserList; }
+	wchar_t* GetChatting() { return m_pChatting; }
+	int GetChatCount() { return m_chatCount; }
 	CRoom::stROOM* GetRoomInfo() { return &m_room; }
 	CRoom::stUSER* GetUserInfo() { return m_user; }
-	char* GetChatting() { return m_pChatting; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

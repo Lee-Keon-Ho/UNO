@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Room.h"
+#include "Chatting.h"
 
 class CWaitingRoomScene : public CScene
 {
@@ -33,15 +34,12 @@ private:
 	int m_chatCount;
 
 	// 2022-04-28 수정
-	wchar_t m_test[32];
 	wchar_t* m_chatBuffer;
-	// 2022-04-29 수정
-	char* m_chatting;
 
 	CButton* m_pExitButton;
 
 	CText* m_pChatText;
-	CText* m_pChatting;
+	CChatting* m_pChatting;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_chatBackGroundRect;

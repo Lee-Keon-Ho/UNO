@@ -6,7 +6,6 @@
 
 class CUser : public CText 
 {
-public:
 private:
 	wchar_t* m_pData;
 

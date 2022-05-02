@@ -37,13 +37,14 @@ bool CInformation::Initalize()
 	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
 
 	// 2022-04-29 ¼öÁ¤ : test
-	m_pChatting = new char[10000];
+	m_pChatting = new wchar_t[10000];
 	memset(m_pChatting, 0, 10000);
 	return true;
 }
 
 void CInformation::Cleanup()
 {
+	if (m_pChatting) { delete[] m_pChatting; m_pChatting = nullptr; }
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
 	if (m_pUserList) { delete[] m_pUserList; m_pUserList = nullptr; }
 }
@@ -137,13 +138,18 @@ void CInformation::Chatting(char* _chat)
 {
 	unsigned short packetSize = *(unsigned short*)_chat;
 	char* tempBuffer = _chat + 4;
-
+	m_chatCount = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short);
 	for (int i = 0; i < packetSize; i++)
 	{
 		printf("%d ", *_chat);
 		_chat++;
 	}
-	
+	memset(m_pChatting, 0, (32 * 12) * sizeof(wchar_t));
+	memcpy(m_pChatting, tempBuffer, packetSize - 6);
+}
 
-	memcpy(m_pChatting, tempBuffer, packetSize);
+void CInformation::ReSetChatting()
+{
+	memset(m_pChatting, 0, 10000);
 }

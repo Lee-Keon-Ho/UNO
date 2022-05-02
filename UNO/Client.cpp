@@ -2,7 +2,7 @@
 #include "ResourceManager.h"
 #include "information.h"
 #include "PacketType.h"
-#include "Room.h"
+#include "Chatting.h"
 #include <stdio.h>
 #include <process.h>
 
@@ -136,7 +136,7 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_ROOMSTATE:
 		break;
 	case CS_PT_CHATTING:
-		size = wcslen((wchar_t*)_buffer) * sizeof(wchar_t) + 2;
+		size = sizeof(WCHAR) + CHAT_MAX;
 		break;
 	}
 	

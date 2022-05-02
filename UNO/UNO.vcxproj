@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="app.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Chatting.cpp" />
     <ClCompile Include="Direct.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="information.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="app.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Chatting.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="information.h" />
