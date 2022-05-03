@@ -40,6 +40,7 @@ private:
 
 	CText* m_pChatText;
 	CChatting* m_pChatting;
+	CObject2D* m_pCard;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_chatBackGroundRect;

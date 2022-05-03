@@ -34,6 +34,7 @@ void CWaitingRoomScene::Awake()
 	ID2D1Bitmap* pPlayerCountBitmap = pRM->GetBitmap(bitmap_t::ROOM_IN_PLAYER);
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
 	ID2D1Bitmap* pExitBitmap = pRM->GetBitmap(bitmap_t::EXIT);
+	ID2D1Bitmap* pCardBitmap = pRM->GetBitmap(bitmap_t::CARD);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_pBackGround = new CObject2D(sprite[CResourceManager::WAITING_ROOM], pBitmap, m_backGroundRect);
@@ -69,6 +70,9 @@ void CWaitingRoomScene::Awake()
 	m_pName.push_back(new CText(m_player4NameRect, fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText(m_player5NameRect, fontSize, 0, CText::T_WHITE));
 	
+	// 2022-05-03 수정 : test
+	m_pCard = new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 500.0f, 500.0f, 605.0f, 660.5f });
+
 	// 2022-04-28 수정
 	m_chatBuffer = new wchar_t[32];
 	memset(m_chatBuffer, 0, 64);
@@ -189,6 +193,8 @@ void CWaitingRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 	{
 		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
+
+	m_pCard->Render(_pRT, 1.0f);
 
 	m_pChatting->Render(_pRT);
 

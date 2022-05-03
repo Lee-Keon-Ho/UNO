@@ -27,7 +27,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 
 		unsigned short packetSize = *(unsigned short*)recvBuffer;
 		unsigned short type = *(unsigned short*)(recvBuffer + 2);
-
+		printf("packetSize : %d\n type : %d\n", packetSize, type);
 		while (recvedSize >= packetSize)
 		{
 			CInformation::GetInstance()->HandlePacket(recvBuffer);

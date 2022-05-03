@@ -1,5 +1,6 @@
 #include "information.h"
 #include "PacketType.h"
+#include "SceneManager.h"
 
 #define MAX 255
 
@@ -59,6 +60,7 @@ void CInformation::HandlePacket(char* _buffer)
 		UserList(_buffer);
 		break;
 	case CS_PT_CREATEROOM:
+		CreateRoom(_buffer);
 		break;
 	case CS_PT_USERLIST:
 		UserList(_buffer);
@@ -77,9 +79,14 @@ void CInformation::HandlePacket(char* _buffer)
 	}
 }
 
-void CInformation::CreateRoom(char* _buffer)
+void CInformation::CreateRoom(char* _bCreate)
 {
-
+	char* tempBuffer = _bCreate + 4;
+	bool bCreate = tempBuffer;
+	if (bCreate)
+	{
+		CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
+	}
 }
 
 void CInformation::SetName(const wchar_t* _buffer)
@@ -120,6 +127,16 @@ void CInformation::RoomList(char* _roomList)
 		count += size;
 
 		m_roomList.push_back(temp);
+	}
+}
+
+void CInformation::RoomIn(char* _roomin)
+{
+	char* tempBuffer = _roomin + 4;
+	bool bRoomIn = tempBuffer;
+	if (bRoomIn)
+	{
+		CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 	}
 }
 

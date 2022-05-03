@@ -24,6 +24,7 @@ public:
 		EXIT,
 		CREATE,
 		ROOM_IN_PLAYER,
+		CARD,
 		MAX
 	};
 
@@ -53,6 +54,7 @@ public:
 		PLAYER_THREE,
 		PLAYER_FOUR,
 		PLAYER_FIVE,
+		UNO_CARD,
 		ICON_MAX
 	};
 

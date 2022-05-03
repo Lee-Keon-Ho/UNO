@@ -33,9 +33,10 @@ public:
 	void Cleanup();
 
 	void HandlePacket(char* _buffer);
-	void CreateRoom(char* _buffer);
+	void CreateRoom(char* _bCreate);
 	void UserList(char* _userList);
 	void RoomList(char* _roomList);
+	void RoomIn(char* _roomin);
 	void RoomState(char* _roomState);
 	void Chatting(char* _chat);
 
