@@ -12,6 +12,8 @@ public:
 	typedef std::vector<CObject2D*> player_t;
 	typedef std::vector<CText*> playerName_t;
 
+	// 2022-05-04 수정 : test
+	typedef std::vector<CObject2D*> card_t;
 	enum ePlayer
 	{
 		P_ONE = 0,
@@ -37,10 +39,18 @@ private:
 	wchar_t* m_chatBuffer;
 
 	CButton* m_pExitButton;
+	CButton* m_pReadyButton;
+	CButton* m_pStartButton;
 
 	CText* m_pChatText;
 	CChatting* m_pChatting;
-	CObject2D* m_pCard;
+	CObject2D* m_pCard; // 2022-05-04 수정 : test
+	card_t m_player1Card;
+	card_t m_player2Card;
+	card_t m_player3Card;
+	card_t m_player4Card;
+	card_t m_player5Card;
+	D2D1_RECT_F test;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_chatBackGroundRect;

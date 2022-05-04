@@ -22,6 +22,7 @@ CLobbyScene::CLobbyScene()
 	m_roomNameCount(0), m_roomNameMax(24), m_bOnRoom(false), m_roomButtonNum(0), m_roomCount(0),
 	m_roomButtonMAX(8)
 {
+	srand((unsigned int)time(NULL));
 	m_userImageNum = rand() % 5;
 }
 
@@ -32,7 +33,6 @@ CLobbyScene::~CLobbyScene()
 
 void CLobbyScene::Awake()
 {
-	srand((unsigned int)time(NULL));
 	CInformation::GetInstance()->SetImage(m_userImageNum);
 
 	HRESULT hr;

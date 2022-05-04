@@ -25,6 +25,7 @@ public:
 		CREATE,
 		ROOM_IN_PLAYER,
 		CARD,
+		READY,
 		MAX
 	};
 
@@ -55,6 +56,8 @@ public:
 		PLAYER_FOUR,
 		PLAYER_FIVE,
 		UNO_CARD,
+		READY_BUTTON,
+		START_BUTTON,
 		ICON_MAX
 	};
 
