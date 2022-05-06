@@ -16,5 +16,6 @@ public:
 	bool OnButton(POINT _mouse);
 	void OnButtonDown();
 	void OnButtonUp();
+	void ButtonPosition(POINT _position);
 private:
 };

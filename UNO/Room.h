@@ -21,6 +21,7 @@ public:
 		wchar_t playerName[USER_NAME_MAX];
 		int image;
 		SOCKET socket;
+		bool boss;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

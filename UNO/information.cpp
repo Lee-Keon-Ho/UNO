@@ -148,7 +148,12 @@ void CInformation::RoomState(char* _roomState)
 	m_room.playerCount = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
 
+	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
 	memcpy(m_user, tempBuffer, packetSize - 6);
+	for (int i = 0; i < 5; i++)
+	{
+		wprintf_s(L"%s \n", m_user[i].playerName);
+	}
 }
 
 void CInformation::Chatting(char* _chat)

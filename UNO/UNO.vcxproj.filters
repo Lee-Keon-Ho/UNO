@@ -87,7 +87,7 @@
     <ClCompile Include="text.cpp">
       <Filter>소스 파일\core</Filter>
     </ClCompile>
-    <ClCompile Include="waitingRoomScene.cpp">
+    <ClCompile Include="GameRoomScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
@@ -158,7 +158,7 @@
     <ClInclude Include="text.h">
       <Filter>소스 파일\core</Filter>
     </ClInclude>
-    <ClInclude Include="waitingRoomScene.h">
+    <ClInclude Include="GameRoomScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="PacketType.h">

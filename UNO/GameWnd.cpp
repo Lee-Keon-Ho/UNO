@@ -5,6 +5,7 @@
 #include "Input.h"
 
 #pragma comment( lib, "imm32.lib")
+#define IMC_GETOPENSTATUS 0x0005
 
 #define WINDOW_WIDTH 1296
 #define WINDOW_HEIGHT 759
@@ -155,8 +156,9 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	POINT mouse;
 	char key;
 	int len;
-	WCHAR tempStr[10];
-	WCHAR* str;
+	//2022-05-06 수정 test
+	char str[100] = "";
+	HIMC hIMC = ImmGetContext(_hWnd);
 	switch (_message)
 	{
 	case WM_MOUSEMOVE :
@@ -173,6 +175,20 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_IME_COMPOSITION:
+		
+		if (_lParam & GCS_COMPSTR)
+		{
+			len = ImmGetCompositionString(hIMC, GCS_COMPSTR, NULL, 0);
+			ImmGetCompositionString(hIMC, GCS_COMPSTR, str, len);
+			printf("조합중 : %s \n", str);
+		}
+		if (_lParam & GCS_RESULTSTR) {
+			len = ImmGetCompositionString(hIMC, GCS_RESULTSTR, NULL, 0);
+			ImmGetCompositionString(hIMC, GCS_RESULTSTR, str, len);
+
+			printf("조합 완료 : %s \n", str);
+		}
+		ImmReleaseContext(_hWnd, hIMC); str[len] = '\0';
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

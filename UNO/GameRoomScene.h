@@ -5,7 +5,7 @@
 #include "Room.h"
 #include "Chatting.h"
 
-class CWaitingRoomScene : public CScene
+class CGameRoomScene : public CScene
 {
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
@@ -44,13 +44,13 @@ private:
 
 	CText* m_pChatText;
 	CChatting* m_pChatting;
-	CObject2D* m_pCard; // 2022-05-04 수정 : test
+
+	// 2022-05-04 수정 : test
 	card_t m_player1Card;
 	card_t m_player2Card;
 	card_t m_player3Card;
 	card_t m_player4Card;
 	card_t m_player5Card;
-	D2D1_RECT_F test;
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_chatBackGroundRect;
@@ -73,6 +73,8 @@ private:
 	D2D1_RECT_F m_player4NameRect;
 	D2D1_RECT_F m_player5NameRect;
 
+	D2D1_RECT_F m_chatTextRect;
+	D2D1_RECT_F m_chattingRect;
 
 	// 2022-04-27 수정 : test
 	CRoom::stROOM* m_pRoomInfo;
@@ -80,8 +82,8 @@ private:
 	
 	bool m_bChatting;
 public:
-	CWaitingRoomScene();
-	~CWaitingRoomScene();
+	CGameRoomScene();
+	~CGameRoomScene();
 
 	void Awake();
 	void Start();

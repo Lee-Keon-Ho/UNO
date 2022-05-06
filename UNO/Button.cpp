@@ -25,10 +25,9 @@ bool CButton::OnButton(POINT _mouse)
 	if (_mouse.x >= m_target.left && _mouse.x <= m_target.right &&
 		_mouse.y >= m_target.top && _mouse.y <= m_target.bottom)
 	{
-		m_OnButton = 1;
+		m_OnButton = !m_OnButton;
 		return true;
 	}
-	else m_OnButton = 0;
 	return false;
 }
 
@@ -40,4 +39,14 @@ void CButton::OnButtonDown()
 void CButton::OnButtonUp()
 {
 	m_OnButton = 0;
+}
+
+void CButton::ButtonPosition(POINT _position)
+{
+	if (_position.x >= m_target.left && _position.x <= m_target.right &&
+		_position.y >= m_target.top && _position.y <= m_target.bottom)
+	{
+		m_OnButton = 1;
+	}
+	else m_OnButton = 0;
 }
