@@ -155,10 +155,7 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	HIMC himc;
 	POINT mouse;
 	char key;
-	int len;
 	//2022-05-06 수정 test
-	char str[100] = "";
-	HIMC hIMC = ImmGetContext(_hWnd);
 	switch (_message)
 	{
 	case WM_MOUSEMOVE :
@@ -175,20 +172,7 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_IME_COMPOSITION:
-		
-		if (_lParam & GCS_COMPSTR)
-		{
-			len = ImmGetCompositionString(hIMC, GCS_COMPSTR, NULL, 0);
-			ImmGetCompositionString(hIMC, GCS_COMPSTR, str, len);
-			printf("조합중 : %s \n", str);
-		}
-		if (_lParam & GCS_RESULTSTR) {
-			len = ImmGetCompositionString(hIMC, GCS_RESULTSTR, NULL, 0);
-			ImmGetCompositionString(hIMC, GCS_RESULTSTR, str, len);
-
-			printf("조합 완료 : %s \n", str);
-		}
-		ImmReleaseContext(_hWnd, hIMC); str[len] = '\0';
+		OnImeComposition(_hWnd, _lParam);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -223,3 +207,55 @@ enum class eInputType : u_short
 
 	INPUT_TYPE_MAX
 };
+
+
+bool CGameWnd::OnImeComposition(HWND _hWnd, LPARAM _lParam)
+{
+	HIMC hImc = ImmGetContext(_hWnd);
+	if (hImc == NULL)
+	{
+		return false;
+	}
+
+	int nLength = 0;
+
+	wchar_t wszComp[4] = { 0, };
+
+	if (_lParam & GCS_RESULTSTR)
+	{
+		nLength = ImmGetCompositionStringW(hImc, GCS_RESULTSTR, NULL, 0);
+
+		if (nLength > 0)
+		{
+			ImmGetCompositionStringW(hImc, GCS_RESULTSTR, wszComp, nLength);
+
+			for (int i = 0; i < nLength; ++i)
+			{
+				if (wszComp[i] != 0)
+				{
+					wprintf_s(L"조합 완료 : %c \n", wszComp[i]);
+				}
+			}
+		}
+	}
+	else if (_lParam & GCS_COMPSTR)
+	{
+		nLength = ImmGetCompositionStringW(hImc, GCS_COMPSTR, NULL, 0);
+
+		if (nLength > 0)
+		{
+			ImmGetCompositionStringW(hImc, GCS_COMPSTR, wszComp, nLength);
+
+			for (int i = 0; i < nLength; ++i)
+			{
+				if (wszComp[i] != 0)
+				{
+					wprintf_s(L"조합 ing : %c \n", wszComp);
+				}
+			}
+		}
+	}
+
+	ImmReleaseContext(_hWnd, hImc);
+	return true;
+}

@@ -35,3 +35,22 @@ public:
 	static CTimer* GetInstance();
 	static void DeleteInstance();
 };
+
+/*
+class CMessageTimer
+{
+private :
+	std::vector<DWORD> m_timerIDs;
+
+public :
+	void Add(HWND _hWnd, DWORD _id, DWORD _timer)
+	{
+		SetTimer(_hWnd, _id, _timer, NULL);
+	}
+
+	void Alert(DWORD _id)
+	{
+
+	}
+};
+*/

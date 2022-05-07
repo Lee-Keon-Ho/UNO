@@ -20,6 +20,8 @@ public:
 	bool LoadBitmapFile();
 	ID2D1HwndRenderTarget* GetRT() { return m_pRenderTarget; }
 
+	bool OnImeComposition(HWND _hWnd, LPARAM _lParam);
+
 	LRESULT MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam);
 private:
 };
