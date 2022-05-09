@@ -39,7 +39,7 @@ void CLoginScene::Awake()
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 
 
-	m_pBrush = *pRM->GetBlackBrush();
+	m_pBrush = *pRM->GetBrush(1);
 
 	m_pBackGround = new CObject2D(sprite[CResourceManager::LOGIN_BACKGROUND], pBitmap, { 0.0f, 0.0f, 1280.0f, 720.0f });
 

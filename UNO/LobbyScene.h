@@ -89,7 +89,5 @@ public:
 	void Update();
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Destroy();
-
-	void Send(int _type);
 private:
 };

@@ -149,8 +149,12 @@ void CLobbyScene::Update()
 			m_pCreateOkButton->OnButtonDown();
 			if (m_roomNameCount >= 4)
 			{
-				Send(CS_PT_CREATEROOM);
-				//CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
+				char sendBuffer[1000];
+				char* tempBuffer = sendBuffer;
+				*(unsigned short*)tempBuffer = m_userImageNum;
+				tempBuffer += sizeof(unsigned short);
+				memcpy(tempBuffer, m_pRoomName, ROOM_NAME_MAX_SIZE);
+				CClient::GetInstance()->Send(sendBuffer, CS_PT_CREATEROOM);
 			}
 		}
 		if (key == VK_LBUTTON)
@@ -160,7 +164,12 @@ void CLobbyScene::Update()
 				m_pCreateOkButton->OnButtonDown();
 				if (m_roomNameCount >= 4)
 				{
-					Send(CS_PT_CREATEROOM);
+					char sendBuffer[1000];
+					char* tempBuffer = sendBuffer;
+					*(unsigned short*)tempBuffer = m_userImageNum;
+					tempBuffer += sizeof(unsigned short);
+					memcpy(tempBuffer, m_pRoomName, ROOM_NAME_MAX_SIZE);
+					CClient::GetInstance()->Send(sendBuffer, CS_PT_CREATEROOM);
 				}
 			}
 			if (m_pCreateNoButton->OnButton(mouse))
@@ -194,8 +203,15 @@ void CLobbyScene::Update()
 					case LB_CHOOSE:
 						if (m_bOnRoom)
 						{							
-							Send(CS_PT_INROOM);
-							CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
+							char sendBuffer[1000];
+							char* tempBuffer = sendBuffer;
+							*(unsigned short*)tempBuffer = m_roomButtonNum + 1;
+							tempBuffer += sizeof(unsigned short);
+							*(unsigned short*)tempBuffer = m_userImageNum;
+							tempBuffer += sizeof(unsigned short);
+							memcpy(tempBuffer, CInformation::GetInstance()->GetName(), 32);
+							CClient::GetInstance()->Send(sendBuffer, CS_PT_INROOM);
+
 						}
 						break;
 					case LB_QUICK:
@@ -303,28 +319,4 @@ void CLobbyScene::Destroy()
 	m_bOnCreate = false;
 	m_bOnExit = false;
 	m_roomNameCount = 0;
-}
-
-void CLobbyScene::Send(int _type)
-{
-	// 2022-04-26 ¼öÁ¤ : test
-	char sendBuffer[1000];
-	char* tempBuffer = sendBuffer;
-	switch (_type)
-	{
-	case CS_PT_CREATEROOM:
-		*(unsigned short*)tempBuffer = m_userImageNum;
-		tempBuffer += sizeof(unsigned short);
-		memcpy(tempBuffer, m_pRoomName, ROOM_NAME_MAX_SIZE);
-		break;
-	case CS_PT_INROOM:
-		*(unsigned short*)tempBuffer = m_roomButtonNum + 1;
-		tempBuffer += sizeof(unsigned short);
-		*(unsigned short*)tempBuffer = m_userImageNum;
-		tempBuffer += sizeof(unsigned short);
-		memcpy(tempBuffer, CInformation::GetInstance()->GetName(), 32);
-		break;
-	}
-	
-	CClient::GetInstance()->Send(sendBuffer, _type);
 }

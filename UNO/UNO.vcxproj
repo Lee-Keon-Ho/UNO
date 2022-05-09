@@ -146,6 +146,7 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="information.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="GameWnd.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="information.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="PacketType.h" />
+    <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="GameWnd.h" />
     <ClInclude Include="LobbyScene.h" />

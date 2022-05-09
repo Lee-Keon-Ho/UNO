@@ -49,3 +49,16 @@ void CResourceManager::SetSprite(CSprite* _sprite, int _size, int _index)
 		_sprite++;
 	}
 }
+
+ID2D1SolidColorBrush** CResourceManager::GetBrush(int _color)
+{
+	if (_color == 0)
+	{
+		return &m_pWhiteBrush;
+	}
+	if (_color == 1)
+	{
+		return &m_pBlackBrush;
+	}
+	return nullptr;
+}

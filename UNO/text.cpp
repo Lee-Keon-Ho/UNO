@@ -24,15 +24,7 @@ CText::CText(D2D1_RECT_F _layoutRect, int _fontSize, int _height, int _color)
 	m_layoutRect = _layoutRect;
 	m_textHeight = _height;
 
-	if (_color == 0)
-	{
-		m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
-	}
-	else
-	{
-		m_pBrush = *CResourceManager::GetInstance()->GetBlackBrush();
-	}
-	
+	m_pBrush = *CResourceManager::GetInstance()->GetBrush(_color);
 }
 
 CText::CText(wchar_t* _pStr, D2D1_RECT_F _layoutRect, int _fontSize, int _color)
@@ -51,7 +43,7 @@ CText::CText(wchar_t* _pStr, D2D1_RECT_F _layoutRect, int _fontSize, int _color)
 	m_size = wcslen(_pStr);
 	m_layoutRect = _layoutRect;
 	m_textHeight = 0.0f;
-	m_pBrush = *CResourceManager::GetInstance()->GetWhiteBrush();
+	m_pBrush = *CResourceManager::GetInstance()->GetBrush(_color);
 }
 
 CText::~CText()

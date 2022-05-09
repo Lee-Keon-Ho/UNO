@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 #include "Room.h"
 #include "Chatting.h"
-
+#include "PlayerObject.h"
 class CGameRoomScene : public CScene
 {
 public:
@@ -27,9 +27,7 @@ private:
 	CObject2D* m_pBackGround;
 	CObject2D* m_pChatBackGround;
 
-	player_t m_player;
-	player_t m_playerImage;
-	playerName_t m_pName;
+	CPlayerObject* m_pPlayerObject;
 
 	int fontSize;
 	int m_MyNumber;
@@ -54,24 +52,6 @@ private:
 
 	D2D1_RECT_F m_backGroundRect;
 	D2D1_RECT_F m_chatBackGroundRect;
-
-	D2D1_RECT_F m_player1Rect;
-	D2D1_RECT_F m_player2Rect;
-	D2D1_RECT_F m_player3Rect;
-	D2D1_RECT_F m_player4Rect;
-	D2D1_RECT_F m_player5Rect;
-	
-	D2D1_RECT_F m_player1ImageRect;
-	D2D1_RECT_F m_player2ImageRect;
-	D2D1_RECT_F m_player3ImageRect;
-	D2D1_RECT_F m_player4ImageRect;
-	D2D1_RECT_F m_player5ImageRect;
-
-	D2D1_RECT_F m_player1NameRect;
-	D2D1_RECT_F m_player2NameRect;
-	D2D1_RECT_F m_player3NameRect;
-	D2D1_RECT_F m_player4NameRect;
-	D2D1_RECT_F m_player5NameRect;
 
 	D2D1_RECT_F m_chatTextRect;
 	D2D1_RECT_F m_chattingRect;

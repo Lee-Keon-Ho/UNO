@@ -76,8 +76,7 @@ public:
 
 	ID2D1Bitmap* GetBitmap(eBitmap _index) { return m_bitmap[_index]; }
 	spriteList_t* GetSprite() { return m_sprite; }
-	ID2D1SolidColorBrush** GetWhiteBrush() { return &m_pWhiteBrush; }
-	ID2D1SolidColorBrush** GetBlackBrush() { return &m_pBlackBrush; }
+	ID2D1SolidColorBrush** GetBrush(int _color);
 
 public:
 	static CResourceManager* GetInstance();

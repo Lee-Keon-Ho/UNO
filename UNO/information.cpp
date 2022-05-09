@@ -69,6 +69,7 @@ void CInformation::HandlePacket(char* _buffer)
 		RoomList(_buffer);
 		break;
 	case CS_PT_INROOM:
+		RoomIn(_buffer);
 		break;
 	case CS_PT_ROOMSTATE:
 		RoomState(_buffer);
@@ -148,7 +149,6 @@ void CInformation::RoomState(char* _roomState)
 	m_room.playerCount = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
 
-	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
 	memcpy(m_user, tempBuffer, packetSize - 6);
 	for (int i = 0; i < 5; i++)
 	{
@@ -160,15 +160,7 @@ void CInformation::Chatting(char* _chat)
 {
 	unsigned short packetSize = *(unsigned short*)_chat;
 	char* tempBuffer = _chat + 4;
-	m_chatCount = *(unsigned short*)tempBuffer;
-	tempBuffer += sizeof(unsigned short);
-	for (int i = 0; i < packetSize; i++)
-	{
-		printf("%d ", *_chat);
-		_chat++;
-	}
-	memset(m_pChatting, 0, (32 * 12) * sizeof(wchar_t));
-	memcpy(m_pChatting, tempBuffer, packetSize - 6);
+	memcpy(m_pChatting, tempBuffer, packetSize - 4);
 }
 
 void CInformation::ReSetChatting()
