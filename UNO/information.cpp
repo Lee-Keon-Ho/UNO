@@ -37,15 +37,17 @@ bool CInformation::Initalize()
 	//2022-04-27 수정
 	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
 
-	// 2022-04-29 수정 : test
-	m_pChatting = new wchar_t[10000];
-	memset(m_pChatting, 0, 10000);
 	return true;
 }
 
 void CInformation::Cleanup()
 {
-	if (m_pChatting) { delete[] m_pChatting; m_pChatting = nullptr; }
+	chatting_t::iterator iter = m_chat.begin();
+	chatting_t::iterator endIter = m_chat.end();
+	for (; iter != endIter; iter++)
+	{
+		delete* iter; *iter = nullptr;
+	}
 	if (m_pMyName) { delete[] m_pMyName; m_pMyName = nullptr; }
 	if (m_pUserList) { delete[] m_pUserList; m_pUserList = nullptr; }
 }
@@ -150,20 +152,26 @@ void CInformation::RoomState(char* _roomState)
 	tempBuffer += sizeof(unsigned short);
 
 	memcpy(m_user, tempBuffer, packetSize - 6);
-	for (int i = 0; i < 5; i++)
-	{
-		wprintf_s(L"%s \n", m_user[i].playerName);
-	}
 }
 
 void CInformation::Chatting(char* _chat)
 {
 	unsigned short packetSize = *(unsigned short*)_chat;
 	char* tempBuffer = _chat + 4;
-	memcpy(m_pChatting, tempBuffer, packetSize - 4);
+	WCHAR* chat = new WCHAR[CHAT_MAX];
+	memset(chat, 0, sizeof(WCHAR) * CHAT_MAX);
+	memcpy(chat, tempBuffer, packetSize - 4);
+	if (m_chat.size() > 13) m_chat.pop_front();
+	m_chat.push_back(chat);
 }
 
 void CInformation::ReSetChatting()
 {
-	memset(m_pChatting, 0, 10000);
+	chatting_t::iterator iter = m_chat.begin();
+	chatting_t::iterator endIter = m_chat.end();
+	for (; iter != endIter; iter++)
+	{
+		delete* iter; *iter = nullptr;
+	}
+	m_chat.clear();
 }

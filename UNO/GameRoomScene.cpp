@@ -57,14 +57,22 @@ void CGameRoomScene::Awake()
 	}
 
 	// 2022-04-28 수정
-	m_chatBuffer = new wchar_t[32];
-	memset(m_chatBuffer, 0, 64);
+	m_chatBuffer = new wchar_t[CHAT_MAX];
+	memset(m_chatBuffer, 0, sizeof(wchar_t) * CHAT_MAX);
 
 	CTimer::GetInstance()->ResetTimer();
 
 	m_pUserInfo = pInformation->GetUserInfo();
 	m_pRoomInfo = pInformation->GetRoomInfo();
-	m_pChatting->SetList();
+
+	char buffer[] = "game";
+	CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
+	Sleep(10);
+
+	/* 2022-05-11 start
+	if (m_pUserInfo->boss) m_pCurrentButton = m_pReadyButton;
+	else m_pCurrentButton = m_pStartButton;
+	*/
 }
 
 void CGameRoomScene::Start()
@@ -83,9 +91,6 @@ void CGameRoomScene::Update()
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
-		m_pUserInfo = pInformation->GetUserInfo();
-		m_pRoomInfo = pInformation->GetRoomInfo();
-		m_pChatting->SetList();
 		pTimer->ResetTimer();
 	}
 
@@ -93,8 +98,22 @@ void CGameRoomScene::Update()
 
 	if (key == VK_LBUTTON)
 	{
-		m_pReadyButton->OnButton(mouse); // 2022-05-04 test
-
+		if (m_pUserInfo->boss != 1)
+		{
+			if (m_pCurrentButton->OnButton(mouse))
+			{
+				char buffer[] = "ready";
+				CClient::GetInstance()->Send(buffer, CS_PT_READY);
+			}
+		}
+		else
+		{
+			if (m_bStart)
+			{
+				m_pCurrentButton->OnButton(mouse);
+			}
+		}
+		
 		if (m_pExitButton->OnButton(mouse))
 		{
 			char buffer[] = "destroy";
@@ -117,7 +136,7 @@ void CGameRoomScene::Update()
 		{
 			m_chatBuffer[m_chatCount] = key;
 			m_chatCount++;
-			if (m_chatCount > 31) m_chatCount = 31;
+			if (m_chatCount > CHAT_MAX - 1) m_chatCount = CHAT_MAX - 1;
 		}
 		if (key == VK_BACK)
 		{
@@ -131,19 +150,33 @@ void CGameRoomScene::Update()
 			{
 				m_chatBuffer[m_chatCount] = 0;
 				CClient::GetInstance()->Send(m_chatBuffer, CS_PT_CHATTING);
-				m_pChatting->SetList();
-				memset(m_chatBuffer, 0, 64);
+				memset(m_chatBuffer, 0, sizeof(WCHAR) * CHAT_MAX);
 				m_chatCount = 0;
 			}
 		}
+		//2022-05-10
+		//m_chatBuffer[m_chatCount] = *CInput::GetInstance()->GetWKey();
 	}
 
-	for (int i = 0; i < m_pRoomInfo->playerCount; i++)
+
+	// 2022-05-10 수정
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		// 2022-05-06 수정 : 이름 말고 socket?
-		if (wcsncmp(m_pUserInfo[i].playerName, CInformation::GetInstance()->GetName(), wcslen(CInformation::GetInstance()->GetName())) == 0)
+		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
 		{
 			m_MyNumber = m_pUserInfo[i].number;
+		}
+	}
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		if (m_pUserInfo[i].ready == true)
+		{
+			m_bStart = true;
+		}
+		else
+		{
+			m_bStart = false;
+			break;
 		}
 	}
 }
@@ -176,7 +209,9 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_player5Card[i]->Render(_pRT, 1.0f);
 	}
 	*/
-	m_pReadyButton->Render(_pRT, 1.0f);
+	if (m_pUserInfo->boss == true) m_pCurrentButton->Render(_pRT, 1, 1.0f);
+	else m_pCurrentButton->Render(_pRT, 1.0f);
+	
 
 	m_pChatting->Render(_pRT);
 

@@ -7,6 +7,7 @@ class CGameWnd : public CWnd
 public:
 private:
 	ID2D1HwndRenderTarget* m_pRenderTarget;
+	wchar_t m_wchar[4];
 public:
 	CGameWnd();
 	~CGameWnd();

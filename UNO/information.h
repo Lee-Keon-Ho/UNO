@@ -4,14 +4,16 @@
 #include <windows.h>
 #include <list>
 #include <vector>
+#include <deque>
 
 #define ROOM_MAX 8
 #define USER_MAX 15
-
+#define CHAT_MAX 32
 class CInformation
 {
 public:
 	typedef std::vector<CRoom::stROOM> room_t;
+	typedef std::deque<wchar_t*> chatting_t;
 
 private:
 	static CInformation* pInstance;
@@ -24,10 +26,8 @@ private:
 	room_t m_roomList;
 	CRoom::stROOM m_room;
 	CRoom::stUSER m_user[5]; // 2022-04-27 수정
-	wchar_t* m_pChatting;
+	chatting_t m_chat;
 
-	// 2022-05-02 수정 : test
-	int m_chatCount;
 public:
 	bool Initalize();
 	void Cleanup();
@@ -48,8 +48,7 @@ public:
 	wchar_t* GetName() { return m_pMyName; }
 	room_t GetRoomList() { return m_roomList; }
 	wchar_t* GetUserList() { return m_pUserList; }
-	wchar_t* GetChatting() { return m_pChatting; }
-	int GetChatCount() { return m_chatCount; }
+	chatting_t GetChatting() { return m_chat; }
 	CRoom::stROOM* GetRoomInfo() { return &m_room; }
 	CRoom::stUSER* GetUserInfo() { return m_user; }
 public:

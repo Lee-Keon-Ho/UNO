@@ -103,6 +103,17 @@ void CLobbyScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
+	if (pTimer->GetTime() >= 1)
+	{
+		char buffer[] = "List";
+		CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
+		CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
+		pTimer->ResetTimer();
+		m_pUserList->SetList();
+		m_pRoomList->SetList();
+		m_roomCount = m_pRoomList->GetSize();
+	}
+
 	for (int i = 0; i < LB_BUTTON_MAX; i++)
 	{
 		m_button[i]->OnButtonUp();
@@ -127,6 +138,8 @@ void CLobbyScene::Update()
 			if (key == VK_LBUTTON)
 			{
 				m_pExitOkButton->OnButtonDown();
+				// 2022-05-10 서버한테 끊다고 말하고 확인 받기
+				PostQuitMessage(0);
 			}
 		}
 	}
@@ -234,17 +247,6 @@ void CLobbyScene::Update()
 				}
 			}
 		}
-	}
-
-	if (pTimer->GetTime() >= 1)
-	{
-		char buffer[] = "List";
-		CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
-		CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
-		pTimer->ResetTimer();
-		m_pUserList->SetList();
-		m_pRoomList->SetList();
-		m_roomCount = m_pRoomList->GetSize();
 	}
 }
 

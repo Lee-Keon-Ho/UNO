@@ -39,6 +39,7 @@ private:
 	CButton* m_pExitButton;
 	CButton* m_pReadyButton;
 	CButton* m_pStartButton;
+	CButton* m_pCurrentButton;
 
 	CText* m_pChatText;
 	CChatting* m_pChatting;
@@ -61,6 +62,7 @@ private:
 	CRoom::stUSER* m_pUserInfo;
 	
 	bool m_bChatting;
+	bool m_bStart;
 public:
 	CGameRoomScene();
 	~CGameRoomScene();

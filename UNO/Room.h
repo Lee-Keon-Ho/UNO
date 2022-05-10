@@ -22,6 +22,7 @@ public:
 		int image;
 		SOCKET socket;
 		bool boss;
+		bool ready;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

@@ -154,7 +154,6 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 {
 	HIMC himc;
 	POINT mouse;
-	char key;
 	//2022-05-06 수정 test
 	switch (_message)
 	{
@@ -168,11 +167,12 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_CHAR:
-		key = _wParam;
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_IME_COMPOSITION:
 		OnImeComposition(_hWnd, _lParam);
+		break;
+	case WM_CLOSE:
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -233,7 +233,8 @@ bool CGameWnd::OnImeComposition(HWND _hWnd, LPARAM _lParam)
 			{
 				if (wszComp[i] != 0)
 				{
-					wprintf_s(L"조합 완료 : %c \n", wszComp[i]);
+					wprintf_s(L"조합 완료 : %s \n", wszComp);
+					memcpy(m_wchar, wszComp, 8);
 				}
 			}
 		}
@@ -250,12 +251,13 @@ bool CGameWnd::OnImeComposition(HWND _hWnd, LPARAM _lParam)
 			{
 				if (wszComp[i] != 0)
 				{
-					wprintf_s(L"조합 ing : %c \n", wszComp);
+					wprintf_s(L"조합 ing : %s \n", wszComp);
+					memcpy(m_wchar, wszComp, 8);
 				}
 			}
 		}
 	}
-
+	CInput::GetInstance()->SetWkey(m_wchar);
 	ImmReleaseContext(_hWnd, hImc);
 	return true;
 }
