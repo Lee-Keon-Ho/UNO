@@ -58,6 +58,7 @@ public:
 		UNO_CARD,
 		READY_BUTTON,
 		START_BUTTON,
+		SECRET_CARD,
 		ICON_MAX
 	};
 

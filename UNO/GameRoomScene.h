@@ -63,6 +63,7 @@ private:
 	
 	bool m_bChatting;
 	bool m_bStart;
+	bool m_bBoss;
 public:
 	CGameRoomScene();
 	~CGameRoomScene();

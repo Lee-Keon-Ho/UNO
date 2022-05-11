@@ -23,6 +23,8 @@ public:
 		SOCKET socket;
 		bool boss;
 		bool ready;
+		int card[12];
+		int cardCount;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

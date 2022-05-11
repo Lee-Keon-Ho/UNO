@@ -93,9 +93,10 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\PlayerThree1.spr" ,
 											"Resource\\PlayerFour1.spr" ,
 											"Resource\\PlayerFive1.spr",
-											"Resource\\UnoCard62.spr",
+											"Resource\\UnoCard110.spr",
 											"Resource\\ready2.spr",
-											"Resource\\start2.spr"};
+											"Resource\\start2.spr",
+											"Resource\\SecretCard1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

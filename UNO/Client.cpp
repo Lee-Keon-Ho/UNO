@@ -137,7 +137,9 @@ bool CClient::Send(void* _buffer, int _type)
 		size = sizeof(WCHAR) + CHAT_MAX;
 		break;
 	case CS_PT_READY:
-		size = 2;
+		size = sizeof(unsigned short);
+		break;
+	case CS_PT_START:
 		break;
 	}
 	

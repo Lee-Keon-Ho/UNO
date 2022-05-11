@@ -45,7 +45,7 @@ void CGameRoomScene::Awake()
 
 	m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
 	m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
-	
+
 	// 2022-05-03 수정 : test
 	for (int i = 0; i < 12; i++)
 	{
@@ -67,12 +67,26 @@ void CGameRoomScene::Awake()
 
 	char buffer[] = "game";
 	CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
-	Sleep(10);
 
-	/* 2022-05-11 start
-	if (m_pUserInfo->boss) m_pCurrentButton = m_pReadyButton;
-	else m_pCurrentButton = m_pStartButton;
-	*/
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
+		{
+			m_MyNumber = m_pUserInfo[i].number;
+			if (m_pUserInfo[i].boss)
+			{
+				m_bBoss = true;
+				m_pCurrentButton = m_pStartButton;
+			}
+			else
+			{
+				m_bBoss = false;
+				m_pCurrentButton = m_pReadyButton;
+			}
+			break;
+		}
+	}
+	
 }
 
 void CGameRoomScene::Start()
@@ -98,7 +112,7 @@ void CGameRoomScene::Update()
 
 	if (key == VK_LBUTTON)
 	{
-		if (m_pUserInfo->boss != 1)
+		if (!m_bBoss)
 		{
 			if (m_pCurrentButton->OnButton(mouse))
 			{
@@ -110,7 +124,11 @@ void CGameRoomScene::Update()
 		{
 			if (m_bStart)
 			{
-				m_pCurrentButton->OnButton(mouse);
+				if (m_pCurrentButton->OnButton(mouse))
+				{
+					char buffer[] = "start";
+					CClient::GetInstance()->Send(buffer, CS_PT_START);
+				}
 			}
 		}
 		
@@ -118,8 +136,8 @@ void CGameRoomScene::Update()
 		{
 			char buffer[] = "destroy";
 			m_pExitButton->OnButtonUp();
+			// 2022-05-11 수정 : 여기도 서버에서 시키면 하자
 			CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
-			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
 		m_bChatting = false;
 	}
@@ -129,7 +147,6 @@ void CGameRoomScene::Update()
 		m_bChatting = true;
 	}
 
-	// 2022-04-28 수정 : test
 	if (m_bChatting)
 	{
 		if ((key >= 'A' && key <= 'z') || (key >= '0' && key <= '9') || key == VK_SPACE)
@@ -162,21 +179,17 @@ void CGameRoomScene::Update()
 	// 2022-05-10 수정
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
+		if (m_pUserInfo[i].number != 0)
 		{
-			m_MyNumber = m_pUserInfo[i].number;
-		}
-	}
-	for (int i = 0; i < PLAYER_MAX; i++)
-	{
-		if (m_pUserInfo[i].ready == true)
-		{
-			m_bStart = true;
-		}
-		else
-		{
-			m_bStart = false;
-			break;
+			if (m_pUserInfo[i].ready == true)
+			{
+				m_bStart = true;
+			}
+			else
+			{
+				m_bStart = false;
+				break;
+			}
 		}
 	}
 }
@@ -209,7 +222,10 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_player5Card[i]->Render(_pRT, 1.0f);
 	}
 	*/
-	if (m_pUserInfo->boss == true) m_pCurrentButton->Render(_pRT, 1, 1.0f);
+	if (m_bBoss)
+	{
+		if (m_pRoomInfo->playerCount > 1) m_pCurrentButton->Render(_pRT, !m_bStart,1.0f);
+	}
 	else m_pCurrentButton->Render(_pRT, 1.0f);
 	
 

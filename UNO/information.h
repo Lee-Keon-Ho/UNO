@@ -7,8 +7,10 @@
 #include <deque>
 
 #define ROOM_MAX 8
-#define USER_MAX 15
+#define USERLIST_MAX 15
 #define CHAT_MAX 32
+#define USRE_MAX 5
+
 class CInformation
 {
 public:
@@ -25,7 +27,7 @@ private:
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
-	CRoom::stUSER m_user[5]; // 2022-04-27 수정
+	CRoom::stUSER m_user[USRE_MAX]; // 2022-04-27 수정
 	chatting_t m_chat;
 
 public:
@@ -33,12 +35,14 @@ public:
 	void Cleanup();
 
 	void HandlePacket(char* _buffer);
-	void CreateRoom(char* _bCreate);
+	void CreateRoom(char* _create);
 	void UserList(char* _userList);
 	void RoomList(char* _roomList);
 	void RoomIn(char* _roomin);
+	void RoomOut(char* _roomOut);
 	void RoomState(char* _roomState);
 	void Chatting(char* _chat);
+	void Start(char* _card);
 
 	void ReSetChatting();
 

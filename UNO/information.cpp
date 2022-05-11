@@ -73,19 +73,33 @@ void CInformation::HandlePacket(char* _buffer)
 	case CS_PT_INROOM:
 		RoomIn(_buffer);
 		break;
+	case CS_PT_OUTROOM:
+		RoomOut(_buffer);
+		break;
 	case CS_PT_ROOMSTATE:
 		RoomState(_buffer);
 		break;
 	case CS_PT_CHATTING:
 		Chatting(_buffer);
 		break;
+	case CS_PT_START:
+		Start(_buffer);
+		break;
 	}
 }
 
-void CInformation::CreateRoom(char* _bCreate)
+void CInformation::CreateRoom(char* _create)
 {
-	char* tempBuffer = _bCreate + 4;
+	char* tempBuffer = _create;
+	unsigned short packetSize = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short) * 2;
 	bool bCreate = tempBuffer;
+	tempBuffer += sizeof(unsigned short);
+	m_room.playerCount = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short);
+
+	memcpy(m_user, tempBuffer, packetSize - 8);
+
 	if (bCreate)
 	{
 		CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
@@ -104,7 +118,7 @@ void CInformation::UserList(char* _userList)
 	unsigned short packetSize = *(unsigned short*)_userList;
 	char* tempBuffer = _userList + 4;
 
-	memset(m_pUserList, 0, (USER_MAX * USER_NAME_MAX_SIZE) * sizeof(wchar_t));
+	memset(m_pUserList, 0, (USERLIST_MAX * USER_NAME_MAX_SIZE) * sizeof(wchar_t));
 	memcpy(m_pUserList, tempBuffer, packetSize - 4);
 }
 
@@ -135,12 +149,46 @@ void CInformation::RoomList(char* _roomList)
 
 void CInformation::RoomIn(char* _roomin)
 {
-	char* tempBuffer = _roomin + 4;
+	char* tempBuffer = _roomin;
+	unsigned short packetSize = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short) * 2;
 	bool bRoomIn = tempBuffer;
+	tempBuffer += sizeof(unsigned short);
+	m_room.playerCount = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short);
+	
+	memcpy(m_user, tempBuffer, packetSize - 8);
+
 	if (bRoomIn)
 	{
 		CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
 	}
+}
+
+void CInformation::RoomOut(char* _roomOut)
+{
+	unsigned short packetSize = *(unsigned short*)_roomOut;
+	char* tempBuffer = _roomOut + 4;
+
+	int size = sizeof(CRoom::stROOM);
+	int count = 0;
+
+	m_roomList.clear();
+
+	packetSize -= 4;
+	while (count < packetSize)
+	{
+		CRoom::stROOM temp;
+
+		memcpy(&temp, tempBuffer, size);
+
+		tempBuffer += size;
+		count += size;
+
+		m_roomList.push_back(temp);
+	}
+
+	CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 }
 
 void CInformation::RoomState(char* _roomState)
@@ -163,6 +211,10 @@ void CInformation::Chatting(char* _chat)
 	memcpy(chat, tempBuffer, packetSize - 4);
 	if (m_chat.size() > 13) m_chat.pop_front();
 	m_chat.push_back(chat);
+}
+
+void CInformation::Start(char* _card)
+{
 }
 
 void CInformation::ReSetChatting()
