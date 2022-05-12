@@ -26,8 +26,3 @@ void CObject2D::Render(ID2D1HwndRenderTarget* _pRT, int _index, float _alpha)
 {
 	m_sprite[_index].Render(_pRT, m_bitmap, m_target, _alpha);
 }
-
-void CObject2D::SetTarget(D2D1_RECT_F _target)
-{
-	m_target = _target;
-}

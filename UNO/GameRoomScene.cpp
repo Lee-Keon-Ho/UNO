@@ -25,7 +25,6 @@ void CGameRoomScene::Awake()
 	ID2D1Bitmap* pBitmap = pRM->GetBitmap(bitmap_t::WAITING);
 	ID2D1Bitmap* pButtonBitmap = pRM->GetBitmap(bitmap_t::BUTTON);
 	ID2D1Bitmap* pExitBitmap = pRM->GetBitmap(bitmap_t::EXIT);
-	ID2D1Bitmap* pCardBitmap = pRM->GetBitmap(bitmap_t::CARD);
 	ID2D1Bitmap* pReadyBitmap = pRM->GetBitmap(bitmap_t::READY);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
@@ -46,17 +45,6 @@ void CGameRoomScene::Awake()
 	m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
 	m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
 
-	// 2022-05-03 수정 : test
-	for (int i = 0; i < 12; i++)
-	{
-		m_player1Card.push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 500.0f + (19 * i), 500.0f, 570.0f + (19 * i), 607.0f }));
-		m_player2Card.push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 171.0f + (12 * i), 108.0f, 241.0f + (12 * i), 215.0f }));
-		m_player3Card.push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 1050.0f - (12 * i), 108.0f, 1120.0f - (12 * i), 215.0f }));
-		m_player4Card.push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 171.0f + (12 * i), 319.0f, 241.0f + (12 * i), 426.0f }));
-		m_player5Card.push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 1050.0f - (12 * i), 319.0f, 1120.0f - (12 * i), 426.0f }));
-	}
-
-	// 2022-04-28 수정
 	m_chatBuffer = new wchar_t[CHAT_MAX];
 	memset(m_chatBuffer, 0, sizeof(wchar_t) * CHAT_MAX);
 
@@ -136,7 +124,6 @@ void CGameRoomScene::Update()
 		{
 			char buffer[] = "destroy";
 			m_pExitButton->OnButtonUp();
-			// 2022-05-11 수정 : 여기도 서버에서 시키면 하자
 			CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
 		}
 		m_bChatting = false;
@@ -211,23 +198,15 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
 
-	// 2022-05-04 수정 : test
-	/*
-	for (int i = 0; i < 12; i++)
+	//2022-05-12 수정 : test중 여기부터
+	if (m_pRoomInfo->state)
 	{
-		m_player1Card[i]->Render(_pRT, 1.0f);
-		m_player2Card[i]->Render(_pRT, 1.0f);
-		m_player3Card[i]->Render(_pRT, 1.0f);
-		m_player4Card[i]->Render(_pRT, 1.0f);
-		m_player5Card[i]->Render(_pRT, 1.0f);
+		if (m_bBoss)
+		{
+			m_pCurrentButton->Render(_pRT, !m_bStart, 1.0f);
+		}
+		else m_pCurrentButton->Render(_pRT, 1.0f);
 	}
-	*/
-	if (m_bBoss)
-	{
-		if (m_pRoomInfo->playerCount > 1) m_pCurrentButton->Render(_pRT, !m_bStart,1.0f);
-	}
-	else m_pCurrentButton->Render(_pRT, 1.0f);
-	
 
 	m_pChatting->Render(_pRT);
 
@@ -241,31 +220,6 @@ void CGameRoomScene::Destroy()
 	// 2022-05-02 수정
 	memset(m_chatBuffer, 0, 32);
 	CInformation::GetInstance()->ReSetChatting();
-
-	card_t::iterator cardIter1 = m_player1Card.begin();
-	card_t::iterator cardEndIter1 = m_player1Card.end();
-	card_t::iterator cardIter2 = m_player1Card.begin();
-	card_t::iterator cardEndIter2 = m_player1Card.end();
-	card_t::iterator cardIter3 = m_player1Card.begin();
-	card_t::iterator cardEndIter3 = m_player1Card.end();
-	card_t::iterator cardIter4 = m_player1Card.begin();
-	card_t::iterator cardEndIter4 = m_player1Card.end();
-	card_t::iterator cardIter5 = m_player1Card.begin();
-	card_t::iterator cardEndIter5 = m_player1Card.end();
-	while (cardIter1 != cardEndIter1)
-	{
-		if (*cardIter1) { delete* cardIter1; *cardIter1 = nullptr; }
-		if (*cardIter2) { delete* cardIter2; *cardIter2 = nullptr; }
-		if (*cardIter3) { delete* cardIter3; *cardIter3 = nullptr; }
-		if (*cardIter4) { delete* cardIter4; *cardIter4 = nullptr; }
-		if (*cardIter5) { delete* cardIter5; *cardIter5 = nullptr; }
-		cardIter1++; cardIter2++; cardIter3++; cardIter4++; cardIter5;;
-	}
-	m_player1Card.clear();
-	m_player2Card.clear();
-	m_player3Card.clear();
-	m_player4Card.clear();
-	m_player5Card.clear();
 
 	if (m_pPlayerObject) { delete m_pPlayerObject; m_pPlayerObject = nullptr; }
 	if (m_pChatting) { delete m_pChatting; m_pChatting = nullptr; }

@@ -9,13 +9,16 @@ public:
 	typedef CResourceManager::eBitmap bitmap_t;
 	typedef std::vector<CObject2D*> player_t;
 	typedef std::vector<CText*> playerName_t;
+	typedef std::vector<CObject2D*> card_t;
 
 private:
 	player_t m_player;
 	player_t m_playerImage;
 	playerName_t m_pName;
 
-	int fontSize;
+	card_t* m_playersCard;
+
+	int m_fontSize;
 
 	D2D1_RECT_F m_player1Rect;
 	D2D1_RECT_F m_player2Rect;

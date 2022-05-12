@@ -98,7 +98,9 @@ void CInformation::CreateRoom(char* _create)
 	m_room.playerCount = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
 
-	memcpy(m_user, tempBuffer, packetSize - 8);
+	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
+	tempBuffer += sizeof(CRoom::stROOM);
+	memcpy(m_user, tempBuffer, sizeof(CRoom::stUSER) * 5);
 
 	if (bCreate)
 	{

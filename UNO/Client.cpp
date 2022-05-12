@@ -19,7 +19,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 	{
 		int recvLen = 0;
 		recvLen = recv(socket, recvBuffer + recvedSize, MAX - recvedSize, 0);
-		if (recvLen < 1) break;
+		if (recvLen < 1) break;	
 
 		recvedSize += recvLen;
 
@@ -47,7 +47,7 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 			}
 		}
 	}
-	return 0;
+ 	return 0;
 }
 
 CClient* CClient::pInstance = nullptr;
