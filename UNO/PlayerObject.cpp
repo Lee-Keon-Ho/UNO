@@ -48,12 +48,20 @@ CPlayerObject::CPlayerObject() :
 	{
 		for (int i = 0; i < CARD_MAX; i++)
 		{
-			if (player == 0) rect = { 500.0f + (19 * i), 500.0f, 570.0f + (19 * i), 607.0f };
-			if (player == 1) rect = { 171.0f + (12 * i), 108.0f, 241.0f + (12 * i), 215.0f };
-			if (player == 2) rect = { 1050.0f - (12 * i), 108.0f, 1120.0f - (12 * i), 215.0f };
-			if (player == 3) rect = { 171.0f + (12 * i), 319.0f, 241.0f + (12 * i), 426.0f };
-			if (player == 4) rect = { 1050.0f - (12 * i), 319.0f, 1120.0f - (12 * i), 426.0f };
-			m_playersCard[player].push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, rect));
+			if (player == 0)
+			{
+				rect = { 500.0f + (19 * i), 500.0f, 570.0f + (19 * i), 607.0f };
+				m_playersCard[player].push_back(new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, rect));
+			}
+			else
+			{
+				if (player == 1) rect = { 171.0f + (12 * i), 108.0f, 241.0f + (12 * i), 215.0f };
+				if (player == 2) rect = { 1050.0f - (12 * i), 108.0f, 1120.0f - (12 * i), 215.0f };
+				if (player == 3) rect = { 171.0f + (12 * i), 319.0f, 241.0f + (12 * i), 426.0f };
+				if (player == 4) rect = { 1050.0f - (12 * i), 319.0f, 1120.0f - (12 * i), 426.0f };
+				m_playersCard[player].push_back(new CObject2D(sprite[CResourceManager::SECRET_CARD], pCardBitmap, rect));
+			}
+			
 		}
 	}
 }
@@ -101,6 +109,7 @@ CPlayerObject::~CPlayerObject()
 
 void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stROOM* _roominfo, CRoom::stUSER* _userinfo, int _myNum)
 {
+	int myUserinfoNum = _myNum - 1;
 	for (int iObject = 1, iUserInfo = 0; iUserInfo < PLAYER_MAX; iUserInfo++)
 	{
 		int count = _userinfo[iUserInfo].number;
@@ -113,7 +122,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stROOM* _roominfo
 				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].playerName);
 				for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 				{
-					m_playersCard[0][i]->Render(_pRT, _userinfo->card[i], 1.0f);
+					m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
 				}
 			}
 			else

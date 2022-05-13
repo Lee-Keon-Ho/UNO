@@ -198,10 +198,13 @@ void CInformation::RoomState(char* _roomState)
 	unsigned short packetSize = *(unsigned short*)_roomState;
 	char* tempBuffer = _roomState + 4;
 
-	m_room.playerCount = *(unsigned short*)tempBuffer;
+	m_currentCard = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
 
-	memcpy(m_user, tempBuffer, packetSize - 6);
+	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
+	tempBuffer += sizeof(CRoom::stROOM);
+
+	memcpy(m_user, tempBuffer, sizeof(CRoom::stUSER) * 5);
 }
 
 void CInformation::Chatting(char* _chat)

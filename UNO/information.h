@@ -24,6 +24,7 @@ private:
 private:
 	wchar_t* m_pMyName;
 	int m_MyImage;
+	int m_currentCard;
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
@@ -49,6 +50,7 @@ public:
 	void SetName(const wchar_t* _buffer);
 	void SetImage(int _num) { m_MyImage = _num; }
 
+	int GetCurrentCard() { return m_currentCard; }
 	wchar_t* GetName() { return m_pMyName; }
 	room_t GetRoomList() { return m_roomList; }
 	wchar_t* GetUserList() { return m_pUserList; }
