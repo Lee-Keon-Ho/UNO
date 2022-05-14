@@ -93,7 +93,7 @@ void CGameRoomScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1.0)
+	if (pTimer->GetTime() >= 1.0)  // float >= double
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);

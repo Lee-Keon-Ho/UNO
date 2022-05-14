@@ -8,7 +8,7 @@ CObject2D::~CObject2D()
 {
 }
 
-CObject2D::CObject2D(spriteList_t _sprite, ID2D1Bitmap* _bitmap, D2D1_RECT_F _target)
+CObject2D::CObject2D(spriteList_t _sprite, ID2D1Bitmap* _bitmap, const D2D1_RECT_F& _target)
 	: m_sprite(_sprite), m_bitmap(_bitmap), m_target(_target)
 {
 }

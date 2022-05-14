@@ -20,7 +20,7 @@ private:
 
 	int m_fontSize;
 
-	D2D1_RECT_F m_player1Rect;
+	D2D1_RECT_F m_player1Rect; // vector로 변환
 	D2D1_RECT_F m_player2Rect;
 	D2D1_RECT_F m_player3Rect;
 	D2D1_RECT_F m_player4Rect;
@@ -38,6 +38,8 @@ private:
 	D2D1_RECT_F m_player4NameRect;
 	D2D1_RECT_F m_player5NameRect;
 
+	//변수 상시로 필요한 변수
+	//임시 변수
 public:
 	CPlayerObject();
 	~CPlayerObject();
