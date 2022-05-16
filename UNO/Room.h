@@ -23,7 +23,7 @@ public:
 		SOCKET socket;
 		bool boss;
 		bool ready;
-		int card[12];
+		int card[20];
 		int cardCount;
 	};
 

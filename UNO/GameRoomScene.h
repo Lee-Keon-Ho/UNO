@@ -43,12 +43,6 @@ private:
 	CText* m_pChatText;
 	CChatting* m_pChatting;
 
-	D2D1_RECT_F m_backGroundRect;
-	D2D1_RECT_F m_chatBackGroundRect;
-
-	D2D1_RECT_F m_chatTextRect;
-	D2D1_RECT_F m_chattingRect;
-
 	// 2022-04-27 ¼öÁ¤ : test
 	CRoom::stROOM* m_pRoomInfo;
 	CRoom::stUSER* m_pUserInfo;

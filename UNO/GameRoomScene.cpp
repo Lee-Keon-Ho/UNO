@@ -7,8 +7,6 @@
 #include "information.h"
 
 CGameRoomScene::CGameRoomScene() : 
-	m_backGroundRect({0.0f, 0.0f, 1280.0f, 720.0f}), m_chatBackGroundRect({ 0.0f, 486.0f, 353.0f, 686.0f }), 
-	m_chatTextRect({ 10.0f, 693.0f, 343.0f, 720.0f }), m_chattingRect({ 10.0f, 680.0f, 343.0f, 720.0f }),
 	fontSize(15), m_MyNumber(0), m_bChatting(false), m_chatCount(0)
 {
 }
@@ -29,8 +27,8 @@ void CGameRoomScene::Awake()
 	ID2D1Bitmap* pReadyBitmap = pRM->GetBitmap(bitmap_t::READY);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
-	m_pBackGround = new CObject2D(sprite[CResourceManager::WAITING_ROOM], pBitmap, m_backGroundRect);
-	m_pChatBackGround = new CObject2D(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, m_chatBackGroundRect);
+	m_pBackGround = new CObject2D(sprite[CResourceManager::WAITING_ROOM], pBitmap, { 0.0f, 0.0f, 1280.0f, 720.0f });
+	m_pChatBackGround = new CObject2D(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, { 0.0f, 486.0f, 353.0f, 686.0f });
 
 	// 2022-05-13 수정
 	m_pCurrentCard = new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 605.0f, 227.0f, 675.0f, 334.0f });
@@ -40,8 +38,8 @@ void CGameRoomScene::Awake()
 	m_pStartButton = new CButton(sprite[CResourceManager::START_BUTTON], pReadyBitmap, { 566.0f, 321.0f, 713.0f, 399.0f });
 
 	// 2022-04-29
-	m_pChatText = new CText(m_chatTextRect, fontSize, 0, CText::T_WHITE);
-	m_pChatting = new CChatting(m_chattingRect, fontSize, fontSize, CText::T_WHITE);
+	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
+	m_pChatting = new CChatting({ 10.0f, 680.0f, 343.0f, 720.0f }, fontSize, fontSize, CText::T_WHITE);
 
 	// 2022-05-09 수정
 	m_pPlayerObject = new CPlayerObject();
