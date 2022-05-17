@@ -11,7 +11,8 @@ public:
 	enum eTEXT_COLOR
 	{
 		T_WHITE = 0,
-		T_BLACK
+		T_BLACK,
+		T_RED
 	};
 protected:
 	IDWriteTextFormat* m_pWriteTextFormat;
@@ -29,9 +30,6 @@ public:
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
 	void Render(ID2D1HwndRenderTarget* _pRT, wchar_t* _str);
-
-	// 2022-05-02 ¼öÁ¤ test
-	void setlayout(D2D1_RECT_F _test) { m_layoutRect = _test; }
 private:
 	
 };

@@ -14,6 +14,13 @@ public:
 	typedef std::vector<ID2D1Bitmap*> bitmapList_t;
 	typedef std::vector<CSprite> spriteList_t;
 
+	enum eColor
+	{
+		COLOR_WHITE = 0,
+		COLOR_BLACK,
+		COLOR_RED
+	};
+
 	enum eBitmap
 	{
 		LOGIN = 0,
@@ -68,6 +75,7 @@ private:
 
 	ID2D1SolidColorBrush* m_pWhiteBrush;
 	ID2D1SolidColorBrush* m_pBlackBrush;
+	ID2D1SolidColorBrush* m_pRedBrush;
 public:
 	bool Initialize();
 	void Cleanup();

@@ -91,7 +91,7 @@ void CGameRoomScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1.0)  // float >= double
+	if (pTimer->GetTime() >= 1.0f)
 	{
 		char buffer[] = "game";
 		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
@@ -104,33 +104,36 @@ void CGameRoomScene::Update()
 
 	if (key == VK_LBUTTON)
 	{
-		if (m_bBoss)
+		if (m_pRoomInfo->state)
 		{
-			if (m_bStart)
+			if (m_bBoss)
+			{
+				if (m_bStart)
+				{
+					if (m_pCurrentButton->OnButton(mouse))
+					{
+						char buffer[] = "start";
+						CClient::GetInstance()->Send(buffer, CS_PT_START);
+					}
+				}
+			}
+			else
 			{
 				if (m_pCurrentButton->OnButton(mouse))
 				{
-					char buffer[] = "start";
-					CClient::GetInstance()->Send(buffer, CS_PT_START);
+					char buffer[] = "ready";
+					CClient::GetInstance()->Send(buffer, CS_PT_READY);
 				}
 			}
-		}
-		else
-		{
-			if (m_pCurrentButton->OnButton(mouse))
+
+			if (m_pExitButton->OnButton(mouse))
 			{
-				char buffer[] = "ready";
-				CClient::GetInstance()->Send(buffer, CS_PT_READY);
+				char buffer[] = "destroy";
+				m_pExitButton->OnButtonUp();
+				CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
 			}
+			m_bChatting = false;
 		}
-		
-		if (m_pExitButton->OnButton(mouse))
-		{
-			char buffer[] = "destroy";
-			m_pExitButton->OnButtonUp();
-			CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
-		}
-		m_bChatting = false;
 	}
 
 	if (key == VK_RETURN)
@@ -162,12 +165,8 @@ void CGameRoomScene::Update()
 				m_chatCount = 0;
 			}
 		}
-		//2022-05-10
-		//m_chatBuffer[m_chatCount] = *CInput::GetInstance()->GetWKey();
 	}
 
-
-	// 2022-05-10 수정
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		if (m_pUserInfo[i].number != 0)
@@ -183,6 +182,9 @@ void CGameRoomScene::Update()
 			}
 		}
 	}
+
+	// 2022-05-17 수정
+	m_pPlayerObject->Update(&m_pUserInfo[m_MyNumber - 1], mouse, key);
 }
 
 void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -191,7 +193,7 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pBackGround->Render(_pRT, 1.0f);
 	
-	m_pPlayerObject->Render(_pRT, m_pRoomInfo, m_pUserInfo, m_MyNumber);
+	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_MyNumber);
 
 	// 2022-05-09 수정
 	if (!m_pRoomInfo->state)
@@ -206,7 +208,7 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pChatText->Render(_pRT, m_chatBuffer);
 	}
 
-	//2022-05-12 수정 : test중 여기부터
+	// START or READY
 	if (m_pRoomInfo->playerCount > 1 && m_pRoomInfo->state)
 	{
 		if (m_bBoss)

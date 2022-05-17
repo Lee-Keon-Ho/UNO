@@ -41,11 +41,15 @@ bool CGameWnd::Initialize()
 	//式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
 
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xFFFFFF, 1.0f),
-		CResourceManager::GetInstance()->GetBrush(0));
+		CResourceManager::GetInstance()->GetBrush(CResourceManager::COLOR_WHITE));
 	if (FAILED(hr)) return false;
 
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 1.0f),
-		CResourceManager::GetInstance()->GetBrush(1));
+		CResourceManager::GetInstance()->GetBrush(CResourceManager::COLOR_BLACK));
+	if (FAILED(hr)) return false;
+
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xFF0000, 1.0f),
+		CResourceManager::GetInstance()->GetBrush(CResourceManager::COLOR_RED));
 	if (FAILED(hr)) return false;
 
 	LoadBitmapFile();

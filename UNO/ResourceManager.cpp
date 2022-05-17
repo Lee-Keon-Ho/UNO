@@ -52,13 +52,15 @@ void CResourceManager::SetSprite(CSprite* _sprite, int _size, int _index)
 
 ID2D1SolidColorBrush** CResourceManager::GetBrush(int _color)
 {
-	if (_color == 0)
+	switch (_color)
 	{
+	case 0:
 		return &m_pWhiteBrush;
-	}
-	if (_color == 1)
-	{
+	case 1:
 		return &m_pBlackBrush;
+	case 2:
+		return &m_pRedBrush;
+	default:
+		return nullptr;
 	}
-	return nullptr;
 }

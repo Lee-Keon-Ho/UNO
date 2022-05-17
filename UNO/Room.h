@@ -25,6 +25,7 @@ public:
 		bool ready;
 		int card[20];
 		int cardCount;
+		bool turn;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

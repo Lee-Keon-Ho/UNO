@@ -1,10 +1,13 @@
+#include "Client.h"
 #include "PlayerObject.h"
 #include "Input.h"
+#include "PacketType.h"
 
 #define PLAYER_MAX 5
 #define CARD_MAX 9
 
-CPlayerObject::CPlayerObject() : m_fontSize(15)
+CPlayerObject::CPlayerObject() 
+	: CText({0.0f,0.0f,0.0f,0.0f}, 0, 0, T_RED), m_fontSize(15), m_bCard(false)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
@@ -103,21 +106,30 @@ CPlayerObject::~CPlayerObject()
 	m_pName.clear();
 }
 
-void CPlayerObject::Update()
+void CPlayerObject::Update(CRoom::stUSER* _userinfo, POINT _mouse, int _key)
 {
-	CInput* pInput = CInput::GetInstance();
-	POINT mouse = pInput->GetMousePosition();
-	
-	for (int i = 0; i < 7;i++)
+	for (int i = 0; i < _userinfo->cardCount; i++)
 	{
-		if (m_playersCard[0][i]->OnButton(mouse))
+		if (m_playersCard[0][i]->OnButton(_mouse))
 		{
-			m_pCurrentCard = m_playersCard[0][i];
+			if (_key == VK_LBUTTON && _userinfo->turn)
+			{
+				char buffer[100];
+				char* temp = buffer;
+				memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
+				temp += sizeof(unsigned short);
+				memcpy(temp, &i, sizeof(unsigned short));
+				CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
+			}
+			m_cruuentCardRect = m_playersCard[0][i]->GetTarget();
+			m_bCard = true;
+			break;
 		}
+		m_bCard = false;
 	}
 }
 
-void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stROOM* _roominfo, CRoom::stUSER* _userinfo, int _myNum)
+void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum)
 {
 	int myUserinfoNum = _myNum - 1;
 	for (int iObject = 1, iUserInfo = 0; iUserInfo < PLAYER_MAX; iUserInfo++)
@@ -150,9 +162,6 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stROOM* _roominfo
 		else iObject++;
 	}
 
-	// 2022-05-16 수정
-	if (m_pCurrentCard != nullptr)
-	{
-		
-	}
+	// 2022-05-17 수정
+	if (m_bCard) _pRT->DrawRectangle(m_cruuentCardRect, m_pBrush, 1.0f);
 }

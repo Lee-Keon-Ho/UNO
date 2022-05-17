@@ -4,7 +4,7 @@
 #include "Button.h"
 #include "ResourceManager.h"
 
-class CPlayerObject : public CObject2D
+class CPlayerObject : public CObject2D, CText
 {
 public:
 	typedef CResourceManager::eBitmap bitmap_t;
@@ -21,12 +21,15 @@ private:
 
 	CButton* m_pCurrentCard;
 
+	D2D1_RECT_F m_cruuentCardRect;
+
 	int m_fontSize;
 
+	bool m_bCard;
 public:
 	CPlayerObject();
 	~CPlayerObject();
 
-	void Update();
-	void Render(ID2D1HwndRenderTarget* _pRT, CRoom::stROOM* _roominfo, CRoom::stUSER* _userinfo, int _myNum);
+	void Update(CRoom::stUSER* _userinfo, POINT _mouse, int _key);
+	void Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum);
 };
