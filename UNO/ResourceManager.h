@@ -33,6 +33,8 @@ public:
 		ROOM_IN_PLAYER,
 		CARD,
 		READY,
+		BOSS,
+		TURN,
 		MAX
 	};
 
@@ -66,6 +68,9 @@ public:
 		READY_BUTTON,
 		START_BUTTON,
 		SECRET_CARD,
+		CENTER_CARD,
+		BOSS_ICON,
+		MYTURN,
 		ICON_MAX
 	};
 

@@ -25,6 +25,7 @@ private:
 	CObject2D* m_pBackGround;
 	CObject2D* m_pChatBackGround;
 	CObject2D* m_pCurrentCard;
+	CButton* m_pCenterCard;
 
 	CPlayerObject* m_pPlayerObject;
 

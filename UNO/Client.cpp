@@ -117,10 +117,10 @@ bool CClient::Send(void* _buffer, int _type)
 	switch (_type)
 	{
 	case CS_PT_LOGIN:
-		size = sizeof(WCHAR) * USER_NAME_MAX_SIZE; // 2022-04-19 수정
+		size = sizeof(WCHAR) * USER_NAME_MAX_SIZE;
 		break;
 	case CS_PT_CREATEROOM:
-		size = sizeof(WCHAR) * ROOM_NAME_MAX_SIZE; // 2022-04-25 수정
+		size = sizeof(WCHAR) * ROOM_NAME_MAX_SIZE;
 		break;
 	case CS_PT_USERLIST:
 		break;
@@ -143,6 +143,8 @@ bool CClient::Send(void* _buffer, int _type)
 		break;
 	case CS_PT_DRAWCARD:
 		size = sizeof(unsigned short) + sizeof(unsigned short);
+		break;
+	case CS_PT_TAKECARD:
 		break;
 	}
 	

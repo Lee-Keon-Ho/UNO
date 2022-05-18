@@ -13,14 +13,16 @@ CPlayerObject::CPlayerObject()
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
 	ID2D1Bitmap* pPlayerCountBitmap = pRM->GetBitmap(bitmap_t::ROOM_IN_PLAYER);
 	ID2D1Bitmap* pCardBitmap = pRM->GetBitmap(bitmap_t::CARD);
+	ID2D1Bitmap* pBossBitmap = pRM->GetBitmap(bitmap_t::BOSS);
+	ID2D1Bitmap* pTurnBitmap = pRM->GetBitmap(bitmap_t::TURN);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_player.reserve(PLAYER_MAX);
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_ONE], pPlayerCountBitmap, { 384.0f, 472.0f, 838.0f, 720.0f }));
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_TWO], pPlayerCountBitmap, { 0.0f, 69.0f, 440.0f, 250.0f }));
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_THREE], pPlayerCountBitmap, { 837.0f, 69.0f, 1280.0f, 250.0f }));
-	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_FOUR], pPlayerCountBitmap, { 10.0f, 285.0f, 450.0f, 466.0f }));
-	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_FIVE], pPlayerCountBitmap, { 837.0f, 275.0f, 1280.0f, 456.0f }));
+	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_FOUR], pPlayerCountBitmap, { 0.0f, 285.0f, 440.0f, 466.0f }));
+	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_FIVE], pPlayerCountBitmap, { 837.0f, 285.0f, 1280.0f, 466.0f }));
 
 
 	m_playerImage.reserve(PLAYER_MAX);
@@ -36,6 +38,20 @@ CPlayerObject::CPlayerObject()
 	m_pName.push_back(new CText({ 1153.0f, 197.0f, 1233.0f, 277.0f }, m_fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText({ 103.0f, 412.0f, 183.0f, 492.0f }, m_fontSize, 0, CText::T_WHITE));
 	m_pName.push_back(new CText({ 1153.0f, 412.0f, 1233.0f, 492.0f }, m_fontSize, 0, CText::T_WHITE));
+
+	m_boss.reserve(PLAYER_MAX);
+	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 430.0f, 490.0f, 450.0f, 510.0f }));
+	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 110.0f, 90.0f, 130.0f, 110.0f }));
+	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 1159.0f, 90.0f, 1179.0f, 110.0f }));
+	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 110.0f, 306.0f, 130.0f, 326.0f }));
+	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 1159.0f, 306.0f, 1179.0f, 326.0f }));
+
+	m_turn.reserve(PLAYER_MAX);
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 734.0f, 460.0f, 784.0f, 485.0f }));
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 440.0f, 71.0f, 490.0f, 96.0f }));
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 71.0f, 839.0f, 96.0f }));
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 440.0f, 287.0f, 490.0f, 312.0f }));
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 287.0f, 839.0f, 312.0f }));
 
 	m_playersCard = new card_t[PLAYER_MAX];
 
@@ -54,9 +70,9 @@ CPlayerObject::CPlayerObject()
 				else
 				{
 					if (player == 1) rect = { 171.0f + (23.0f * i), 80.0f + (52.0f * y), 241.0f + (23.0f * i), 187.0f + (52.0f * y) };
-					if (player == 2) rect = { 1050.0f - (20.0f * i), 80.0f + (52.0f * y), 1120.0f - (20.0f * i), 187.0f + (52.0f * y) };
-					if (player == 3) rect = { 171.0f + (20.0f * i), 301.0f + (52.0f * y), 241.0f + (20.0f * i), 408.0f + (52.0f * y) };
-					if (player == 4) rect = { 1050.0f - (20.0f * i), 301.0f + (52.0f * y), 1120.0f - (15.0f * i), 408.0f + (52.0f * y) };
+					if (player == 2) rect = { 1050.0f - (23.0f * i), 80.0f + (52.0f * y), 1120.0f - (23.0f * i), 187.0f + (52.0f * y) };
+					if (player == 3) rect = { 171.0f + (23.0f * i), 301.0f + (52.0f * y), 241.0f + (23.0f * i), 408.0f + (52.0f * y) };
+					if (player == 4) rect = { 1050.0f - (23.0f * i), 301.0f + (52.0f * y), 1120.0f - (23.0f * i), 408.0f + (52.0f * y) };
 					m_playersCard[player].push_back(new CButton(sprite[CResourceManager::SECRET_CARD], pCardBitmap, rect));
 				}
 
@@ -81,8 +97,16 @@ CPlayerObject::~CPlayerObject()
 		delete[] m_playersCard;
 	}
 
-	player_t::iterator iter = m_player.begin();
-	player_t::iterator endIter = m_player.end();
+	player_t::iterator iter = m_boss.begin();
+	player_t::iterator endIter = m_boss.end();
+	for (; iter != endIter; iter++)
+	{
+		if (*iter) { delete* iter; *iter = nullptr; }
+	}
+	m_boss.clear();
+
+	iter = m_player.begin();
+	endIter = m_player.end();
 	for (; iter != endIter; iter++)
 	{
 		if (*iter) { delete* iter; *iter = nullptr; }
@@ -106,8 +130,9 @@ CPlayerObject::~CPlayerObject()
 	m_pName.clear();
 }
 
-void CPlayerObject::Update(CRoom::stUSER* _userinfo, POINT _mouse, int _key)
+void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
 {
+	m_bStart = !_roominfo->state;
 	for (int i = 0; i < _userinfo->cardCount; i++)
 	{
 		if (m_playersCard[0][i]->OnButton(_mouse))
@@ -121,7 +146,7 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, POINT _mouse, int _key)
 				memcpy(temp, &i, sizeof(unsigned short));
 				CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
 			}
-			m_cruuentCardRect = m_playersCard[0][i]->GetTarget();
+			m_currentCardRect = m_playersCard[0][i]->GetTarget();
 			m_bCard = true;
 			break;
 		}
@@ -132,6 +157,7 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, POINT _mouse, int _key)
 void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum)
 {
 	int myUserinfoNum = _myNum - 1;
+
 	for (int iObject = 1, iUserInfo = 0; iUserInfo < PLAYER_MAX; iUserInfo++)
 	{
 		int count = _userinfo[iUserInfo].number;
@@ -146,6 +172,10 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
 				}
+				if (_userinfo[iUserInfo].boss)
+				{
+					m_boss[0]->Render(_pRT, 1.0f);
+				}
 			}
 			else
 			{
@@ -156,12 +186,28 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_playersCard[iObject][i]->Render(_pRT, 1.0f);
 				}
+				if (_userinfo[iUserInfo].boss)
+				{
+					m_boss[iObject]->Render(_pRT, 1.0f);
+				}
 				iObject++;
 			}
+
 		}
 		else iObject++;
 	}
 
 	// 2022-05-17 ¼öÁ¤
-	if (m_bCard) _pRT->DrawRectangle(m_cruuentCardRect, m_pBrush, 1.0f);
+	if (m_bCard) _pRT->DrawRectangle(m_currentCardRect, m_pBrush, 1.0f);
+
+	if (m_bStart)
+	{
+		for (int i = 0; i < PLAYER_MAX; i++)
+		{
+			if (_userinfo[i].turn)
+			{
+				m_turn[i]->Render(_pRT, 1.0f);
+			}
+		}
+	}
 }

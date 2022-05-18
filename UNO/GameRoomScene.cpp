@@ -43,6 +43,7 @@ void CGameRoomScene::Awake()
 
 	// 2022-05-09 수정
 	m_pPlayerObject = new CPlayerObject();
+	m_pCenterCard = new CButton(sprite[CResourceManager::CENTER_CARD], pCardBitmap, { 465.0f, 287.0f, 535.0f, 404.0f });
 
 	m_pUserInfo = CInformation::GetInstance()->GetUserInfo();
 	m_pRoomInfo = CInformation::GetInstance()->GetRoomInfo();
@@ -76,7 +77,6 @@ void CGameRoomScene::Awake()
 			break;
 		}
 	}
-	
 }
 
 void CGameRoomScene::Start()
@@ -110,7 +110,7 @@ void CGameRoomScene::Update()
 			{
 				if (m_bStart)
 				{
-					if (m_pCurrentButton->OnButton(mouse))
+					if (m_pCurrentButton->OnButton(mouse) && m_pRoomInfo->playerCount > 1)
 					{
 						char buffer[] = "start";
 						CClient::GetInstance()->Send(buffer, CS_PT_START);
@@ -133,6 +133,11 @@ void CGameRoomScene::Update()
 				CClient::GetInstance()->Send(buffer, CS_PT_OUTROOM);
 			}
 			m_bChatting = false;
+		}
+		if (m_pCenterCard->OnButton(mouse))
+		{
+			char buffer[] = "take";
+			CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
 		}
 	}
 
@@ -169,6 +174,14 @@ void CGameRoomScene::Update()
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
+		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
+		{
+			if (m_pUserInfo[i].boss)
+			{
+				m_bBoss = true;
+				m_pCurrentButton = m_pStartButton;
+			}
+		}
 		if (m_pUserInfo[i].number != 0)
 		{
 			if (m_pUserInfo[i].ready == true)
@@ -184,7 +197,7 @@ void CGameRoomScene::Update()
 	}
 
 	// 2022-05-17 수정
-	m_pPlayerObject->Update(&m_pUserInfo[m_MyNumber - 1], mouse, key);
+	m_pPlayerObject->Update(&m_pUserInfo[m_MyNumber - 1], m_pRoomInfo, mouse, key);
 }
 
 void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
@@ -195,10 +208,10 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 	
 	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_MyNumber);
 
-	// 2022-05-09 수정
 	if (!m_pRoomInfo->state)
 	{
 		m_pCurrentCard->Render(_pRT, CInformation::GetInstance()->GetCurrentCard(), 1.0f);
+		m_pCenterCard->Render(_pRT, 0, 1.0f);
 	}
 	
 	m_pChatBackGround->Render(_pRT, 0.3f);

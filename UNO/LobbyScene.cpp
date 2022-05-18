@@ -103,7 +103,7 @@ void CLobbyScene::Update()
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1)
+	if (pTimer->GetTime() >= 1.0f)
 	{
 		char buffer[] = "List";
 		CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
