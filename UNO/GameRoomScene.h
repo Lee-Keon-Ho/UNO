@@ -25,7 +25,6 @@ private:
 	CObject2D* m_pBackGround;
 	CObject2D* m_pChatBackGround;
 	CObject2D* m_pCurrentCard;
-	CButton* m_pCenterCard;
 
 	CPlayerObject* m_pPlayerObject;
 
@@ -39,6 +38,7 @@ private:
 	CButton* m_pReadyButton;
 	CButton* m_pStartButton;
 	CButton* m_pCurrentButton;
+	CButton* m_pCenterCard;
 
 	CText* m_pChatText;
 	CChatting* m_pChatting;
@@ -49,6 +49,7 @@ private:
 	bool m_bChatting;
 	bool m_bStart;
 	bool m_bBoss;
+
 public:
 	CGameRoomScene();
 	~CGameRoomScene();

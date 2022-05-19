@@ -23,7 +23,8 @@ private:
 	card_t m_pChoiceColor;
 	card_t* m_playersCard;
 
-	// 134 44
+	CObject2D* m_pCardBoard;
+	CObject2D* m_pChoiceCardBoard;
 
 	CButton* m_pCurrentCard;
 
@@ -33,6 +34,8 @@ private:
 
 	bool m_bCard;
 	bool m_bStart;
+
+	D2D1_RECT_F test;
 public:
 	CPlayerObject();
 	~CPlayerObject();

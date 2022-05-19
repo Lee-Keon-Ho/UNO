@@ -36,6 +36,7 @@ public:
 		BOSS,
 		TURN,
 		CHOICE,
+		BOARD,
 		MAX
 	};
 
@@ -73,6 +74,7 @@ public:
 		BOSS_ICON,
 		MYTURN,
 		CHOICE_COLOR,
+		CARD_BOARD,
 		ICON_MAX
 	};
 

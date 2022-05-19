@@ -30,18 +30,15 @@ void CGameRoomScene::Awake()
 	m_pBackGround = new CObject2D(sprite[CResourceManager::WAITING_ROOM], pBitmap, { 0.0f, 0.0f, 1280.0f, 720.0f });
 	m_pChatBackGround = new CObject2D(sprite[CResourceManager::EXIT_BACKGROUND], pExitBitmap, { 0.0f, 486.0f, 353.0f, 686.0f });
 
-	// 2022-05-13 수정
 	m_pCurrentCard = new CObject2D(sprite[CResourceManager::UNO_CARD], pCardBitmap, { 605.0f, 227.0f, 675.0f, 334.0f });
 
 	m_pExitButton = new CButton(sprite[CResourceManager::WATTING_ROOM_EXIT], pButtonBitmap, { 1179.0f, 686.0f, 1280.0f, 720.0f });
 	m_pReadyButton = new CButton(sprite[CResourceManager::READY_BUTTON], pReadyBitmap, { 566.0f, 321.0f, 713.0f, 399.0f });
 	m_pStartButton = new CButton(sprite[CResourceManager::START_BUTTON], pReadyBitmap, { 566.0f, 321.0f, 713.0f, 399.0f });
 
-	// 2022-04-29
 	m_pChatText = new CText({ 10.0f, 693.0f, 343.0f, 720.0f }, fontSize, 0, CText::T_WHITE);
 	m_pChatting = new CChatting({ 10.0f, 680.0f, 343.0f, 720.0f }, fontSize, fontSize, CText::T_WHITE);
 
-	// 2022-05-09 수정
 	m_pPlayerObject = new CPlayerObject();
 	m_pCenterCard = new CButton(sprite[CResourceManager::CENTER_CARD], pCardBitmap, { 465.0f, 287.0f, 535.0f, 404.0f });
 
@@ -212,13 +209,13 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 	m_pBackGround->Render(_pRT, 1.0f);
 	
-	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_MyNumber);
-
 	if (!m_pRoomInfo->state)
 	{
 		m_pCurrentCard->Render(_pRT, CInformation::GetInstance()->GetCurrentCard(), 1.0f);
 		m_pCenterCard->Render(_pRT, 0, 1.0f);
 	}
+
+	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_MyNumber);
 	
 	m_pChatBackGround->Render(_pRT, 0.3f);
 

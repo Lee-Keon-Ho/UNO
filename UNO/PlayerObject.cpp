@@ -16,8 +16,12 @@ CPlayerObject::CPlayerObject()
 	ID2D1Bitmap* pBossBitmap = pRM->GetBitmap(bitmap_t::BOSS);
 	ID2D1Bitmap* pTurnBitmap = pRM->GetBitmap(bitmap_t::TURN);
 	ID2D1Bitmap* pChoiceBitmap = pRM->GetBitmap(bitmap_t::CHOICE);
+	ID2D1Bitmap* pboardBitmap = pRM->GetBitmap(bitmap_t::BOARD);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
+	m_pCardBoard = new CObject2D(sprite[CResourceManager::CARD_BOARD], pboardBitmap, { 490.0f, 483.0f, 1140.0f, 715.0f });
+	m_pChoiceCardBoard = new CObject2D(sprite[CResourceManager::CARD_BOARD], pboardBitmap, { 490.0f, 483.0f, 1140.0f, 715.0f });
+	
 	m_player.reserve(PLAYER_MAX);
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_ONE], pPlayerCountBitmap, { 384.0f, 472.0f, 838.0f, 720.0f }));
 	m_player.push_back(new CObject2D(sprite[CResourceManager::PLAYER_TWO], pPlayerCountBitmap, { 0.0f, 69.0f, 440.0f, 250.0f }));
@@ -48,19 +52,18 @@ CPlayerObject::CPlayerObject()
 	m_boss.push_back(new CObject2D(sprite[CResourceManager::BOSS_ICON], pBossBitmap, { 1159.0f, 306.0f, 1179.0f, 326.0f }));
 
 	m_turn.reserve(PLAYER_MAX);
-	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 734.0f, 460.0f, 784.0f, 485.0f }));
+	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 491.0f, 457.0f, 541.0f, 482.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 440.0f, 71.0f, 490.0f, 96.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 71.0f, 839.0f, 96.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 440.0f, 287.0f, 490.0f, 312.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 287.0f, 839.0f, 312.0f }));
 
-
 	m_pChoiceColor.reserve(4);
-	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 265.0f, 217.0f, 335.0f, 334.0f }));
-	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 365.0f, 217.0f, 435.0f, 334.0f }));
-	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 465.0f, 217.0f, 535.0f, 334.0f }));
-	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 565.0f, 217.0f, 635.0f, 334.0f }));
-
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 456.0f, 219.0f, 526.0f, 336.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 556.0f, 219.0f, 626.0f, 336.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 655.0f, 219.0f, 726.0f, 336.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 756.0f, 219.0f, 826.0f, 336.0f }));
+	test = { 446.0f, 209.0f, 836.0f, 346.0f };
 	m_playersCard = new card_t[PLAYER_MAX];
 
 	D2D1_RECT_F rect;
@@ -184,12 +187,35 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 		}
 		m_bCard = false;
 	}
+
+	if (_key == VK_UP)
+	{
+		test.top -= 1;
+		test.bottom -= 1;
+	}
+	if (_key == VK_DOWN)
+	{
+		test.top += 1;
+		test.bottom += 1;
+	}
+	if (_key == VK_LEFT)
+	{
+		test.left -= 1;
+		test.right -= 1;
+	}
+	if (_key == VK_RIGHT)
+	{
+		test.left += 1;
+		test.right += 1;
+	}
+
+	m_pChoiceCardBoard->SetTarget(test);
 }
 
 void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum)
 {
 	int myUserinfoNum = _myNum - 1;
-
+	
 	for (int iObject = 1, iUserInfo = 0; iUserInfo < PLAYER_MAX; iUserInfo++)
 	{
 		int count = _userinfo[iUserInfo].number;
@@ -200,6 +226,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				m_player[0]->Render(_pRT, 1.0f);
 				m_playerImage[0]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
 				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].playerName);
+				m_pCardBoard->Render(_pRT, 1.0f);
 				for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 				{
 					m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
@@ -236,10 +263,10 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 		}
 		else iObject++;
 	}
-
 	// 2022-05-17 ¼öÁ¤
 	if (m_bCard) _pRT->DrawRectangle(m_currentCardRect, m_pBrush, 1.0f);
 
+	m_pChoiceCardBoard->Render(_pRT, 1.0f);
 	for (int i = 0; i < 4; i++)
 	{
 		m_pChoiceColor[i]->Render(_pRT, i, 1.0f);

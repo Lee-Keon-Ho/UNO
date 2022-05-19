@@ -74,7 +74,8 @@ bool CGameWnd::LoadBitmapFile()
 											L"PNG\\readyButton.png",
 											L"PNG\\boss.png",
 											L"PNG\\MY TURN.png",
-											L"PNG\\choiceColor.png"};
+											L"PNG\\choiceColor.png",
+											L"PNG\\cardBoard.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -107,7 +108,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\centerCard1.spr",
 											"Resource\\boss1.spr",
 											"Resource\\MyTurn1.spr",
-											"Resource\\choiceColor4.spr"};
+											"Resource\\choiceColor4.spr",
+											"Resource\\cardBoard1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
@@ -179,6 +181,9 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_CHAR:
+		CInput::GetInstance()->SetKey(_wParam);
+		break;
+	case WM_KEYDOWN:
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_IME_COMPOSITION:
