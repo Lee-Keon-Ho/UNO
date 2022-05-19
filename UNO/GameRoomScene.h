@@ -33,7 +33,6 @@ private:
 	int m_MyNumber;
 	int m_chatCount;
 
-	// 2022-04-28 수정
 	wchar_t* m_chatBuffer;
 
 	CButton* m_pExitButton;
@@ -44,7 +43,6 @@ private:
 	CText* m_pChatText;
 	CChatting* m_pChatting;
 
-	// 2022-04-27 수정 : test
 	CRoom::stROOM* m_pRoomInfo;
 	CRoom::stUSER* m_pUserInfo;
 	

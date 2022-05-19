@@ -35,6 +35,7 @@ public:
 		READY,
 		BOSS,
 		TURN,
+		CHOICE,
 		MAX
 	};
 
@@ -71,6 +72,7 @@ public:
 		CENTER_CARD,
 		BOSS_ICON,
 		MYTURN,
+		CHOICE_COLOR,
 		ICON_MAX
 	};
 

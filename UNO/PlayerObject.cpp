@@ -15,6 +15,7 @@ CPlayerObject::CPlayerObject()
 	ID2D1Bitmap* pCardBitmap = pRM->GetBitmap(bitmap_t::CARD);
 	ID2D1Bitmap* pBossBitmap = pRM->GetBitmap(bitmap_t::BOSS);
 	ID2D1Bitmap* pTurnBitmap = pRM->GetBitmap(bitmap_t::TURN);
+	ID2D1Bitmap* pChoiceBitmap = pRM->GetBitmap(bitmap_t::CHOICE);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_player.reserve(PLAYER_MAX);
@@ -52,6 +53,13 @@ CPlayerObject::CPlayerObject()
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 71.0f, 839.0f, 96.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 440.0f, 287.0f, 490.0f, 312.0f }));
 	m_turn.push_back(new CObject2D(sprite[CResourceManager::MYTURN], pTurnBitmap, { 789.0f, 287.0f, 839.0f, 312.0f }));
+
+
+	m_pChoiceColor.reserve(4);
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 265.0f, 217.0f, 335.0f, 334.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 365.0f, 217.0f, 435.0f, 334.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 465.0f, 217.0f, 535.0f, 334.0f }));
+	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 565.0f, 217.0f, 635.0f, 334.0f }));
 
 	m_playersCard = new card_t[PLAYER_MAX];
 
@@ -97,8 +105,24 @@ CPlayerObject::~CPlayerObject()
 		delete[] m_playersCard;
 	}
 
-	player_t::iterator iter = m_boss.begin();
-	player_t::iterator endIter = m_boss.end();
+	card_t::iterator colorIter = m_pChoiceColor.begin();
+	card_t::iterator colorEndIter = m_pChoiceColor.end();
+	for (; colorIter != colorEndIter; colorIter++)
+	{
+		if (*colorIter) { delete* colorIter; *colorIter = nullptr; }
+	}
+	m_pChoiceColor.clear();
+
+	player_t::iterator iter = m_turn.begin();
+	player_t::iterator endIter = m_turn.end();
+	for (; iter != endIter; iter++)
+	{
+		if (*iter) { delete* iter; *iter = nullptr; }
+	}
+	m_turn.clear();
+
+	iter = m_boss.begin();
+	endIter = m_boss.end();
 	for (; iter != endIter; iter++)
 	{
 		if (*iter) { delete* iter; *iter = nullptr; }
@@ -113,11 +137,11 @@ CPlayerObject::~CPlayerObject()
 	}
 	m_player.clear();
 
-	player_t::iterator imageIter = m_playerImage.begin();
-	player_t::iterator imageEndIter = m_playerImage.end();
-	for (; imageIter != imageEndIter; imageIter++)
+	iter = m_playerImage.begin();
+	endIter = m_playerImage.end();
+	for (; iter != endIter; iter++)
 	{
-		if (*imageIter) { delete* imageIter; *imageIter = nullptr; }
+		if (*iter) { delete* iter; *iter = nullptr; }
 	}
 	m_playerImage.clear();
 
@@ -128,6 +152,14 @@ CPlayerObject::~CPlayerObject()
 		if (*nameIter) { delete* nameIter; *nameIter = nullptr; }
 	}
 	m_pName.clear();
+
+	iter = m_player.begin();
+	endIter = m_player.end();
+	for (; iter != endIter; iter++)
+	{
+		if (*iter) { delete* iter; *iter = nullptr; }
+	}
+	m_player.clear();
 }
 
 void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
@@ -176,6 +208,10 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_boss[0]->Render(_pRT, 1.0f);
 				}
+				if (_userinfo[iUserInfo].turn && m_bStart)
+				{
+					m_turn[0]->Render(_pRT, 1.0f);
+				}
 			}
 			else
 			{
@@ -190,6 +226,10 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_boss[iObject]->Render(_pRT, 1.0f);
 				}
+				if (_userinfo[iUserInfo].turn && m_bStart)
+				{
+					m_turn[iObject]->Render(_pRT, 1.0f);
+				}
 				iObject++;
 			}
 
@@ -200,14 +240,8 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 	// 2022-05-17 ¼öÁ¤
 	if (m_bCard) _pRT->DrawRectangle(m_currentCardRect, m_pBrush, 1.0f);
 
-	if (m_bStart)
+	for (int i = 0; i < 4; i++)
 	{
-		for (int i = 0; i < PLAYER_MAX; i++)
-		{
-			if (_userinfo[i].turn)
-			{
-				m_turn[i]->Render(_pRT, 1.0f);
-			}
-		}
+		m_pChoiceColor[i]->Render(_pRT, i, 1.0f);
 	}
 }

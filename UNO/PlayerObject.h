@@ -1,7 +1,7 @@
 #pragma once
 #include "text.h"
 #include "Room.h"
-#include "Button.h"
+#include "Button.h"	
 #include "ResourceManager.h"
 
 class CPlayerObject : public CObject2D, CText
@@ -20,6 +20,7 @@ private:
 	player_t m_turn;
 	playerName_t m_pName;
 
+	card_t m_pChoiceColor;
 	card_t* m_playersCard;
 
 	// 134 44

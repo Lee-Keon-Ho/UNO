@@ -134,10 +134,16 @@ void CGameRoomScene::Update()
 			}
 			m_bChatting = false;
 		}
-		if (m_pCenterCard->OnButton(mouse))
+		else
 		{
-			char buffer[] = "take";
-			CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
+			if (m_pUserInfo[m_MyNumber - 1].turn)
+			{
+				if (m_pCenterCard->OnButton(mouse))
+				{
+					char buffer[] = "take";
+					CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
+				}
+			}
 		}
 	}
 
@@ -244,6 +250,7 @@ void CGameRoomScene::Destroy()
 	memset(m_chatBuffer, 0, 32);
 	CInformation::GetInstance()->ReSetChatting();
 
+	if (m_chatBuffer) { delete m_chatBuffer; m_chatBuffer = nullptr; }
 	if (m_pPlayerObject) { delete m_pPlayerObject; m_pPlayerObject = nullptr; }
 	if (m_pChatting) { delete m_pChatting; m_pChatting = nullptr; }
 	if (m_pStartButton) { delete m_pStartButton; m_pStartButton = nullptr; }
