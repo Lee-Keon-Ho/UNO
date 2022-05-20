@@ -45,7 +45,7 @@ public:
 	~CRoom();
 
 	void Render(ID2D1HwndRenderTarget* _pRT);
-	void SetList(); //2022-04-20 ¼öÁ¤ : test
+	void SetList();
 
 	int GetSize() { return m_list.size(); }
 	room_t GetRoomList() { return m_list; }

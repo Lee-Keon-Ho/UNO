@@ -34,12 +34,10 @@ unsigned int __stdcall ThreadFunc(void* _pArgs)
 			if (recvedSize > 0)
 			{
 				memcpy(recvBuffer, recvBuffer + packetSize, recvedSize);
-				// 2022-04-25 수정
 				if (recvedSize > 1)
 				{
 					packetSize = *(unsigned short*)recvBuffer;
 				}
-				// 2022-04-25 수정
 				if (recvedSize > 3)
 				{
 					type = *(unsigned short*)(recvBuffer + 2);

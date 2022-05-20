@@ -6,9 +6,10 @@
 #define PLAYER_MAX 5
 #define CARD_MAX 9
 #define COLOR_CARD_MAX 4
+#define BUFFER_MAX 100
 
-CPlayerObject::CPlayerObject() 
-	: CText({0.0f,0.0f,0.0f,0.0f}, 0, 0, T_BLACK), m_fontSize(15), m_bCard(false), m_bChoice(false)
+CPlayerObject::CPlayerObject()
+	: CText({ 0.0f,0.0f,0.0f,0.0f }, 0, 0, T_BLACK), m_fontSize(15), m_bCard(false), m_bChoice(false)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
@@ -177,7 +178,7 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 			{
 				if (_key == VK_LBUTTON)
 				{
-					char buffer[100]; // 수정 필요
+					char buffer[BUFFER_MAX];
 					char* temp = buffer;
 					memcpy(temp, &i, sizeof(unsigned short));
 					CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
@@ -197,7 +198,7 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 			{
 				if (_key == VK_LBUTTON && _userinfo->turn)
 				{
-					char buffer[100]; // 수정 필요
+					char buffer[BUFFER_MAX];
 					char* temp = buffer;
 					memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
 					temp += sizeof(unsigned short);
@@ -211,29 +212,6 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 			else m_bCard = false;
 		}
 	}
-
-	/*if (_key == VK_UP)
-	{
-		test.top -= 1;
-		test.bottom -= 1;
-	}
-	if (_key == VK_DOWN)
-	{
-		test.top += 1;
-		test.bottom += 1;
-	}
-	if (_key == VK_LEFT)
-	{
-		test.left -= 1;
-		test.right -= 1;
-	}
-	if (_key == VK_RIGHT)
-	{
-		test.left += 1;
-		test.right += 1;
-	}
-
-	m_pChoiceCardBoard->SetTarget(test);*/
 }
 
 void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum)

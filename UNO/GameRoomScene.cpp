@@ -199,7 +199,6 @@ void CGameRoomScene::Update()
 		}
 	}
 
-	// 2022-05-17 수정
 	m_pPlayerObject->Update(&m_pUserInfo[m_MyNumber - 1], m_pRoomInfo, mouse, key);
 }
 
@@ -243,7 +242,6 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 
 void CGameRoomScene::Destroy()
 {
-	// 2022-05-02 수정
 	memset(m_chatBuffer, 0, 32);
 	CInformation::GetInstance()->ReSetChatting();
 

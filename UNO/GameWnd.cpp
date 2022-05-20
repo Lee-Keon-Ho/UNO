@@ -168,7 +168,7 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 {
 	HIMC himc;
 	POINT mouse;
-	//2022-05-06 ¼öÁ¤ test
+
 	switch (_message)
 	{
 	case WM_MOUSEMOVE :
@@ -181,9 +181,6 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_CHAR:
-		CInput::GetInstance()->SetKey(_wParam);
-		break;
-	case WM_KEYDOWN:
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
 	case WM_IME_COMPOSITION:

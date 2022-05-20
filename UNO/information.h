@@ -28,7 +28,7 @@ private:
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
-	CRoom::stUSER m_user[USRE_MAX]; // 2022-04-27 ¼öÁ¤
+	CRoom::stUSER m_user[USRE_MAX];
 	chatting_t m_chat;
 
 public:

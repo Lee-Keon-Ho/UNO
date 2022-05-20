@@ -34,7 +34,6 @@ bool CInformation::Initalize()
 	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
 
-	//2022-04-27 수정
 	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
 
 	return true;
@@ -126,7 +125,6 @@ void CInformation::UserList(char* _userList)
 
 void CInformation::RoomList(char* _roomList)
 {
-	// 2022-04-19 수정 : 완료
 	unsigned short packetSize = *(unsigned short*)_roomList;
 	char* tempBuffer = _roomList + 4;
 

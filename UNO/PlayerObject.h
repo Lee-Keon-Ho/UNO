@@ -36,8 +36,6 @@ private:
 	bool m_bCard;
 	bool m_bStart;
 	bool m_bChoice;
-
-	D2D1_RECT_F test;
 public:
 	CPlayerObject();
 	~CPlayerObject();

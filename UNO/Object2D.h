@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include <vector>
 #include <d2d1.h>
-class CObject2D // 2022-04-23 ¼öÁ¤ : Object2D
+class CObject2D
 {
 public:
 	typedef std::vector<CSprite> spriteList_t;
