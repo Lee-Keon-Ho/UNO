@@ -3,6 +3,7 @@
 
 #define ROOM_NAME_MAX_SIZE 64
 #define USER_NAME_MAX 32
+#define USER_CARD_MAX 20
 
 class CRoom : public CText
 {
@@ -23,9 +24,10 @@ public:
 		SOCKET socket;
 		bool boss;
 		bool ready;
-		int card[20];
+		int card[USER_CARD_MAX];
 		int cardCount;
 		bool turn;
+		bool choiceColor;
 	};
 
 	typedef std::vector<CRoom::stROOM> room_t;

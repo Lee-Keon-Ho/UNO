@@ -18,7 +18,7 @@ private:
 	player_t m_playerImage;
 	player_t m_boss;
 	player_t m_turn;
-	playerName_t m_pName;
+	playerName_t m_pName;	
 
 	card_t m_pChoiceColor;
 	card_t* m_playersCard;
@@ -29,11 +29,13 @@ private:
 	CButton* m_pCurrentCard;
 
 	D2D1_RECT_F m_currentCardRect;
+	D2D1_RECT_F m_ChoiceColorCardRect;
 
 	int m_fontSize;
 
 	bool m_bCard;
 	bool m_bStart;
+	bool m_bChoice;
 
 	D2D1_RECT_F test;
 public:

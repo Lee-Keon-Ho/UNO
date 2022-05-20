@@ -22,7 +22,7 @@ CApp::~CApp()
 
 bool CApp::Initialize()
 {
-	if (!CClient::GetInstance()->Initialize("211.218.197.8", 30002))return false;
+	if (!CClient::GetInstance()->Initialize("192.168.123.17", 30002))return false;
 	if (!CDirect::GetInstance()->Initialize()) return false;
 	if (!CResourceManager::GetInstance()->Initialize()) return false;
 	if (!CInformation::GetInstance()->Initalize()) return false;
