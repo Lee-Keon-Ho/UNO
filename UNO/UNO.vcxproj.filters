@@ -25,6 +25,9 @@
     <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{5ee67e97-a5ee-41c3-80a8-bd9d8ad1cc88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Object">
+      <UniqueIdentifier>{5f63cd8d-ff09-476a-a545-bc1e9b0949f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UNO.cpp">
@@ -97,7 +100,10 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerObject.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>소스 파일\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +177,10 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PlayerObject.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>소스 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

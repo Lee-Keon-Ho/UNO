@@ -13,7 +13,7 @@ CObject2D::CObject2D(spriteList_t _sprite, ID2D1Bitmap* _bitmap, const D2D1_RECT
 {
 }
 
-void CObject2D::Rneder(ID2D1HwndRenderTarget* _pRT)
+void CObject2D::Render(ID2D1HwndRenderTarget* _pRT)
 {
 }
 

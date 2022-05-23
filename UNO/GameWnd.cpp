@@ -75,7 +75,8 @@ bool CGameWnd::LoadBitmapFile()
 											L"PNG\\boss.png",
 											L"PNG\\MY TURN.png",
 											L"PNG\\choiceColor.png",
-											L"PNG\\cardBoard.png"};
+											L"PNG\\cardBoard.png",
+											L"PNG\\GAME OVER.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -109,7 +110,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\boss1.spr",
 											"Resource\\MyTurn1.spr",
 											"Resource\\choiceColor4.spr",
-											"Resource\\cardBoard1.spr"};
+											"Resource\\cardBoard1.spr",
+											"Resource\\GameOver1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;

@@ -7,6 +7,7 @@
 #define CARD_MAX 9
 #define COLOR_CARD_MAX 4
 #define BUFFER_MAX 100
+#define GAME_OVER 19
 
 CPlayerObject::CPlayerObject()
 	: CText({ 0.0f,0.0f,0.0f,0.0f }, 0, 0, T_BLACK), m_fontSize(15), m_bCard(false), m_bChoice(false)
@@ -19,6 +20,7 @@ CPlayerObject::CPlayerObject()
 	ID2D1Bitmap* pTurnBitmap = pRM->GetBitmap(bitmap_t::TURN);
 	ID2D1Bitmap* pChoiceBitmap = pRM->GetBitmap(bitmap_t::CHOICE);
 	ID2D1Bitmap* pboardBitmap = pRM->GetBitmap(bitmap_t::BOARD);
+	ID2D1Bitmap* pGameOverBitmap = pRM->GetBitmap(bitmap_t::GAMEOVER);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_pCardBoard = new CObject2D(sprite[CResourceManager::CARD_BOARD], pboardBitmap, { 490.0f, 483.0f, 1140.0f, 715.0f });
@@ -66,6 +68,13 @@ CPlayerObject::CPlayerObject()
 	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 655.0f, 219.0f, 726.0f, 336.0f }));
 	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 756.0f, 219.0f, 826.0f, 336.0f }));
 
+	m_gameOver.reserve(PLAYER_MAX);
+	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 491.0f, 482.0f, 762.0f, 666.0f }));
+	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 71.0f, 440.0f, 255.0f }));
+	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 71.0f, 1110.0f, 255.0f }));
+	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 287.0f, 440.0f, 471.0f }));
+	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 287.0f, 1110.0f, 471.0f }));
+
 	m_playersCard = new card_t[PLAYER_MAX];
 
 	D2D1_RECT_F rect;
@@ -109,6 +118,14 @@ CPlayerObject::~CPlayerObject()
 		}
 		delete[] m_playersCard;
 	}
+
+	GameOver_t::iterator gameOverIter = m_gameOver.begin();
+	GameOver_t::iterator gameOverEndIter = m_gameOver.end();
+	for (; gameOverIter != gameOverEndIter; gameOverIter++)
+	{
+		if (*gameOverIter) { delete* gameOverIter; *gameOverIter = nullptr; }
+	}
+	m_gameOver.clear();
 
 	card_t::iterator colorIter = m_pChoiceColor.begin();
 	card_t::iterator colorEndIter = m_pChoiceColor.end();
@@ -170,46 +187,51 @@ CPlayerObject::~CPlayerObject()
 void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
 {
 	m_bStart = !_roominfo->state;
-	if (_userinfo->choiceColor)
+	if (_userinfo->cardCount < GAME_OVER)
 	{
-		for (int i = 0; i < COLOR_CARD_MAX; i++)
+		if (_userinfo->choiceColor)
 		{
-			if (m_pChoiceColor[i]->OnButton(_mouse))
+			for (int i = 0; i < COLOR_CARD_MAX; i++)
 			{
-				if (_key == VK_LBUTTON)
+				if (m_pChoiceColor[i]->OnButton(_mouse))
 				{
-					char buffer[BUFFER_MAX];
-					char* temp = buffer;
-					memcpy(temp, &i, sizeof(unsigned short));
-					CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
+					m_currentCardRect = m_pChoiceColor[i]->GetTarget();
+					if (_key == VK_LBUTTON)
+					{
+						char buffer[BUFFER_MAX];
+						char* temp = buffer;
+						memcpy(temp, &i, sizeof(unsigned short));
+						CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
+						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+					}
+					m_bChoice = true;
+					break;
 				}
-				m_currentCardRect = m_pChoiceColor[i]->GetTarget();
-				m_bChoice = true;
-				break;
+				else m_bChoice = false;
 			}
-			else m_bChoice = false;
 		}
-	}
-	else
-	{
-		for (int i = 0; i < _userinfo->cardCount; i++)
+		else
 		{
-			if (m_playersCard[0][i]->OnButton(_mouse))
+			for (int i = 0; i < _userinfo->cardCount; i++)
 			{
-				if (_key == VK_LBUTTON && _userinfo->turn)
+				if (m_playersCard[0][i]->OnButton(_mouse))
 				{
-					char buffer[BUFFER_MAX];
-					char* temp = buffer;
-					memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
-					temp += sizeof(unsigned short);
-					memcpy(temp, &i, sizeof(unsigned short));
-					CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
+					m_currentCardRect = m_playersCard[0][i]->GetTarget();
+					if (_key == VK_LBUTTON && _userinfo->turn)
+					{
+						char buffer[BUFFER_MAX];
+						char* temp = buffer;
+						memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
+						temp += sizeof(unsigned short);
+						memcpy(temp, &i, sizeof(unsigned short));
+						CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
+						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+					}
+					m_bCard = true;
+					break;
 				}
-				m_currentCardRect = m_playersCard[0][i]->GetTarget();
-				m_bCard = true;
-				break;
+				else m_bCard = false;
 			}
-			else m_bCard = false;
 		}
 	}
 }
@@ -228,44 +250,61 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				m_player[0]->Render(_pRT, 1.0f);
 				m_playerImage[0]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
 				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].playerName);
-				if (m_bStart) m_pCardBoard->Render(_pRT, 1.0f);
-				for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
+				if (_userinfo[iUserInfo].cardCount >= 18)
 				{
-					m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
+					m_gameOver[0]->Render(_pRT);
 				}
-				if (_userinfo[iUserInfo].boss)
+				else
 				{
-					m_boss[0]->Render(_pRT, 1.0f);
-				}
-				if (_userinfo[iUserInfo].turn && m_bStart)
-				{
-					m_turn[0]->Render(_pRT, 1.0f);
-				}
-				if (_userinfo[iUserInfo].choiceColor)
-				{
-					m_pChoiceCardBoard->Render(_pRT, 1.0f);
-					for (int i = 0; i < 4; i++)
+					if (m_bStart) m_pCardBoard->Render(_pRT, 1.0f);
+
+					for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 					{
-						m_pChoiceColor[i]->Render(_pRT, i, 1.0f);
+						m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
+					}
+
+					if (_userinfo[iUserInfo].boss)
+					{
+						m_boss[0]->Render(_pRT, 1.0f);
+					}
+					if (_userinfo[iUserInfo].turn && m_bStart)
+					{
+						m_turn[0]->Render(_pRT, 1.0f);
+					}
+					if (_userinfo[iUserInfo].choiceColor)
+					{
+						m_pChoiceCardBoard->Render(_pRT, 1.0f);
+						for (int i = 0; i < 4; i++)
+						{
+							m_pChoiceColor[i]->Render(_pRT, i, 1.0f);
+						}
 					}
 				}
 			}
 			else
 			{
-				m_player[iObject]->Render(_pRT, 1.0f);
-				m_playerImage[iObject]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
-				m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].playerName);
-				for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
+				if (_userinfo[iObject].cardCount > 18)
 				{
-					m_playersCard[iObject][i]->Render(_pRT, 1.0f);
+					m_gameOver[0]->Render(_pRT);
 				}
-				if (_userinfo[iUserInfo].boss)
+				else
 				{
-					m_boss[iObject]->Render(_pRT, 1.0f);
-				}
-				if (_userinfo[iUserInfo].turn && m_bStart)
-				{
-					m_turn[iObject]->Render(_pRT, 1.0f);
+					m_player[iObject]->Render(_pRT, 1.0f);
+					m_playerImage[iObject]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
+					m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].playerName);
+					for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
+					{
+						m_playersCard[iObject][i]->Render(_pRT, 1.0f);
+					}
+					if (_userinfo[iUserInfo].boss)
+					{
+						m_boss[iObject]->Render(_pRT, 1.0f);
+					}
+					if (_userinfo[iUserInfo].turn && m_bStart)
+					{
+						m_turn[iObject]->Render(_pRT, 1.0f);
+					}
+					
 				}
 				iObject++;
 			}

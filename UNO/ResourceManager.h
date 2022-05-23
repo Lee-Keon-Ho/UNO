@@ -37,6 +37,7 @@ public:
 		TURN,
 		CHOICE,
 		BOARD,
+		GAMEOVER,
 		MAX
 	};
 
@@ -75,6 +76,7 @@ public:
 		MYTURN,
 		CHOICE_COLOR,
 		CARD_BOARD,
+		GAME_OVER_ICON,
 		ICON_MAX
 	};
 
