@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "SceneManager.h"
 #include "Input.h"
+#include "Timer.h"
 
 #pragma comment( lib, "imm32.lib")
 #define IMC_GETOPENSTATUS 0x0005
@@ -76,7 +77,8 @@ bool CGameWnd::LoadBitmapFile()
 											L"PNG\\MY TURN.png",
 											L"PNG\\choiceColor.png",
 											L"PNG\\cardBoard.png",
-											L"PNG\\GAME OVER.png"};
+											L"PNG\\GAME OVER.png",
+											L"PNG\\winner.png"};
 
 	char resourceFileName[][_MAX_PATH] = {	"Resource\\LOBBY1.spr",
 											"Resource\\LOGIN_background1.spr",
@@ -111,7 +113,8 @@ bool CGameWnd::LoadBitmapFile()
 											"Resource\\MyTurn1.spr",
 											"Resource\\choiceColor4.spr",
 											"Resource\\cardBoard1.spr",
-											"Resource\\GameOver1.spr"};
+											"Resource\\GameOver1.spr",
+											"Resource\\winner1.spr"};
 
 	FILE* pFile;
 	CSprite* tmpSprite;
@@ -166,6 +169,11 @@ void CGameWnd::Render()
 	CSceneManager::GetInstance()->Render(m_pRenderTarget);
 }
 
+void CGameWnd::OnTimer(HWND _hWnd, int _i)
+{
+	CTimer::GetInstance()->Update();
+}
+
 LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
 	HIMC himc;
@@ -173,6 +181,9 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 
 	switch (_message)
 	{
+	case WM_CREATE:
+		SetTimer(_hWnd, 0, 1000, nullptr);
+		break;
 	case WM_MOUSEMOVE :
 	case WM_LBUTTONUP:
 		mouse.x = LOWORD(_lParam);
@@ -185,10 +196,14 @@ LRESULT CGameWnd::MSGProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPa
 	case WM_CHAR:
 		CInput::GetInstance()->SetKey(_wParam);
 		break;
+	case WM_TIMER:
+		OnTimer(_hWnd, 0);
+		break;
 	case WM_IME_COMPOSITION:
 		OnImeComposition(_hWnd, _lParam);
 		break;
 	case WM_CLOSE:
+		KillTimer(_hWnd, 0);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

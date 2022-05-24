@@ -18,6 +18,10 @@ public:
 	void Update();
 	void Render();
 
+	// tiler class 가서 확인
+
+	void OnTimer(HWND _hWnd, int _i);
+
 	bool LoadBitmapFile();
 	ID2D1HwndRenderTarget* GetRT() { return m_pRenderTarget; }
 

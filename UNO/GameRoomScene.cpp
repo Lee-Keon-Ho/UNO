@@ -1,10 +1,10 @@
 #include "Client.h"
 #include "PacketType.h"
 #include "GameRoomScene.h"
-#include "timer.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "information.h"
+#include "Timer.h"
 
 CGameRoomScene::CGameRoomScene() : 
 	fontSize(15), m_MyNumber(0), m_bChatting(false), m_chatCount(0)
@@ -48,7 +48,7 @@ void CGameRoomScene::Awake()
 	m_chatBuffer = new wchar_t[CHAT_MAX];
 	memset(m_chatBuffer, 0, sizeof(wchar_t) * CHAT_MAX);
 
-	CTimer::GetInstance()->ResetTimer();
+	//CTimer::GetInstance()->ResetTimer();
 
 	m_pUserInfo = pInformation->GetUserInfo();
 	m_pRoomInfo = pInformation->GetRoomInfo();
@@ -83,19 +83,20 @@ void CGameRoomScene::Start()
 void CGameRoomScene::Update()
 {
 	CInput* pInput = CInput::GetInstance();
-	CTimer* pTimer = CTimer::GetInstance();
+	//CTimer* pTimer = CTimer::GetInstance();
 	CInformation* pInformation = CInformation::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1.0f)
+	// 2022-05-24 수정
+	char buffer[] = "game";
+	CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
+	m_pUserInfo = pInformation->GetUserInfo();
+	m_pRoomInfo = pInformation->GetRoomInfo();
+	/*if (pTimer->GetTime() >= 1.0f)
 	{
-		char buffer[] = "game";
-		CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
-		m_pUserInfo = pInformation->GetUserInfo();
-		m_pRoomInfo = pInformation->GetRoomInfo();
 		pTimer->ResetTimer();
-	}
+	}*/
 
 	m_pExitButton->ButtonPosition(mouse);
 
@@ -131,7 +132,7 @@ void CGameRoomScene::Update()
 			}
 			m_bChatting = false;
 		}
-		else
+		else if(!m_pRoomInfo->victory) // 2022-05-24 수정
 		{
 			if (m_pUserInfo[m_MyNumber - 1].turn)
 			{
@@ -140,6 +141,13 @@ void CGameRoomScene::Update()
 					char buffer[] = "take";
 					CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
 				}
+			}
+		}
+		else
+		{
+			if (CTimer::GetInstance()->GetTime() > 3)
+			{
+				// reset
 			}
 		}
 	}

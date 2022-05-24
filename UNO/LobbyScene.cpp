@@ -3,7 +3,6 @@
 #include "SceneManager.h"
 #include "PacketType.h"
 #include "Input.h"
-#include "Timer.h"
 #include <ctime>
 #include <string>
 
@@ -89,7 +88,7 @@ void CLobbyScene::Awake()
 
 	m_roomCount = m_pRoomList->GetSize();
 
-	CTimer::GetInstance()->ResetTimer(); // 타이머 초기화
+	//CTimer::GetInstance()->ResetTimer(); // 타이머 초기화
 }
 
 void CLobbyScene::Start()
@@ -98,21 +97,22 @@ void CLobbyScene::Start()
 
 void CLobbyScene::Update()
 {
-	CTimer* pTimer = CTimer::GetInstance();
+	//CTimer* pTimer = CTimer::GetInstance();
 	CInput* pInput = CInput::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	if (pTimer->GetTime() >= 1.0f)
+	// 2022-05-24
+	char buffer[] = "List";
+	CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
+	CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
+	m_pUserList->SetList();
+	m_pRoomList->SetList();
+	m_roomCount = m_pRoomList->GetSize();
+	/*if (pTimer->GetTime() >= 1.0f)
 	{
-		char buffer[] = "List";
-		CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
-		CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
 		pTimer->ResetTimer();
-		m_pUserList->SetList();
-		m_pRoomList->SetList();
-		m_roomCount = m_pRoomList->GetSize();
-	}
+	}*/
 
 	for (int i = 0; i < LB_BUTTON_MAX; i++)
 	{

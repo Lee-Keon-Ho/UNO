@@ -43,23 +43,24 @@ void CTimer::End(void)
 
 void CTimer::Update()
 {
-	DWORD nowTick = timeGetTime();
+	//DWORD nowTick = timeGetTime();
 
-	m_deltaTick = nowTick - m_prevTick;
-	m_deltaTime = (float)m_deltaTick / 1000.0f;
+	//m_deltaTick = nowTick - m_prevTick;
+	//m_deltaTime = (float)m_deltaTick / 1000.0f;
 
-	m_fps++;
+	//m_fps++;
 
-	// 1초를 알기 위해서
-	m_secTick += m_deltaTick;
-	if (m_secTick > 999)
-	{
-		m_time += 1;
-		m_secTick -= 1000;
-		m_fpsAvg = m_fps;
-		m_fps = 0;
-	}
+	//// 1초를 알기 위해서
+	//m_secTick += m_deltaTick;
+	//if (m_secTick > 999)
+	//{
+	//	m_time += 1;
+	//	m_secTick -= 1000;
+	//	m_fpsAvg = m_fps;
+	//	m_fps = 0;
+	//}
 
-	m_prevTick = nowTick;
+	//m_prevTick = nowTick;
+	m_time += 1;
 }
 

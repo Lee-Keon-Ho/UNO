@@ -28,6 +28,7 @@ public:
 	void Update();
 	int GetFps(void) { return m_fpsAvg; }
 	float GetTime() { return m_time; }
+	void UpTime() { m_time += 1; }
 	void ResetTimer() { m_time = 0; }
 	//=================================
 

@@ -2,7 +2,7 @@
 #include "text.h"
 #include "Room.h"
 #include "Button.h"	
-#include "GameOver.h"
+#include "TextObject.h"
 #include "ResourceManager.h"
 
 class CPlayerObject : public CObject2D, CText
@@ -13,7 +13,8 @@ public:
 	typedef std::vector<CText*> playerName_t;
 	typedef std::vector<CButton*> card_t;
 	typedef std::vector<D2D1_RECT_F> Turn_t;
-	typedef std::vector<CGameOver*> GameOver_t;
+	typedef std::vector<CTextObject*> GameOver_t;
+	typedef std::vector<CTextObject*> Winner_t;
 
 private:
 	player_t m_player;
@@ -22,6 +23,7 @@ private:
 	player_t m_turn;
 	playerName_t m_pName;
 	GameOver_t m_gameOver;
+	Winner_t m_winner;
 
 	card_t m_pChoiceColor;
 	card_t* m_playersCard;

@@ -2,6 +2,7 @@
 #include "PlayerObject.h"
 #include "Input.h"
 #include "PacketType.h"
+#include "Timer.h"
 
 #define PLAYER_MAX 5
 #define CARD_MAX 9
@@ -21,6 +22,7 @@ CPlayerObject::CPlayerObject()
 	ID2D1Bitmap* pChoiceBitmap = pRM->GetBitmap(bitmap_t::CHOICE);
 	ID2D1Bitmap* pboardBitmap = pRM->GetBitmap(bitmap_t::BOARD);
 	ID2D1Bitmap* pGameOverBitmap = pRM->GetBitmap(bitmap_t::GAMEOVER);
+	ID2D1Bitmap* pWinnerBitmap = pRM->GetBitmap(bitmap_t::WINNER);
 	CResourceManager::spriteList_t* sprite = pRM->GetSprite();
 
 	m_pCardBoard = new CObject2D(sprite[CResourceManager::CARD_BOARD], pboardBitmap, { 490.0f, 483.0f, 1140.0f, 715.0f });
@@ -69,11 +71,18 @@ CPlayerObject::CPlayerObject()
 	m_pChoiceColor.push_back(new CButton(sprite[CResourceManager::CHOICE_COLOR], pChoiceBitmap, { 756.0f, 219.0f, 826.0f, 336.0f }));
 
 	m_gameOver.reserve(PLAYER_MAX);
-	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 491.0f, 482.0f, 762.0f, 666.0f }));
-	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 71.0f, 440.0f, 255.0f }));
-	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 71.0f, 1110.0f, 255.0f }));
-	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 287.0f, 440.0f, 471.0f }));
-	m_gameOver.push_back(new CGameOver(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 287.0f, 1110.0f, 471.0f }));
+	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 496.0f, 485.0f, 787.0f, 670.0f }));
+	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 71.0f, 440.0f, 255.0f }));
+	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 71.0f, 1110.0f, 255.0f }));
+	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 169.0f, 287.0f, 440.0f, 471.0f }));
+	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 287.0f, 1110.0f, 471.0f }));
+
+	m_winner.reserve(PLAYER_MAX);
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 531.0f, 514.0f, 752.0f, 580.0f }));//531 400 752 466
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 194.0f, 114.0f, 415.0f, 180.0f }));
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 864.0f, 114.0f, 1085.0f, 180.0f }));
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 194.0f, 330.0f, 415.0f, 396.0f }));
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 864.0f, 330.0f, 1085.0f, 396.0f }));
 
 	m_playersCard = new card_t[PLAYER_MAX];
 
@@ -187,7 +196,13 @@ CPlayerObject::~CPlayerObject()
 void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
 {
 	m_bStart = !_roominfo->state;
-	if (_userinfo->cardCount < GAME_OVER)
+
+	// 2022-05-24 수정
+	if (_roominfo->victory)
+	{
+
+	}
+	else if (_userinfo->cardCount < GAME_OVER)
 	{
 		if (_userinfo->choiceColor)
 		{
@@ -226,6 +241,9 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 						memcpy(temp, &i, sizeof(unsigned short));
 						CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
 						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+						// 2022-05-24 수정
+						CTimer::GetInstance()->ResetTimer();
 					}
 					m_bCard = true;
 					break;
@@ -250,7 +268,15 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				m_player[0]->Render(_pRT, 1.0f);
 				m_playerImage[0]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
 				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].playerName);
-				if (_userinfo[iUserInfo].cardCount >= 18)
+				if (_userinfo[iUserInfo].boss)
+				{
+					m_boss[0]->Render(_pRT, 1.0f);
+				}
+				if (_userinfo[iUserInfo].cardCount <= 0)
+				{
+					m_winner[0]->Render(_pRT);
+				}
+				else if (_userinfo[iUserInfo].cardCount >= GAME_OVER)
 				{
 					m_gameOver[0]->Render(_pRT);
 				}
@@ -261,11 +287,6 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 					for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 					{
 						m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
-					}
-
-					if (_userinfo[iUserInfo].boss)
-					{
-						m_boss[0]->Render(_pRT, 1.0f);
 					}
 					if (_userinfo[iUserInfo].turn && m_bStart)
 					{
@@ -283,32 +304,34 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 			}
 			else
 			{
-				if (_userinfo[iObject].cardCount > 18)
+				m_player[iObject]->Render(_pRT, 1.0f);
+				m_playerImage[iObject]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
+				m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].playerName);
+				if (_userinfo[iUserInfo].boss)
 				{
-					m_gameOver[0]->Render(_pRT);
+					m_boss[iObject]->Render(_pRT, 1.0f);
+				}
+				if (_userinfo[iUserInfo].cardCount <= 0)
+				{
+					m_winner[iObject]->Render(_pRT);
+				}
+				else if (_userinfo[iUserInfo].cardCount >= GAME_OVER)
+				{
+					m_gameOver[iObject]->Render(_pRT);
 				}
 				else
-				{
-					m_player[iObject]->Render(_pRT, 1.0f);
-					m_playerImage[iObject]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
-					m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].playerName);
+				{	
 					for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 					{
 						m_playersCard[iObject][i]->Render(_pRT, 1.0f);
-					}
-					if (_userinfo[iUserInfo].boss)
-					{
-						m_boss[iObject]->Render(_pRT, 1.0f);
 					}
 					if (_userinfo[iUserInfo].turn && m_bStart)
 					{
 						m_turn[iObject]->Render(_pRT, 1.0f);
 					}
-					
 				}
 				iObject++;
 			}
-
 		}
 		else iObject++;
 	}

@@ -163,7 +163,7 @@
     <ClCompile Include="User.cpp" />
     <ClCompile Include="GameRoomScene.cpp" />
     <ClCompile Include="Wnd.cpp" />
-    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="TextObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
@@ -171,7 +171,7 @@
     <ClInclude Include="Chatting.h" />
     <ClInclude Include="Direct.h" />
     <ClInclude Include="FPS.h" />
-    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="TextObject.h" />
     <ClInclude Include="information.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="PacketType.h" />

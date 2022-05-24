@@ -102,7 +102,7 @@
     <ClCompile Include="PlayerObject.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
-    <ClCompile Include="GameOver.cpp">
+    <ClCompile Include="TextObject.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,7 +179,7 @@
     <ClInclude Include="PlayerObject.h">
       <Filter>소스 파일\Object</Filter>
     </ClInclude>
-    <ClInclude Include="GameOver.h">
+    <ClInclude Include="TextObject.h">
       <Filter>소스 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>

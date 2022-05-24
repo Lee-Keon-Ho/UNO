@@ -60,7 +60,7 @@ int CApp::MessageLoop()
 		if (m_pFps->IsFrame())
 		{
 			// gpm
-			CTimer::GetInstance()->Update();
+			//CTimer::GetInstance()->Update();
 			Update();
 			Render();
 		}

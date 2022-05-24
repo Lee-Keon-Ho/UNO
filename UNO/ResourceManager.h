@@ -38,6 +38,7 @@ public:
 		CHOICE,
 		BOARD,
 		GAMEOVER,
+		WINNER,
 		MAX
 	};
 
@@ -77,6 +78,7 @@ public:
 		CHOICE_COLOR,
 		CARD_BOARD,
 		GAME_OVER_ICON,
+		WINNER_ICON,
 		ICON_MAX
 	};
 

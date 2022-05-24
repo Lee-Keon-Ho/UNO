@@ -14,6 +14,7 @@ public:
 		wchar_t name[ROOM_NAME_MAX_SIZE];
 		int playerCount;
 		bool state;
+		bool victory;
 	};
 
 	struct stUSER
