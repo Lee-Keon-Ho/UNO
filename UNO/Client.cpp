@@ -147,6 +147,8 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_CHOISECOLOR:
 		size = sizeof(unsigned short);
 		break;
+	case CS_PT_VICTORY:
+		break;
 	}
 	
 	*(unsigned short*)tempBuffer = 2 + 2 + size;

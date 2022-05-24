@@ -97,7 +97,14 @@ void CGameRoomScene::Update()
 	{
 		pTimer->ResetTimer();
 	}*/
-
+	if (m_pRoomInfo->victory)
+	{
+		if (CTimer::GetInstance()->GetTime() > 5)
+		{
+			char buffer[] = "victory";
+			CClient::GetInstance()->Send(buffer, CS_PT_VICTORY);
+		}
+	}
 	m_pExitButton->ButtonPosition(mouse);
 
 	if (key == VK_LBUTTON)
@@ -141,13 +148,6 @@ void CGameRoomScene::Update()
 					char buffer[] = "take";
 					CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
 				}
-			}
-		}
-		else
-		{
-			if (CTimer::GetInstance()->GetTime() > 3)
-			{
-				// reset
 			}
 		}
 	}

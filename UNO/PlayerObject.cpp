@@ -272,7 +272,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_boss[0]->Render(_pRT, 1.0f);
 				}
-				if (_userinfo[iUserInfo].cardCount <= 0)
+				if (_userinfo[iUserInfo].cardCount == 0)
 				{
 					m_winner[0]->Render(_pRT);
 				}
@@ -311,7 +311,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 				{
 					m_boss[iObject]->Render(_pRT, 1.0f);
 				}
-				if (_userinfo[iUserInfo].cardCount <= 0)
+				if (_userinfo[iUserInfo].cardCount == 0)
 				{
 					m_winner[iObject]->Render(_pRT);
 				}
