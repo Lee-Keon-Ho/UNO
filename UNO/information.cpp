@@ -84,6 +84,9 @@ void CInformation::HandlePacket(char* _buffer)
 	case CS_PT_START:
 		Start(_buffer);
 		break;
+	case CS_PT_VICTORY:
+		CSceneManager::GetInstance()->ChangeScene(eScene::WAITING_SCENE);
+		break;
 	}
 }
 
