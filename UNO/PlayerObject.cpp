@@ -11,7 +11,7 @@
 #define GAME_OVER 19
 
 CPlayerObject::CPlayerObject()
-	: CText({ 0.0f,0.0f,0.0f,0.0f }, 0, 0, T_BLACK), m_fontSize(15), m_bCard(false), m_bChoice(false)
+	: CText({ 0.0f,0.0f,0.0f,0.0f }, 0, 0, T_WHITE), m_fontSize(15), m_bCard(false), m_bChoice(false)
 {
 	CResourceManager* pRM = CResourceManager::GetInstance();
 	ID2D1Bitmap* pPlayerImage = pRM->GetBitmap(bitmap_t::CHARCTER);
@@ -78,7 +78,7 @@ CPlayerObject::CPlayerObject()
 	m_gameOver.push_back(new CTextObject(sprite[CResourceManager::GAME_OVER_ICON], pGameOverBitmap, { 839.0f, 287.0f, 1110.0f, 471.0f }));
 
 	m_winner.reserve(PLAYER_MAX);
-	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 531.0f, 514.0f, 752.0f, 580.0f }));//531 400 752 466
+	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 531.0f, 514.0f, 752.0f, 580.0f }));
 	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 194.0f, 114.0f, 415.0f, 180.0f }));
 	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 864.0f, 114.0f, 1085.0f, 180.0f }));
 	m_winner.push_back(new CTextObject(sprite[CResourceManager::WINNER_ICON], pWinnerBitmap, { 194.0f, 330.0f, 415.0f, 396.0f }));
@@ -200,7 +200,7 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 	// 2022-05-24 ¼öÁ¤
 	if (_roominfo->victory)
 	{
-
+	
 	}
 	else if (_userinfo->cardCount < GAME_OVER)
 	{
@@ -217,12 +217,15 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 						char* temp = buffer;
 						memcpy(temp, &i, sizeof(unsigned short));
 						CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
-						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 					m_bChoice = true;
 					break;
 				}
-				else m_bChoice = false;
+				else
+				{
+					m_bChoice = false;
+					m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+				}
 			}
 		}
 		else
@@ -248,7 +251,11 @@ void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, P
 					m_bCard = true;
 					break;
 				}
-				else m_bCard = false;
+				else
+				{
+					m_bCard = false;
+					m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+				}
 			}
 		}
 	}
