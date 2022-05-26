@@ -58,7 +58,7 @@ void CGameRoomScene::Awake()
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
+		if (wcsncmp(m_pUserInfo[i].name, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
 		{
 			m_MyNumber = m_pUserInfo[i].number;
 			if (m_pUserInfo[i].boss)
@@ -185,7 +185,7 @@ void CGameRoomScene::Update()
 
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (wcsncmp(m_pUserInfo[i].playerName, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
+		if (wcsncmp(m_pUserInfo[i].name, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
 		{
 			if (m_pUserInfo[i].boss)
 			{
@@ -222,7 +222,7 @@ void CGameRoomScene::Render(ID2D1HwndRenderTarget* _pRT)
 		m_pCenterCard->Render(_pRT, 0, 1.0f);
 	}
 
-	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_MyNumber);
+	m_pPlayerObject->Render(_pRT, m_pUserInfo, m_pRoomInfo->playerCount, m_MyNumber);
 	
 	m_pChatBackGround->Render(_pRT, 0.3f);
 

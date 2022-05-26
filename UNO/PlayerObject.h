@@ -1,5 +1,6 @@
 #pragma once
 #include "text.h"
+#include "User.h"
 #include "Room.h"
 #include "Button.h"	
 #include "TextObject.h"
@@ -45,6 +46,6 @@ public:
 	CPlayerObject();
 	~CPlayerObject();
 
-	void Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key);
-	void Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum);
+	void Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key);
+	void Render(ID2D1HwndRenderTarget* _pRT, CUser::stUserInfo* _userinfo, int _playerCount,int _myNum);
 };

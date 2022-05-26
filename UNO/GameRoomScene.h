@@ -2,9 +2,11 @@
 #include "Scene.h"
 #include "Button.h"
 #include "ResourceManager.h"
+#include "User.h"
 #include "Room.h"
 #include "Chatting.h"
 #include "PlayerObject.h"
+
 class CGameRoomScene : public CScene
 {
 public:
@@ -44,7 +46,7 @@ private:
 	CChatting* m_pChatting;
 
 	CRoom::stROOM* m_pRoomInfo;
-	CRoom::stUSER* m_pUserInfo;
+	CUser::stUserInfo* m_pUserInfo;
 	
 	bool m_bChatting;
 	bool m_bStart;

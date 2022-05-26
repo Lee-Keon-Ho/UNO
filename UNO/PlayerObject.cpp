@@ -193,79 +193,79 @@ CPlayerObject::~CPlayerObject()
 	m_player.clear();
 }
 
-void CPlayerObject::Update(CRoom::stUSER* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
+void CPlayerObject::Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominfo, POINT _mouse, int _key)
 {
 	m_bStart = !_roominfo->state;
 
 	// 2022-05-24 수정
-	if (_roominfo->victory)
-	{
-	
-	}
-	else if (_userinfo->cardCount < GAME_OVER)
-	{
-		if (_userinfo->choiceColor)
-		{
-			for (int i = 0; i < COLOR_CARD_MAX; i++)
-			{
-				if (m_pChoiceColor[i]->OnButton(_mouse))
-				{
-					m_currentCardRect = m_pChoiceColor[i]->GetTarget();
-					if (_key == VK_LBUTTON)
-					{
-						char buffer[BUFFER_MAX];
-						char* temp = buffer;
-						memcpy(temp, &i, sizeof(unsigned short));
-						CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
-					}
-					m_bChoice = true;
-					break;
-				}
-				else
-				{
-					m_bChoice = false;
-					m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < _userinfo->cardCount; i++)
-			{
-				if (m_playersCard[0][i]->OnButton(_mouse))
-				{
-					m_currentCardRect = m_playersCard[0][i]->GetTarget();
-					if (_key == VK_LBUTTON && _userinfo->turn)
-					{
-						char buffer[BUFFER_MAX];
-						char* temp = buffer;
-						memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
-						temp += sizeof(unsigned short);
-						memcpy(temp, &i, sizeof(unsigned short));
-						CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
-						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//if (_roominfo->victory)
+	//{
+	//
+	//}
+	//else if (_userinfo->cardCount < GAME_OVER)
+	//{
+	//	if (_userinfo->choiceColor)
+	//	{
+	//		for (int i = 0; i < COLOR_CARD_MAX; i++)
+	//		{
+	//			if (m_pChoiceColor[i]->OnButton(_mouse))
+	//			{
+	//				m_currentCardRect = m_pChoiceColor[i]->GetTarget();
+	//				if (_key == VK_LBUTTON)
+	//				{
+	//					char buffer[BUFFER_MAX];
+	//					char* temp = buffer;
+	//					memcpy(temp, &i, sizeof(unsigned short));
+	//					CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
+	//				}
+	//				m_bChoice = true;
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				m_bChoice = false;
+	//				m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		for (int i = 0; i < _userinfo->cardCount; i++)
+	//		{
+	//			if (m_playersCard[0][i]->OnButton(_mouse))
+	//			{
+	//				m_currentCardRect = m_playersCard[0][i]->GetTarget();
+	//				if (_key == VK_LBUTTON && _userinfo->turn)
+	//				{
+	//					char buffer[BUFFER_MAX];
+	//					char* temp = buffer;
+	//					memcpy(temp, &_userinfo->card[i], sizeof(unsigned short));
+	//					temp += sizeof(unsigned short);
+	//					memcpy(temp, &i, sizeof(unsigned short));
+	//					CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
+	//					m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-						// 2022-05-24 수정
-						CTimer::GetInstance()->ResetTimer();
-					}
-					m_bCard = true;
-					break;
-				}
-				else
-				{
-					m_bCard = false;
-					m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
-				}
-			}
-		}
-	}
+	//					// 2022-05-24 수정
+	//					CTimer::GetInstance()->ResetTimer();
+	//				}
+	//				m_bCard = true;
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				m_bCard = false;
+	//				m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//			}
+	//		}
+	//	}
+	//}
 }
 
-void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo, int _myNum)
+void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CUser::stUserInfo* _userinfo, int _playerCount, int _myNum)
 {
 	int myUserinfoNum = _myNum - 1;
 
-	for (int iObject = 1, iUserInfo = 0; iUserInfo < PLAYER_MAX; iUserInfo++)
+	for (int iObject = 1, iUserInfo = 0; iUserInfo < _playerCount; iUserInfo++)
 	{
 		int count = _userinfo[iUserInfo].number;
 		if (count != 0)
@@ -274,7 +274,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 			{
 				m_player[0]->Render(_pRT, 1.0f);
 				m_playerImage[0]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
-				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].playerName);
+				m_pName[0]->Render(_pRT, _userinfo[iUserInfo].name);
 				if (_userinfo[iUserInfo].boss)
 				{
 					m_boss[0]->Render(_pRT, 1.0f);
@@ -293,7 +293,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 
 					for (int i = 0; i < _userinfo[iUserInfo].cardCount; i++)
 					{
-						m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
+						//m_playersCard[0][i]->Render(_pRT, _userinfo[myUserinfoNum].card[i], 1.0f);
 					}
 					if (_userinfo[iUserInfo].turn && m_bStart)
 					{
@@ -313,7 +313,7 @@ void CPlayerObject::Render(ID2D1HwndRenderTarget* _pRT, CRoom::stUSER* _userinfo
 			{
 				m_player[iObject]->Render(_pRT, 1.0f);
 				m_playerImage[iObject]->Render(_pRT, _userinfo[iUserInfo].image, 1.0f);
-				m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].playerName);
+				m_pName[iObject]->Render(_pRT, _userinfo[iUserInfo].name);
 				if (_userinfo[iUserInfo].boss)
 				{
 					m_boss[iObject]->Render(_pRT, 1.0f);

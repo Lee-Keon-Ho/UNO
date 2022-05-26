@@ -221,8 +221,6 @@ void CLobbyScene::Update()
 							*(unsigned short*)tempBuffer = m_roomButtonNum + 1;
 							tempBuffer += sizeof(unsigned short);
 							*(unsigned short*)tempBuffer = m_userImageNum;
-							tempBuffer += sizeof(unsigned short);
-							memcpy(tempBuffer, CInformation::GetInstance()->GetName(), 32);
 							CClient::GetInstance()->Send(sendBuffer, CS_PT_INROOM);
 
 						}

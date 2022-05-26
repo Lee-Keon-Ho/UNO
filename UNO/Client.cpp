@@ -127,7 +127,7 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_OUTROOM:
 		break;
 	case CS_PT_INROOM:
-		size = 2 + 2 + 32; // unsigned short + unsigned short + buffer Size 
+		size = 2 + 2; // unsigned short + unsigned short + buffer Size 
 		break;
 	case CS_PT_ROOMSTATE:
 		break;

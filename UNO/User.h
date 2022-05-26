@@ -6,6 +6,19 @@
 
 class CUser : public CText 
 {
+public:
+	struct stUserInfo
+	{
+		wchar_t name[USER_NAME_MAX_SIZE];
+		int image;
+		int cardCount;
+		int number;
+		bool boss;
+		bool ready;
+		bool turn;
+		bool choiceColor;
+	};
+
 private:
 	wchar_t* m_pData;
 

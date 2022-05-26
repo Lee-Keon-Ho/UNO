@@ -21,6 +21,7 @@ private:
 	static CInformation* pInstance;
 	CInformation();
 	~CInformation();
+
 private:
 	wchar_t* m_pMyName;
 	int m_MyImage;
@@ -28,7 +29,7 @@ private:
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
-	CRoom::stUSER m_user[USRE_MAX];
+	CUser::stUserInfo m_user[USRE_MAX];
 	chatting_t m_chat;
 
 public:
@@ -56,7 +57,7 @@ public:
 	wchar_t* GetUserList() { return m_pUserList; }
 	chatting_t GetChatting() { return m_chat; }
 	CRoom::stROOM* GetRoomInfo() { return &m_room; }
-	CRoom::stUSER* GetUserInfo() { return m_user; }
+	CUser::stUserInfo* GetUserInfo() { return m_user; }
 public:
 	static CInformation* GetInstance();
 	static void DeleteInstance();

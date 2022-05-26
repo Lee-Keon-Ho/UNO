@@ -34,8 +34,7 @@ bool CInformation::Initalize()
 	memset(m_pMyName, 0, MAX);
 	if (m_pMyName == nullptr) return false;
 
-	memset(m_user, 0, sizeof(CRoom::stUSER) * 5);
-
+	memset(m_user, 0, sizeof(CUser::stUserInfo) * USRE_MAX);
 	return true;
 }
 
@@ -102,7 +101,7 @@ void CInformation::CreateRoom(char* _create)
 
 	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
 	tempBuffer += sizeof(CRoom::stROOM);
-	memcpy(m_user, tempBuffer, sizeof(CRoom::stUSER) * 5);
+	memcpy(m_user, tempBuffer, sizeof(CUser::stUserInfo) * 5);
 
 	if (bCreate)
 	{
@@ -160,7 +159,7 @@ void CInformation::RoomIn(char* _roomin)
 	m_room.playerCount = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
 	
-	memcpy(m_user, tempBuffer, packetSize - 8);
+	memcpy(m_user, tempBuffer, sizeof(CUser::stUserInfo) * m_room.playerCount);
 
 	if (bRoomIn)
 	{
@@ -196,8 +195,10 @@ void CInformation::RoomOut(char* _roomOut)
 
 void CInformation::RoomState(char* _roomState)
 {
-	unsigned short packetSize = *(unsigned short*)_roomState;
-	char* tempBuffer = _roomState + 4;
+	char* tempBuffer = _roomState;
+	unsigned short packetSize = *(unsigned short*)tempBuffer;
+	tempBuffer += sizeof(unsigned short) + 2;
+	
 
 	m_currentCard = *(unsigned short*)tempBuffer;
 	tempBuffer += sizeof(unsigned short);
@@ -205,7 +206,7 @@ void CInformation::RoomState(char* _roomState)
 	memcpy(&m_room, tempBuffer, sizeof(CRoom::stROOM));
 	tempBuffer += sizeof(CRoom::stROOM);
 
-	memcpy(m_user, tempBuffer, sizeof(CRoom::stUSER) * 5);
+	memcpy(m_user, tempBuffer, sizeof(CUser::stUserInfo) * m_room.playerCount);
 }
 
 void CInformation::Chatting(char* _chat)
