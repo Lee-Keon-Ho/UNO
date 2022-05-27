@@ -37,6 +37,8 @@ private:
 	D2D1_RECT_F m_currentCardRect;
 	D2D1_RECT_F m_ChoiceColorCardRect;
 
+	int* m_pCard;
+
 	int m_fontSize;
 
 	bool m_bCard;

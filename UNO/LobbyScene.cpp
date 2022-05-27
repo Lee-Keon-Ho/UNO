@@ -7,6 +7,7 @@
 #include <string>
 
 #define ROOM_NAME_MAX_SIZE 128
+#define BUFFER_SIZE 1000
 
 CLobbyScene::CLobbyScene()
 	: m_backGroundRect({ 0.0f, 0.0f, 1280.0f, 720.0f }), m_createButtonRect({ 386.0f, 230.0f, 558.0f, 303.0f }),
@@ -162,7 +163,7 @@ void CLobbyScene::Update()
 			m_pCreateOkButton->OnButtonDown();
 			if (m_roomNameCount >= 4)
 			{
-				char sendBuffer[1000];
+				char sendBuffer[BUFFER_SIZE];
 				char* tempBuffer = sendBuffer;
 				*(unsigned short*)tempBuffer = m_userImageNum;
 				tempBuffer += sizeof(unsigned short);
@@ -177,7 +178,7 @@ void CLobbyScene::Update()
 				m_pCreateOkButton->OnButtonDown();
 				if (m_roomNameCount >= 4)
 				{
-					char sendBuffer[1000];
+					char sendBuffer[BUFFER_SIZE];
 					char* tempBuffer = sendBuffer;
 					*(unsigned short*)tempBuffer = m_userImageNum;
 					tempBuffer += sizeof(unsigned short);
@@ -216,7 +217,7 @@ void CLobbyScene::Update()
 					case LB_CHOOSE:
 						if (m_bOnRoom)
 						{							
-							char sendBuffer[1000];
+							char sendBuffer[BUFFER_SIZE];
 							char* tempBuffer = sendBuffer;
 							*(unsigned short*)tempBuffer = m_roomButtonNum + 1;
 							tempBuffer += sizeof(unsigned short);

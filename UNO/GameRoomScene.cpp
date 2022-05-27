@@ -6,6 +6,8 @@
 #include "information.h"
 #include "Timer.h"
 
+#define BUFFER_SIZE 100
+
 CGameRoomScene::CGameRoomScene() : 
 	fontSize(15), m_MyNumber(0), m_bChatting(false), m_chatCount(0)
 {
@@ -64,11 +66,13 @@ void CGameRoomScene::Awake()
 			if (m_pUserInfo[i].boss)
 			{
 				m_bBoss = true;
+				m_bReady = true;
 				m_pCurrentButton = m_pStartButton;
 			}
 			else
 			{
 				m_bBoss = false;
+				m_bReady = false;
 				m_pCurrentButton = m_pReadyButton;
 			}
 			break;
@@ -126,7 +130,10 @@ void CGameRoomScene::Update()
 			{
 				if (m_pCurrentButton->OnButton(mouse))
 				{
-					char buffer[] = "ready";
+					m_bReady = !m_bReady;
+					char buffer[BUFFER_SIZE];
+					char* tempBuffer = buffer;
+					*(unsigned short*)tempBuffer = m_bReady;
 					CClient::GetInstance()->Send(buffer, CS_PT_READY);
 				}
 			}
@@ -182,8 +189,8 @@ void CGameRoomScene::Update()
 			}
 		}
 	}
-
-	for (int i = 0; i < PLAYER_MAX; i++)
+	
+	for (int i = 0; i < m_pRoomInfo->playerCount; i++)
 	{
 		if (wcsncmp(m_pUserInfo[i].name, pInformation->GetName(), wcslen(pInformation->GetName())) == 0)
 		{

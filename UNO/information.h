@@ -10,6 +10,7 @@
 #define USERLIST_MAX 15
 #define CHAT_MAX 32
 #define USRE_MAX 5
+#define USER_CARD_MAX 18
 
 class CInformation
 {
@@ -26,6 +27,7 @@ private:
 	wchar_t* m_pMyName;
 	int m_MyImage;
 	int m_currentCard;
+	int* m_pCard;
 	wchar_t* m_pUserList;
 	room_t m_roomList;
 	CRoom::stROOM m_room;
@@ -52,6 +54,7 @@ public:
 	void SetImage(int _num) { m_MyImage = _num; }
 
 	int GetCurrentCard() { return m_currentCard; }
+	int* GetUserCard() { return m_pCard; }
 	wchar_t* GetName() { return m_pMyName; }
 	room_t GetRoomList() { return m_roomList; }
 	wchar_t* GetUserList() { return m_pUserList; }
