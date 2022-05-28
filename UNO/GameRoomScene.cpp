@@ -103,10 +103,11 @@ void CGameRoomScene::Update()
 	}*/
 	if (m_pRoomInfo->victory)
 	{
+		m_pCurrentButton->OnButtonUp();
 		if (CTimer::GetInstance()->GetTime() > 5)
 		{
 			char buffer[] = "victory";
-			CClient::GetInstance()->Send(buffer, CS_PT_VICTORY);
+			CClient::GetInstance()->Send(buffer, CS_PT_RESET);
 		}
 	}
 	m_pExitButton->ButtonPosition(mouse);

@@ -147,7 +147,7 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_CHOISECOLOR:
 		size = sizeof(unsigned short);
 		break;
-	case CS_PT_VICTORY:
+	case CS_PT_RESET:
 		break;
 	}
 	
