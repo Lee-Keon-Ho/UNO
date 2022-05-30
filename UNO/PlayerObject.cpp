@@ -203,7 +203,7 @@ void CPlayerObject::Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominf
 	// 2022-05-24 ¼öÁ¤
 	if (_roominfo->victory)
 	{
-	
+		m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
 	}
 	else if (_userinfo->cardCount < GAME_OVER)
 	{
@@ -220,6 +220,7 @@ void CPlayerObject::Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominf
 						char* temp = buffer;
 						memcpy(temp, &i, sizeof(unsigned short));
 						CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
+						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 					m_bChoice = true;
 					break;

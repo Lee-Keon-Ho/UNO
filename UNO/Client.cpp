@@ -120,16 +120,8 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_CREATEROOM:
 		size = sizeof(WCHAR) * ROOM_NAME_MAX_SIZE;
 		break;
-	case CS_PT_USERLIST:
-		break;
-	case CS_PT_ROOMLIST:
-		break;
-	case CS_PT_OUTROOM:
-		break;
 	case CS_PT_INROOM:
 		size = 2 + 2; // unsigned short + unsigned short + buffer Size 
-		break;
-	case CS_PT_ROOMSTATE:
 		break;
 	case CS_PT_CHATTING:
 		size = sizeof(WCHAR) + CHAT_MAX;
@@ -137,17 +129,11 @@ bool CClient::Send(void* _buffer, int _type)
 	case CS_PT_READY:
 		size = sizeof(unsigned short);
 		break;
-	case CS_PT_START:
-		break;
 	case CS_PT_DRAWCARD:
 		size = sizeof(unsigned short) + sizeof(unsigned short);
 		break;
-	case CS_PT_TAKECARD:
-		break;
 	case CS_PT_CHOISECOLOR:
 		size = sizeof(unsigned short);
-		break;
-	case CS_PT_RESET:
 		break;
 	}
 	

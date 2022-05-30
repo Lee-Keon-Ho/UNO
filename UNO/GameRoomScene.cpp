@@ -87,27 +87,35 @@ void CGameRoomScene::Start()
 void CGameRoomScene::Update()
 {
 	CInput* pInput = CInput::GetInstance();
-	//CTimer* pTimer = CTimer::GetInstance();
 	CInformation* pInformation = CInformation::GetInstance();
 	POINT mouse = pInput->GetMousePosition();
 	int key = pInput->GetKey();
 
-	// 2022-05-24 수정
 	char buffer[] = "game";
 	CClient::GetInstance()->Send(buffer, CS_PT_ROOMSTATE);
 	m_pUserInfo = pInformation->GetUserInfo();
 	m_pRoomInfo = pInformation->GetRoomInfo();
-	/*if (pTimer->GetTime() >= 1.0f)
-	{
-		pTimer->ResetTimer();
-	}*/
+
 	if (m_pRoomInfo->victory)
 	{
 		m_pCurrentButton->OnButtonUp();
-		if (CTimer::GetInstance()->GetTime() > 5)
+		if (m_bBoss)
 		{
-			char buffer[] = "victory";
-			CClient::GetInstance()->Send(buffer, CS_PT_RESET);
+			m_bReady = true;
+			m_pCurrentButton = m_pStartButton;
+		}
+		else
+		{
+			m_bReady = false;
+			m_pCurrentButton = m_pReadyButton;
+		}
+		if (m_pUserInfo[m_MyNumber - 1].cardCount == 0)
+		{
+			if (CTimer::GetInstance()->GetTime() > 5)
+			{
+				char buffer[] = "victory";
+				CClient::GetInstance()->Send(buffer, CS_PT_RESET);
+			}
 		}
 	}
 	m_pExitButton->ButtonPosition(mouse);
@@ -147,9 +155,9 @@ void CGameRoomScene::Update()
 			}
 			m_bChatting = false;
 		}
-		else if(!m_pRoomInfo->victory) // 2022-05-24 수정
+		else if(!m_pRoomInfo->victory)
 		{
-			if (m_pUserInfo[m_MyNumber - 1].turn)
+			if (m_pUserInfo[m_MyNumber - 1].turn && !m_pUserInfo[m_MyNumber - 1].choiceColor)
 			{
 				if (m_pCenterCard->OnButton(mouse))
 				{

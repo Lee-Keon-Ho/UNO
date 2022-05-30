@@ -1,4 +1,4 @@
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+//#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #include "app.h"
 #include <Windows.h>
 

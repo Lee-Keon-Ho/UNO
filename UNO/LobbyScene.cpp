@@ -50,7 +50,7 @@ void CLobbyScene::Awake()
 
 	m_pMyNameText = new CText(CInformation::GetInstance()->GetName() , m_myNameTextRect, m_pontSize1, CText::T_BLACK);
 
-	m_pUserList = new CUser(m_userListRect, m_pontSize2, m_textHeight, CText::T_WHITE);
+	m_pUserList = new CUser(m_userListRect, m_pontSize2, m_textHeight, CText::T_BLACK);
 
 	m_pCreateRoomText = new CText(m_createRoomTextRect, m_pontSize2, 0, CText::T_BLACK);
 
@@ -138,8 +138,9 @@ void CLobbyScene::Update()
 		{
 			if (key == VK_LBUTTON)
 			{
+				char buffer[] = "LogOut";
 				m_pExitOkButton->OnButtonDown();
-				// 2022-05-10 서버한테 끊다고 말하고 확인 받기
+				CClient::GetInstance()->Send(buffer, CS_PT_LOGOUT);
 				PostQuitMessage(0);
 			}
 		}
@@ -227,6 +228,8 @@ void CLobbyScene::Update()
 						}
 						break;
 					case LB_QUICK:
+						char buffer[] = "quick";
+						CClient::GetInstance()->Send(buffer, CS_PT_QUICKROOM);
 						break;
 					}
 				}
