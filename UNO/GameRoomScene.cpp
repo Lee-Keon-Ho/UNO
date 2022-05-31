@@ -162,6 +162,7 @@ void CGameRoomScene::Update()
 				if (m_pCenterCard->OnButton(mouse))
 				{
 					char buffer[] = "take";
+					PlaySound(L"card_flip.wav", 0, SND_FILENAME | SND_ASYNC);
 					CClient::GetInstance()->Send(buffer, CS_PT_TAKECARD);
 				}
 			}

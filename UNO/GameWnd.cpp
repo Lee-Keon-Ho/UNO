@@ -4,7 +4,9 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "Timer.h"
+#include <mmsystem.h>
 
+#pragma comment( lib, "winmm.lib")
 #pragma comment( lib, "imm32.lib")
 #define IMC_GETOPENSTATUS 0x0005
 

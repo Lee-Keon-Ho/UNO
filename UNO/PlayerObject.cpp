@@ -219,6 +219,7 @@ void CPlayerObject::Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominf
 						char buffer[BUFFER_MAX];
 						char* temp = buffer;
 						memcpy(temp, &i, sizeof(unsigned short));
+						PlaySound(L"card_flip.wav", 0, SND_FILENAME | SND_ASYNC);
 						CClient::GetInstance()->Send(buffer, CS_PT_CHOISECOLOR);
 						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
@@ -246,6 +247,7 @@ void CPlayerObject::Update(CUser::stUserInfo* _userinfo, CRoom::stROOM* _roominf
 						memcpy(temp, &m_pCard[i], sizeof(unsigned short));
 						temp += sizeof(unsigned short);
 						memcpy(temp, &i, sizeof(unsigned short));
+						PlaySound(L"card_flip.wav", 0, SND_FILENAME | SND_ASYNC);
 						CClient::GetInstance()->Send(buffer, CS_PT_DRAWCARD);
 						_userinfo->turn = false;
 						m_currentCardRect = { 0.0f, 0.0f, 0.0f, 0.0f };
