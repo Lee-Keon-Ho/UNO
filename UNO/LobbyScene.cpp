@@ -106,7 +106,7 @@ void CLobbyScene::Update()
 	// 2022-05-24
 	char buffer[] = "List";
 	CClient::GetInstance()->Send(buffer, CS_PT_USERLIST);
-	CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
+	//CClient::GetInstance()->Send(buffer, CS_PT_ROOMLIST);
 	m_pUserList->SetList();
 	m_pRoomList->SetList();
 	m_roomCount = m_pRoomList->GetSize();

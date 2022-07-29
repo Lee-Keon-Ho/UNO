@@ -85,7 +85,7 @@ void CLoginScene::Update()
 		{
 			m_pBuffer[m_bufferCount] = 0;
 			CClient::GetInstance()->Send(m_pBuffer, CS_PT_LOGIN);
-			CClient::GetInstance()->Send(m_pBuffer, CS_PT_ROOMLIST);
+			//CClient::GetInstance()->Send(m_pBuffer, CS_PT_ROOMLIST);
 			CInformation::GetInstance()->SetName(m_pBuffer);
 			CSceneManager::GetInstance()->ChangeScene(eScene::LOBBY_SCENE);
 		}
